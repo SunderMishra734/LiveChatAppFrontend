@@ -1,0 +1,99 @@
+<div class="lg-main-cont-cls">
+    <div class="lg-lft-cont-cls">
+        <div class="lg-logo-cls">
+            <div class="logo-cls">
+                <span>LiveChatApp</span>
+            </div>
+        </div>
+        <div class="lg-main-cls">
+            <div class="header-cls">
+                <div class="sign-newacc-cls active-cls" (click)="signInFn()">Sign in</div>
+            </div>
+            <div class="lg-cnt-cls">
+                <div class="inp-cnt-cls" [ngClass]="{ 'focused': isEmailFocused }">
+                    <i class="fa fa-envelope-o common-icon-cls"></i>
+                    <input type="text" placeholder="E-mail" [(ngModel)]="strEmail" (input)="emailOnChange()"
+                        (keydown.enter)="emailInput(pswdInp)" (focus)="isEmailFocused = true"
+                        (blur)="isEmailFocused = false">
+                </div>
+                @if(emptyEmail){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Email is required.</span>
+                </div>
+                }
+                @if(invalidEmail){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Invalid email.</span>
+                </div>
+                }
+                <div class="inp-cnt-cls" [ngClass]="{ 'focused': isPasswordFocused }">
+                    <i class="fa fa-lock common-icon-cls"></i>
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
+                        [(ngModel)]="strPassword" (input)="passwordOnChange()" (keydown.enter)="loginFn()"
+                        (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" #pswdInp>
+                    @if(isShowEyeVisible){
+                    <i class="fa fa-eye common-icon-cls eye-icon-com-cls" style="cursor: pointer;"
+                        (click)="togglePasswordVisibility()"></i>
+                    }
+                    @else {
+                    <i class="fa fa-eye-slash common-icon-cls eye-icon-com-cls" style="cursor: pointer;"
+                        (click)="togglePasswordVisibility()"></i>
+                    }
+                </div>
+                @if(emptyPassword){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Password is required.</span>
+                </div>
+                }
+                <div class="check-cnt-cls" style="display: flex;">
+                    <input type="checkbox" id="rememberMe" style="vertical-align: middle;" [(ngModel)]="rememberMe">
+                    <div class="common-checkbox-cont-cls">
+                        <!-- <i class="fa fa-square-o common-checkbox-cls"></i>
+                        <i class="fa fa-check-square common-checkbox-cls"></i> -->
+                        <label for="rememberMe" class="common-checkbox-label-cls">Remember me</label>
+                    </div>
+                </div>
+                <div class="login-cls" (click)="loginFn()">Login</div>
+            </div>
+        </div>
+    </div>
+    <div class="lg-sep-cls">
+        <div class="sep-cls"></div>
+    </div>
+    <div class="lg-rgt-cont-cls">
+        <div>
+            <div class="welcome-mssg-cls">Welcome to LiveChatApp!</div>
+            <div class="common-subhead-cls">ChatSphere is your ultimate real-time chatting platform, designed to make
+                communication faster, smoother, and more engaging. Whether you're chatting with friends, family, or
+                colleagues, we’ve got you covered. Here's what you’ll find:</div>
+
+            <div class="lg-left-common-cls">
+                <b>Instant Messaging: </b>Send and receive messages in real-time with lightning-fast speed.
+            </div>
+            <div class="lg-left-common-cls">
+                <b>Media Sharing: </b>Easily share images, videos, and documents with your contacts.
+            </div>
+            <div class="lg-left-common-cls">
+                <b>Group Chats: </b>Create and manage group conversations for seamless collaboration.
+            </div>
+            <div class="lg-left-common-cls">
+                <b>Secure & Private: </b>Enjoy end-to-end encryption to keep your conversations safe and secure.
+            </div>
+            <div class="lg-left-common-cls">
+                <b>User-Friendly Experience: </b>Navigate through the app effortlessly with an intuitive and clean
+                design.
+            </div>
+            <div>Log in now and start connecting instantly with ChatSphere – where conversations come alive!</div>
+        </div>
+
+    </div>
+</div>
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType"></app-toaster-message>
+}
+@if (isLoading) {
+<app-loader></app-loader>
+}

@@ -1,0 +1,35 @@
+.nf-cont-cls {
+    position: relative;
+    height: 100vh;
+    background-color: rgb(71, 73, 84);
+}
+
+.nf-mc-cls {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.header-cls {
+    color: #ffffff;
+    font-size: 100px;
+    font-weight: bold;
+}
+
+.err-txt-cls {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+.pnf-back-btn-cls {
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(47, 136, 154);
+    border-radius: 4px;
+    width: 25%;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}

@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 10px;
+}
+
+.logo-cls {
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.lg-logo-cls {
+    padding: 20px;
+}
+
+.class-main-cont-cls {
+    padding: 15px 20px;
+    background-color: #ffffff;
+}
+
+.class-common-cont-cls {
+    margin-block: 15px;
+}
+
+.common-label-cls {
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    color: #565252;
+}
+
+.common-inp-cls {
+    width: 95%;
+    border: 1px solid #c4c6d0;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+.common-inp-cls:focus {
+    border: 1px solid hsl(218, 81.8%, 56.9%);
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+.common-ckeditor-cls:nth-child(2) {
+    width: 95%;
+}
+
+.common-btn-cls {
+    background-color: #107bea;
+    display: inline;
+    padding: 6px 14px;
+    color: #ffffff;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.back-btn-cls {
+    display: flex;
+    align-items: center;
+}
+
+.common-back-btn-icon-cls {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    box-sizing: content-box;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.common-btn-cls:hover,
+.common-back-btn-icon-cls:hover {
+    background-color: #005cbb;
+}
+
+.common-button-cont-cls {
+    padding-block: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.common-side-inp-cont-cls {
+    display: flex;
+    width: 100%;
+}
+
+.common-side-inp-cls {
+    flex: 1;
+}
+
+.common-header-txt-cls {
+    font-size: 24px;
+    color: #5a5252;
+}
+
+.common-manage-cont-cls {
+    padding: 16px 24px;
+}
+
+.common-manage-cont-cls table {
+    width: 100%;
+    border: 1px solid #74777f;
+    border-spacing: 0;
+    table-layout: auto;
+    white-space: normal;
+    background-color: #faf9fd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        0px 0px 3.6px rgba(0, 0, 0, 0.03),
+        0px 0px 9.3px rgba(0, 0, 0, 0.039),
+        0px 0px 24.6px rgba(0, 0, 0, 0.05),
+        0px 0px 198px rgba(0, 0, 0, 0.07);
+}
+
+.common-manage-cont-cls table th,
+.common-manage-cont-cls table td {
+    border-bottom: 1px solid #74777f;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 10px 16px;
+    text-align: center;
+}
+
+.common-ed-icon-cls {
+    color: rgb(72, 168, 237);
+    font-size: 18px;
+    box-sizing: content-box;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.common-checkbox-cls {
+    color: rgb(72, 168, 237);
+    font-size: 20px;
+    box-sizing: content-box;
+    line-height: 20px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.common-checkbox-cont-cls {
+    display: flex;
+    align-items: center;
+}
+
+.common-checkbox-label-cls {
+    user-select: none;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.common-photo-icon-cls {
+    color: rgb(184, 193, 197);
+    font-size: 35px;
+    box-sizing: content-box;
+    line-height: 50px;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+}

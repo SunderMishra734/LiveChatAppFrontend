@@ -1,0 +1,43 @@
+<div class="chat-side-bar-main-cls">
+    <aside>
+        <div>
+            @for(chattingUser of allChatUser; track chattingUser){
+            <div class="common-chat-tiles-cls" [ngClass]="{'active-chat-tiles-cls': isSelected(chattingUser)}"
+                (click)="selectUser(chattingUser)">
+                <div style="display: flex; gap: 10px;">
+                    <div class="chat-tiles-img-cls">
+                        <div class="status-cont-cls" [ngClass]="{'online-status-cls': chattingUser.onlineStatus == 1, 'offline-status-cls': chattingUser.onlineStatus == 0}">
+                            <div class="common-icon-cls">
+                                @if(chattingUser.onlineStatus == 1){
+                                <i class="fa fa-check common-status-icon-cls"></i>
+
+                                }
+                                @else if(chattingUser.onlineStatus == 0) {
+                                <i class="fa fa-remove common-status-icon-cls"></i>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>{{chattingUser.username}}</div>
+                        <div>{{chattingUser.lastMessage}}</div>
+                    </div>
+                </div>
+                <div><span>{{ chattingUser.lastMessageTime | date:'shortTime' }}</span></div>
+            </div>
+            }
+        </div>
+    </aside>
+    <div class="chat-main-cont-cls">
+        @if(isUserSelected){
+        <app-chat-main-content [chattingUser]="selectedUser" [loggedInUserId]="loggedInUserId"
+            [isUserSelected]="isUserSelected"></app-chat-main-content>
+        }
+        @else {
+        <div class="no-user-selected-page-cls">
+            <h2>Select a user to start chatting</h2>
+            <p>Click on any user on the left to begin your conversation.</p>
+        </div>
+        }
+    </div>
+</div>

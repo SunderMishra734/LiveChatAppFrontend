@@ -1,0 +1,50 @@
+<div class="wrapper">
+    @if(isSuccess){
+    <div class="toast success">
+        <div class="container-1">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="container-2">
+            <p>Created</p>
+            <p>New student created successfully.</p>
+        </div>
+        <button>&times;</button>
+    </div>
+    }
+    @else if (isFail) {
+    <div class="toast error">
+        <div class="container-1">
+            <i class="fa fa-exclamation-triangle error-cls"></i>
+        </div>
+        <div class="container-2">
+            <p>Invalid creadential</p>
+            <p>Entered email and password are incorrect.</p>
+        </div>
+        <button>&times;</button>
+    </div>
+    }
+    @else if (isInfo) {
+    <div class="toast info">
+        <div class="container-1">
+            <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="container-2">
+            <p>Updated</p>
+            <p>Student updated successfully.</p>
+        </div>
+        <button>&times;</button>
+    </div>
+    }
+    @else if (isWarning) {
+    <div class="toast warning">
+        <div class="container-1">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="container-2">
+            <p>Warning</p>
+            <p>Username you have entered is invalid.</p>
+        </div>
+        <button>&times;</button>
+    </div>
+    }
+</div>

@@ -1,0 +1,69 @@
+<div style="height: 100%;">
+    <div class="chat-main-head-cont-cls com-dis-fl-cls">
+        <div style="display: flex; align-items: center;gap: 10px;">
+            <div class="user-img-cls"></div>
+            <div>
+                <div class="user-name-cls">{{chattingUser?.username}}</div>
+                <div class="user-status-cls com-dis-fl-cls">
+                    <div class="status-cls"
+                        [ngClass]="{'online-status-cls': chattingUser?.onlineStatus == 1, 'offline-status-cls': chattingUser?.onlineStatus == 0}">
+                    </div>
+                    <span>{{status}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="com-dis-fl-cls" style="gap: 8px;">
+            <div class="common-commu-cont-cls">
+                <i class="fa fa-phone common-communication-img-cls"></i>
+            </div>
+            <div class="common-commu-cont-cls">
+                <i class="fa fa-video-camera common-communication-img-cls"></i>
+            </div>
+            <div class="common-commu-cont-cls">
+                <i class="fa fa-folder common-communication-img-cls"></i>
+            </div>
+        </div>
+    </div>
+    <div class="seperator-cls"></div>
+    <div class="chat-main-content-cont-cls" #messageContainer>
+        @for(message of messages; track message){
+        @if(message.loggedInUserId == loggedInUserId){
+        <div class="common-chat-cont-cls">
+            <div class="com-dis-fl-cls my-chat-cls">
+                <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                <div class="common-chat-cls my-chat-cont-cls">{{message.message}}</div>
+            </div>
+        </div>
+        }
+        @else if(message.loggedInUserId === currentUserId) {
+        <div class="common-chat-cont-cls">
+            <div class="com-dis-fl-cls your-chat-cls">
+                <div class="common-chat-cls your-chat-cont-cls">{{message.message}}</div>
+                <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+            </div>
+        </div>
+        }
+        }
+    </div>
+    <div class="seperator-cls"></div>
+    <div class="chat-main-footter-cont-cls com-dis-fl-cls">
+        <div class="type-mssg-cont-cls com-dis-fl-cls">
+            <div>
+                <input class="inp-mssg-cls" placeholder="Type a new message..." spellcheck="false"
+                    autocapitalize="false" [(ngModel)]="newMessage" (keydown)="handleMessageInput($event)">
+                <!-- <textarea class="inp-mssg-cls" placeholder="Type a new message..." spellcheck="false"
+                    autocapitalize="false" (keydown)="handleMessageInput($event)">
+            </textarea> -->
+            </div>
+            <div class="common-commu-cont-cls">
+                <i class="fa fa-smile-o common-communication-img-cls"></i>
+            </div>
+            <div class="common-commu-cont-cls">
+                <i class="fa fa-plus common-communication-img-cls"></i>
+            </div>
+        </div>
+        <div class="common-commu-cont-cls">
+            <i class="fa fa-paper-plane-o common-communication-img-cls"></i>
+        </div>
+    </div>    
+</div>

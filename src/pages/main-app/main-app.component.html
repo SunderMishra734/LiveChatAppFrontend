@@ -1,0 +1,67 @@
+<main class="home-cont-cls">
+    <aside class="side-bar-cont-cls">
+        <header>
+            <div class="lg-logo-cls">
+                <div class="logo-cls">
+                    <span></span>
+                </div>
+            </div>
+        </header>
+        <nav>
+            <ul>
+                <li routerLinkActive="active-nav-cls">
+                    <a routerLink="chat"><i class='fa fa-comments-o common-icon-cls'></i></a>
+                </li>
+                <li routerLinkActive="active-nav-cls">
+                    <a routerLink="profile"><i class="fa fa-user common-icon-cls"></i></a>
+                </li>
+                <li routerLinkActive="active-nav-cls">
+                    <a routerLink="setting"><i class="fa fa-cog common-icon-cls"></i></a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a (click)="logOutFn()"><i class="fa fa-sign-out common-icon-cls" (click)="logOutFn()"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="main-cont-cls">
+        <section class="header-sec-cls">
+            <header>
+                <div class="search-cont-cls">
+                    <i class="fa fa-search common-icon-cls"
+                        style="font-size: 16px;line-height: 33px; height: 33px; width: 33px;"></i>
+                    <input type="search" placeholder="search" style="font-size: 16px;outline: none;"
+                        [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+                </div>
+                <div style="display: flex;align-items: center;gap: 5px;">
+                    <i class="fa fa-bell-o nf-icon-cls"></i>
+                    <div style="position: relative;" #userProfileContainer>
+                        <div style="display: flex;" (click)="userProfileFn()">
+                            <i class="fa fa-user user-icon-cls"></i>
+                            <div style="cursor: pointer;">{{userFullName}}</div>
+                        </div>
+                        @if(isUserProfileVisible){
+                        <section class="profile-section-cls">
+                            <div style="display: flex;gap: 10px;margin-bottom: 10px;">
+                                <i class="fa fa-user user-icon-cls"></i>
+                                <div>
+                                    <div>{{userFullName}}</div>
+                                    <div style="color: #655555;">{{userEmail}}</div>
+                                </div>
+                            </div>
+                            <div class="view-prof-cls" (click)="showProfileFn()">View Profile</div>
+                        </section>
+                        }
+                    </div>
+                </div>
+            </header>
+        </section>
+        <section class="main-section-cls">
+            <main>
+                <router-outlet></router-outlet>
+            </main>
+        </section>
+    </div>
+</main>

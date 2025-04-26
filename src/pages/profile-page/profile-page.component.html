@@ -1,0 +1,85 @@
+<div class="class-main-cont-cls">
+    <div style="display: flex;justify-content: flex-end;">
+        @if(isSaveBtnVisible) {
+        <div class="back-btn-cls common-btn-cls" (click)="saveFn()">
+            <span>Save</span>
+        </div>
+        }
+        @else {
+        <div class="back-btn-cls common-btn-cls" (click)="editFn()">
+            <span>Edit</span>
+        </div>
+        }
+    </div>
+    <div class="pr-pic-cont-cls">
+        <div>
+            <i class="fa fa-user pr-image-cls"></i>
+        </div>
+        <div class="name-email-cls">
+            <div class="pr-name-cls">{{userFullName}}</div>
+            <div class="pr-email-cls">{{userEmail}}</div>
+        </div>
+    </div>
+    <div class="seperation-cls"></div>
+    <div class="block-cont-cls">
+        <div>
+            <span class="common-header-txt-cls">Personal Details</span>
+        </div>
+        <div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Name</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" [(ngModel)]="userFullName">
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Email</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" [(ngModel)]="userEmail">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Date of Birth</label>
+                    <input type="date" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" [(ngModel)]="userDOF">
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Contact No</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" [(ngModel)]="userContactNo">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Father's Name</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable">
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Mother's Name</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Address</label>
+                    <ckeditor [config]="editorConfig" [(ngModel)]="address"
+                        [ngClass]="{'disable-cls':isDisable}" [disabled]="isDisable"></ckeditor>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-cont-cls">
+        <div>
+            <span class="common-header-txt-cls">Account Details</span>
+        </div>
+    </div>
+</div>

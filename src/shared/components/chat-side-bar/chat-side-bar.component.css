@@ -1,0 +1,94 @@
+.chat-side-bar-main-cls {
+    display: flex;
+    height: 100%;
+}
+
+aside {
+    width: 25%;
+    height: 100%;
+    background-color: #9093a0;
+    color: #ffffff;
+}
+
+.active-chat-tiles-cls {
+    background-color: #727685;
+    color: #ffffff;
+}
+
+app-chat-main-content {
+    width: 75%;
+}
+
+.common-chat-tiles-cls {
+    padding: 15px 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.chat-tiles-img-cls {
+    height: 50px;
+    width: 50px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    position: relative;
+}
+
+.status-cont-cls {
+    width: 13px;
+    height: 13px;
+
+    border-radius: 50%;
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    border: 1px solid #ffffff;
+}
+
+.online-status-cls {
+    background-color: #10c010;
+}
+
+.offline-status-cls {
+    background-color: #3c393f;
+}
+
+.common-icon-cls {
+    font-size: 5.5px;
+}
+
+.common-status-icon-cls {
+    color: #ffffff;
+    font-size: 10px;
+    box-sizing: content-box;
+    line-height: 11px;
+    text-align: center;
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.chat-main-cont-cls {
+    width: 75%;
+}
+
+.no-user-selected-page-cls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 146px);
+    text-align: center;
+}
+
+.no-user-selected-page-cls h2,
+.no-user-selected-page-cls p {
+    margin: 8px 0;
+    font-size: 26px;
+    font-weight: 600;
+    font-stretch: expanded;
+    letter-spacing: 1px;
+    color: rgb(114, 118, 133);
+}
