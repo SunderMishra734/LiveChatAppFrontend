@@ -8,6 +8,8 @@ aside {
     height: 100%;
     background-color: #9093a0;
     color: #ffffff;
+    position: relative;
+    overflow-y: auto;
 }
 
 .active-chat-tiles-cls {
@@ -91,4 +93,134 @@ app-chat-main-content {
     font-stretch: expanded;
     letter-spacing: 1px;
     color: rgb(114, 118, 133);
+}
+
+.add-new-chat-btn-cls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 50%;
+}
+
+.add-new-chat-btn-cls:hover {
+    transform: scale(1.08);
+}
+
+.add-new-chat-btn-cls:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+}
+
+.add-circle-cls {
+    color: rgb(114, 118, 133);
+    font-size: 70px;
+    box-sizing: content-box;
+    line-height: 67px;
+    text-align: center;
+    width: 65px;
+    height: 65px;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: rgb(224, 231, 237);
+}
+
+.add-circle-cls:hover {
+    background-color: rgb(204, 212, 219);
+    color: rgb(100, 103, 116);
+}
+
+.all-user-popup-cls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.popup-content {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+    padding: 32px 24px 24px 24px;
+    min-width: 420px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-user-list {
+    width: 100%;
+    margin: 16px 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.popup-user-item {
+    padding: 10px 16px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background: #f2f4f8;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 16px;
+}
+
+.popup-user-item:hover {
+    background: #e0e7ed;
+}
+
+.popup-close-btn {
+    margin-top: 12px;
+    padding: 6px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #727685;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.popup-close-btn:hover {
+    background: #9093a0;
+}
+
+.profile-img-cls {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-icon-cls {
+    color: #ffffff;
+    font-size: 38px;
+    box-sizing: content-box;
+    line-height: 42px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+    cursor: pointer;
 }

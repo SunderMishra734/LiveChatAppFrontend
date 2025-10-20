@@ -1,1 +1,84 @@
-<p>setting-page works!</p>
+<div class="setting-page-container">
+    @if(!isCreateUserShow){
+    <div style="display: flex;justify-content: flex-start;">
+        <div class="back-btn-cls common-btn-cls" (click)="createNewUser()">
+            <span>Create New User</span>
+        </div>
+    </div>
+    }
+    @if(isCreateUserShow){
+    <div class="block-cont-cls">
+        <div>
+            <span class="common-header-txt-cls">User Details</span>
+        </div>
+        <form [formGroup]="userForm" (ngSubmit)="createUser()">
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">User Name</label>
+                    <input type="text" class="common-inp-cls" formControlName="userName">
+                    <div *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.invalid" class="error">User Name is required</div>
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Email</label>
+                    <input type="text" class="common-inp-cls" formControlName="email">
+                    <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="error">Valid Email is required</div>
+                </div>
+            </div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Full Name</label>
+                    <input type="text" class="common-inp-cls" formControlName="fullName">
+                    <div *ngIf="userForm.get('fullName')?.touched && userForm.get('fullName')?.invalid" class="error">Full Name is required</div>
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Contact No</label>
+                    <input type="text" class="common-inp-cls" formControlName="phoneNumber">
+                    <div *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid" class="error">Contact No is required and must be 10 digits</div>
+                </div>
+            </div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Gender</label>
+                    <select class="common-inp-cls" formControlName="gender">
+                        <option value="">Select Gender</option>
+                        <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+                    </select>
+                    <div *ngIf="userForm.get('gender')?.touched && userForm.get('gender')?.invalid" class="error">Gender is required</div>
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Role</label>
+                    <select class="common-inp-cls" formControlName="role">
+                        <option value="">Select Role</option>
+                        <option *ngFor="let ur of userRoles" [value]="ur.value">{{ ur.key }}</option>
+                    </select>
+                    <div *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid" class="error">Role is required</div>
+                </div>
+            </div>
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Date of Birth</label>
+                    <input type="date" class="common-inp-cls" formControlName="dateOfBirth">
+                    <div *ngIf="userForm.get('dateOfBirth')?.touched && userForm.get('dateOfBirth')?.invalid" class="error">Date of Birth is required</div>
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Profile Pic</label>
+                    <input type="text" class="common-inp-cls" formControlName="profilePic">
+                </div>
+            </div>
+            <div style="display: flex;justify-content: flex-start;gap: 10px;">
+                <button class="back-btn-cls common-btn-cls" type="submit">
+                    <span>Create</span>
+                </button>
+                <button class="back-btn-cls common-btn-cls cancel-btn" type="button" (click)="isCreateUserShow = false">
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    }
+</div>
+
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
+  [descriptionMssg]="descriptionMssg"></app-toaster-message>
+}

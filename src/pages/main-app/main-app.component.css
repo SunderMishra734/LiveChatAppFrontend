@@ -185,9 +185,10 @@
     background-color: #ffffff;
     box-shadow: 0 0 7px 2px #dddddd;
     top: 195%;
-    left: -178%;
+    left: -105%;
     padding: 12px;
     width: 280px;
+    z-index: 101;
 }
 
 .view-prof-cls {

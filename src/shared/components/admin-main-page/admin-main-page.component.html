@@ -1,0 +1,230 @@
+<div>
+  <div class="header-cls">
+    <span>Admin Page</span>
+  </div>
+  <div class="main-body-cls">
+    @if(isCEPageShow){
+    @if(isCustomerFormVisible){
+    <form [formGroup]="customerForm" class="p-4 space-y-4 bg-white rounded shadow-md create-edit-form overflow-auto">
+      <div>
+        <div>
+          <label>Customer Name: <span class="error">*</span></label>
+          <input formControlName="name" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+          <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" class="error">Name is
+            required.</div>
+        </div>
+        <div>
+          <label>Customer Email: <span class="error">*</span></label>
+          <input formControlName="email" type="email" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+          <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" class="error">Valid
+            email
+            is required.</div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Contact Number: <span class="error">*</span></label>
+          <input formControlName="contactNumber" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+          <div *ngIf="customerForm.get('contactNumber')?.invalid && customerForm.get('contactNumber')?.touched"
+            class="error">Contact is required.</div>
+        </div>
+        <div>
+          <label>Expiry Date: <span class="error">*</span></label>
+          <input formControlName="expiryDate" type="date" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+          <div *ngIf="customerForm.get('expiryDate')?.invalid && customerForm.get('expiryDate')?.touched" class="error">
+            Expiry date is required.</div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Website URL: <span class="error">*</span></label>
+          <input formControlName="websiteURL" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+        <div>
+          <label>Address: <span class="error">*</span></label>
+          <input formControlName="address" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>City:</label>
+          <input formControlName="city" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+        <div>
+          <label>State:</label>
+          <input formControlName="state" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Country:</label>
+          <input formControlName="country" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+        <div>
+          <label>Time Zone:</label>
+          <input formControlName="timeZone" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Logo URL:</label>
+          <input formControlName="logoURL" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+        </div>
+        <div>
+          <label>Industry Type: <span class="error">*</span></label>
+          <input formControlName="industryType" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
+            [disabled]="!isSaveMode" />
+          <div *ngIf="customerForm.get('industryType')?.invalid && customerForm.get('industryType')?.touched"
+            class="error">
+            Industry Type is required.</div>
+        </div>
+      </div>
+      <div>
+        <input type="checkbox" formControlName="isActive" />
+        <label>Is Active:</label>
+      </div>
+      <div class="flex gap-4 mt-4">
+        @if(!isEditMode){
+        <button type="submit" class="btn btn-primary" (click)="submitForm()">Create</button>
+        }
+        @else {
+        @if(isSaveMode){
+        <button type="submit" class="btn btn-primary" (click)="submitForm()">Save</button>
+        }
+        @else {
+        <button type="submit" class="btn btn-primary" (click)="onEditMode()">Edit</button>
+        }
+        }
+        <button type="button" class="btn btn-secondary" (click)="cancelCreate()">Cancel</button>
+        @if(!isSaveMode){
+        <button type="button" class="btn btn-primary" (click)="showAdminUserForm()">Create Admin User</button>
+        }
+      </div>
+    </form>
+    }
+    @if(isAdminUserFormVisible){
+    <form [formGroup]="userForm" (ngSubmit)="submitUserForm()"
+      class="p-4 space-y-4 bg-white rounded shadow-md create-edit-form overflow-auto">
+      <div>
+        <div>
+          <label>User Name: <span class="error">*</span></label>
+          <input formControlName="userName" type="text" class="input-cls">
+          <div *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched" class="error">User name is required.</div>
+        </div>
+        <div>
+          <label>Email: <span class="error">*</span></label>
+          <input formControlName="email" type="email" class="input-cls">
+          <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="error">Valid email is required.</div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Role: <span class="error">*</span></label>
+          <select formControlName="ur" class="input-cls">
+            <option *ngFor="let role of userRoles" [value]="role.value">{{ role.key }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Full Name: <span class="error">*</span></label>
+          <input formControlName="fullName" type="text" class="input-cls">
+          <div *ngIf="userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched" class="error">Please enter full name.</div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Phone Number: <span class="error">*</span></label>
+          <input formControlName="phoneNumber" type="text" class="input-cls">
+          <div *ngIf="userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched" class="error">Please enter your phone number.</div>
+        </div>
+        <div>
+          <label>Gender: <span class="error">*</span></label>
+          <select formControlName="gender" class="input-cls">
+            <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label>Date of Birth: <span class="error">*</span></label>
+          <input formControlName="dob" type="date" class="input-cls">
+          <div *ngIf="userForm.get('dob')?.invalid && userForm.get('dob')?.touched" class="error">Please select your date of birth.</div>
+        </div>
+      </div>
+      <div class="flex gap-4 mt-4">
+        <button type="submit" [disabled]="userForm.invalid" class="btn btn-primary">Save User</button>
+        <button type="button" (click)="cancelUserForm()" class="btn btn-secondary">Cancel</button>
+      </div>
+    </form>
+    }
+    }
+    @else {
+    <div class="create-cont-cls">
+      <div class="create-btn-cls" (click)="createCustomerFn()">Create Customer</div>
+    </div>
+    <div class="overflow-auto">
+      <table class="min-w-full border border-gray-300 text-sm">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="p-2 border">ID</th>
+            <th class="p-2 border">Name</th>
+            <th class="p-2 border">Email</th>
+            <th class="p-2 border">Contact</th>
+            <th class="p-2 border">Expired</th>
+            <th class="p-2 border">Expiry Date</th>
+            <th class="p-2 border">Website</th>
+            <th class="p-2 border">City</th>
+            <th class="p-2 border">State</th>
+            <th class="p-2 border">Country</th>
+            <th class="p-2 border">TimeZone</th>
+            <th class="p-2 border">Industry</th>
+            <th class="p-2 border">Active</th>
+            <th class="p-2 border">Created</th>
+            <th class="p-2 border">Updated</th>
+            <th class="p-2 border">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers" class="hover:bg-gray-50">
+            <td class="p-2 border">{{ customer.id }}</td>
+            <td class="p-2 border">{{ customer.name }}</td>
+            <td class="p-2 border">{{ customer.email }}</td>
+            <td class="p-2 border">{{ customer.contactNumber }}</td>
+            <td class="p-2 border">{{ customer.isExpired ? 'Yes' : 'No' }}</td>
+            <td class="p-2 border">{{ customer.expiryDate | date:'mediumDate' }}</td>
+            <td class="p-2 border">{{ customer.websiteURL }}</td>
+            <td class="p-2 border">{{ customer.city }}</td>
+            <td class="p-2 border">{{ customer.state }}</td>
+            <td class="p-2 border">{{ customer.country }}</td>
+            <td class="p-2 border">{{ customer.timeZone }}</td>
+            <td class="p-2 border">{{ customer.industryType }}</td>
+            <td class="p-2 border">{{ customer.isActive ? 'Yes' : 'No' }}</td>
+            <td class="p-2 border">{{ customer.createdAt | date:'short' }}</td>
+            <td class="p-2 border">{{ customer.updatedAt | date:'short' }}</td>
+            <td class="p-2 border">
+              <div class="icons-cont-cls">
+                <i class="fa fa-pencil edit-icon-cls" (click)="editFn(customer)"></i>
+                <i class="fa fa-trash delete-icon-cls" (click)="deleteFn(customer.id)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    }
+  </div>
+</div>
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
+  [descriptionMssg]="descriptionMssg"></app-toaster-message>
+}

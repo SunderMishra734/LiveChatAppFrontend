@@ -1,9 +1,16 @@
 <div style="height: 100%;">
     <div class="chat-main-head-cont-cls com-dis-fl-cls">
         <div style="display: flex; align-items: center;gap: 10px;">
-            <div class="user-img-cls"></div>
+            <div class="user-img-cls">
+                @if(chattingUser?.profilePicture){
+                <img [src]="chattingUser?.profilePicture" alt="Profile" class="profile-img-cls" />
+                }
+                @else{
+                <i class="fa fa-user user-icon-cls"></i>
+                }
+            </div>
             <div>
-                <div class="user-name-cls">{{chattingUser?.username}}</div>
+                <div class="user-name-cls">{{chattingUser?.fullName}}</div>
                 <div class="user-status-cls com-dis-fl-cls">
                     <div class="status-cls"
                         [ngClass]="{'online-status-cls': chattingUser?.onlineStatus == 1, 'offline-status-cls': chattingUser?.onlineStatus == 0}">
@@ -65,5 +72,5 @@
         <div class="common-commu-cont-cls">
             <i class="fa fa-paper-plane-o common-communication-img-cls"></i>
         </div>
-    </div>    
+    </div>
 </div>

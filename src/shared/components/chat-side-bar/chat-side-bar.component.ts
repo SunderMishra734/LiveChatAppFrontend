@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.service';
 import { SharedUserService } from '../../../services/shared-user.service';
 import { SignalrService } from '../../../services/signalr.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-chat-side-bar',
@@ -14,32 +15,28 @@ import { SignalrService } from '../../../services/signalr.service';
   styleUrl: './chat-side-bar.component.css'
 })
 export class ChatSideBarComponent {
-  selectedUser?: ChatListDto;
+  selectedUser: any;
   isUserSelected: boolean = false;
-  allChatUser!: ChatListDto[];
+  allChatUser?: ChatListDto[];
   loggedInUserId: number = 0;
+  isAllUserPopVisible: boolean = false;
+  allUser: any;
 
-  constructor(private chatService: ChatService, private sharedUserService: SharedUserService, private signalRService: SignalrService) { }
+  constructor(private chatService: ChatService, private sharedUserService: SharedUserService, private signalRService: SignalrService, private userService: UserService) { }
 
   ngOnInit() {
     this.sharedUserService.loggedInUserId.subscribe(userId => {
       this.loggedInUserId = userId;
-      this.chatService.getAllChatUser(this.loggedInUserId).subscribe(userChatDetails => {
-        this.allChatUser = userChatDetails;
-      });
-    });
-    this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      this.allChatUser.forEach(element => {
-        if (element.userID == changeUserStatus.id) {
-          element.onlineStatus = changeUserStatus.status;
+      this.chatService.getAllChatUser().subscribe(res => {
+        if (res.success) {
+          this.allChatUser = res.data;
         }
       });
     });
-    this.signalRService.receiveMessages(messageDtoData => {
-      this.allChatUser.forEach(element => {
-        if ((element.userID == messageDtoData.contactUserId && this.loggedInUserId != messageDtoData.contactUserId) || (element.userID == messageDtoData.loggedInUserId && this.loggedInUserId != messageDtoData.loggedInUserId)) {
-          element.lastMessage = messageDtoData.message;
-          element.lastSeen = messageDtoData.timeStamp;
+    this.signalRService.receiveChangeUserStatus(changeUserStatus => {
+      this.allChatUser!.forEach(element => {
+        if (element.userId == changeUserStatus.userId) {
+          element.onlineStatus = changeUserStatus.status;
         }
       });
     });
@@ -47,17 +44,9 @@ export class ChatSideBarComponent {
 
   ngOnChanges(): void {
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      this.allChatUser.forEach(element => {
-        if (element.userID == changeUserStatus.id) {
+      this.allChatUser!.forEach(element => {
+        if (element.userId == changeUserStatus.userId) {
           element.onlineStatus = changeUserStatus.status;
-        }
-      });
-    });
-    this.signalRService.receiveMessages(messageDtoData => {
-      this.allChatUser.forEach(element => {
-        if ((element.userID == messageDtoData.contactUserId) || (element.userID == messageDtoData.loggedInUserId  && this.loggedInUserId != messageDtoData.loggedInUserId)) {
-          element.lastMessage = messageDtoData.message;
-          element.lastSeen = messageDtoData.timeStamp;
         }
       });
     });
@@ -69,7 +58,36 @@ export class ChatSideBarComponent {
   }
 
   isSelected(user: ChatListDto): boolean {
-    return this.selectedUser?.userID === user.userID;
+    return this.selectedUser?.userId === user.userId;
+  }
+
+  showAllUserPop() {
+    this.isAllUserPopVisible = true;
+    this.userService.getAllUser().subscribe(res => {
+      if (res.success) {
+        this.allUser = res.data;
+      }
+    });
+  }
+
+  selectUserFromPopup(user: any) {
+    const exists = this.allChatUser?.some((u: any) => u.userId === user.userId);
+    if (!exists) {
+      const newUser: ChatListDto = {
+        userId: user.userId,
+        fullName: user.fullName,
+        profilePicture: user.profilePic,
+        lastMessage: '',
+        lastSeen: new Date(),
+        onlineStatus: user.onlineStatus,
+        lastMessageTime: new Date(),
+        isRead: false
+      };
+      this.selectedUser = newUser;
+      this.allChatUser = [...(this.allChatUser ?? []), newUser];
+    }
+    this.isUserSelected = true;
+    this.isAllUserPopVisible = false;
   }
 
 }

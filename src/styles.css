@@ -197,3 +197,35 @@
     border-radius: 50%;
     background-color: rgb(255, 255, 255);
 }
+
+.disable-cls {
+    color: #a3a6ac;
+    background-color: #e8e8e9;
+    cursor: no-drop;
+}
+
+.error {
+    color: red;
+    font-size: 0.8rem;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+.background-cls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

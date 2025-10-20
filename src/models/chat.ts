@@ -41,8 +41,8 @@ export class Messages {
 }
 
 export interface ChatListDto {
-    userID: number;
-    username: string;
+    userId: number;
+    fullName: string;
     profilePicture: string;
     lastSeen: Date;
     onlineStatus: number;

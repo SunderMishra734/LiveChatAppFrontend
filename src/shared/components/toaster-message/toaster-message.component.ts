@@ -8,9 +8,10 @@ import { Component, Input } from '@angular/core';
   styleUrl: './toaster-message.component.css'
 })
 export class ToasterMessageComponent {
-  @Input() message: string = '';
+  @Input() mainMssg: string = '';
+  @Input() descriptionMssg: string = '';
   @Input() actionType: number = 0;
-  // @Output() closeToasterMessage = new EventEmitter<boolean>();
+  
   isSuccess: boolean = false;
   isFail: boolean = false;
   isInfo: boolean = false;

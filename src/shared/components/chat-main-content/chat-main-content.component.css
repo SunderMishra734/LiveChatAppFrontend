@@ -12,6 +12,26 @@
     border-radius: 50%;
 }
 
+.profile-img-cls {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.user-icon-cls {
+    color: #ffffff;
+    font-size: 46px;
+    box-sizing: content-box;
+    line-height: 50px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .user-name-cls {
     font-size: 20px;
     font-weight: 600;

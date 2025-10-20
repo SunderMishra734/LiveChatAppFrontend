@@ -1,8 +1,11 @@
 <div class="class-main-cont-cls">
-    <div style="display: flex;justify-content: flex-end;">
+    <div style="display: flex;justify-content: flex-end;gap: 10px;">
         @if(isSaveBtnVisible) {
-        <div class="back-btn-cls common-btn-cls" (click)="saveFn()">
+        <div class="back-btn-cls common-btn-cls" [ngClass]="{'disable-cls':!isEdited}" (click)="saveFn()">
             <span>Save</span>
+        </div>
+        <div class="back-btn-cls common-btn-cls cancel-btn" (click)="cancelFn()">
+            <span>Cancel</span>
         </div>
         }
         @else {
@@ -11,75 +14,167 @@
         </div>
         }
     </div>
-    <div class="pr-pic-cont-cls">
+    <form [formGroup]="profileForm">
         <div>
-            <i class="fa fa-user pr-image-cls"></i>
+            <div class="pr-pic-cont-cls">
+                <div [ngClass]="isDisable ? 'disable-profile-cls' : 'enable-profile-cls'">
+                    <label style="cursor:pointer;">
+                        <input type="file" #fileInput class="file-input-cls" (change)="onFileSelected($event)" [disabled]="isDisable" hidden>
+                        @if(userDetails?.profilePic){
+                        <img [src]="userDetails?.profilePic" alt="Profile" class="pr-image-cls" />
+                        }
+                        @else {
+                        <i class="fa fa-user pr-image-cls"></i>
+                        }
+                    </label>
+                </div>
+                <div class="name-email-cls">
+                    <div class="pr-name-cls">{{userFullName}}</div>
+                    <div class="pr-email-cls">{{userEmail}}</div>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: flex-start;gap: 10px; margin-bottom: 10px;">
+                @if(!isDisable){
+                @if(userDetails?.profilePic){
+                <div class="back-btn-cls common-btn-cls" (click)="changeProfilePic()">
+                    <span>Change Profile Picture</span>
+                </div>
+                <div class="back-btn-cls common-btn-cls cancel-btn" style="background-color: #f25f69;"
+                    (click)="deleteProfilePic()">
+                    <span>Delete Profile Picture</span>
+                </div>
+                }
+                @else {
+                <div class="back-btn-cls common-btn-cls" (click)="changeProfilePic()">
+                    <span>Add Profile Picture</span>
+                </div>
+                }
+                }
+            </div>
         </div>
-        <div class="name-email-cls">
-            <div class="pr-name-cls">{{userFullName}}</div>
-            <div class="pr-email-cls">{{userEmail}}</div>
-        </div>
-    </div>
-    <div class="seperation-cls"></div>
-    <div class="block-cont-cls">
-        <div>
-            <span class="common-header-txt-cls">Personal Details</span>
-        </div>
-        <div>
+        <div class="seperation-cls"></div>
+        <div class="block-cont-cls">
+            <div>
+                <span class="common-header-txt-cls">Personal Details</span>
+            </div>
             <div class="common-side-inp-cont-cls">
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
                     <label for="" class="common-label-cls">Name</label>
                     <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable" [(ngModel)]="userFullName">
+                        [disabled]="isDisable" formControlName="fullName">
                 </div>
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
                     <label for="" class="common-label-cls">Email</label>
                     <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable" [(ngModel)]="userEmail">
+                        [disabled]="isDisable" formControlName="email">
                 </div>
             </div>
-        </div>
-        <div>
             <div class="common-side-inp-cont-cls">
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
                     <label for="" class="common-label-cls">Date of Birth</label>
                     <input type="date" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable" [(ngModel)]="userDOF">
+                        [disabled]="isDisable" formControlName="dateOfBirth">
                 </div>
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
                     <label for="" class="common-label-cls">Contact No</label>
                     <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable" [(ngModel)]="userContactNo">
+                        [disabled]="isDisable" formControlName="phoneNumber">
                 </div>
             </div>
-        </div>
-        <div>
             <div class="common-side-inp-cont-cls">
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Father's Name</label>
-                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable">
+                    <label for="" class="common-label-cls">Gender</label>
+                    <select name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" formControlName="gender">
+                        <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+                    </select>
                 </div>
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Mother's Name</label>
+                    <label for="" class="common-label-cls">Profile Status</label>
                     <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
-                        [disabled]="isDisable">
+                        [disabled]="isDisable" formControlName="profileStatus">
                 </div>
             </div>
-        </div>
-        <div>
             <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Timezone</label>
+                    <input type="text" name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" formControlName="timeZone">
+                </div>
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label for="" class="common-label-cls">Language</label>
+                    <select name="" id="" class="common-inp-cls" [ngClass]="{'disable-cls':isDisable}"
+                        [disabled]="isDisable" formControlName="languagePreference">
+                        <option *ngFor="let l of language" [value]="l.value">{{ l.key }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="common-side-inp-cont-cls" style="width: 97.5%;">
                 <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
                     <label for="" class="common-label-cls">Address</label>
-                    <ckeditor [config]="editorConfig" [(ngModel)]="address"
-                        [ngClass]="{'disable-cls':isDisable}" [disabled]="isDisable"></ckeditor>
+                    <input type="text" name="" id="" class="common-inp-cls" style="width: 100%;"
+                        [ngClass]="{'disable-cls':isDisable}" [disabled]="isDisable" formControlName="address">
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+    <div class="seperation-cls"></div>
     <div class="block-cont-cls">
         <div>
             <span class="common-header-txt-cls">Account Details</span>
         </div>
+        @if(!isShowChangePassword){
+        <div style="display: flex;justify-content: flex-start;gap: 10px;">
+            <div class="back-btn-cls common-btn-cls" (click)="isShowChangePassword = true">
+                <span>Change Password</span>
+            </div>
+        </div>
+        }
+        @if(isShowChangePassword){
+        <form [formGroup]="changePasswordForm" *ngIf="isShowChangePassword">
+            <div class="common-side-inp-cont-cls">
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label class="common-label-cls">Current Password:</label>
+                    <input type="password" class="common-inp-cls" formControlName="currentPassword">
+                    <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched"
+                        class="error">
+                        Current password is required (min 6 chars)
+                    </div>
+                </div>
+
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label class="common-label-cls">New Password:</label>
+                    <input type="password" class="common-inp-cls" formControlName="newPassword">
+                    <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched"
+                        class="error">
+                        New password is required (min 6 chars)
+                    </div>
+                </div>
+
+                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                    <label class="common-label-cls">Confirm New Password:</label>
+                    <input type="password" class="common-inp-cls" formControlName="confirmPassword">
+                    <div *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched"
+                        class="error">
+                        Passwords do not match
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-start; gap: 10px;">
+                <div class="back-btn-cls common-btn-cls" (click)="changePassword()">
+                    <span>Save</span>
+                </div>
+                <div class="back-btn-cls common-btn-cls cancel-btn" (click)="isShowChangePassword = false">
+                    <span>Cancel</span>
+                </div>
+            </div>
+        </form>
+        }
     </div>
 </div>
+
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
+    [descriptionMssg]="descriptionMssg"></app-toaster-message>
+}

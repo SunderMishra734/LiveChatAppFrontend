@@ -2,15 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Inject, PLATFORM_ID, OnDestroy, HostListener } from '@angular/core';
 import { SignalrService } from './signalr.service';
 import { UserService } from './user.service';
-import { ChangeUserStatusDto } from '../models/user-detail-dto';
+import { UserStatusDto } from '../models/user-detail-dto';
 import { AuthService } from './auth.service';
 import { environment } from '../environments/environment';
+import { Status } from '../models/enums.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserStatusService implements OnDestroy {
-  changeUserStatusDto!: ChangeUserStatusDto;
+  changeUserStatusDto!: UserStatusDto;
   userId: any;
   baseUrl: string = environment.apiUrl;
 
@@ -27,14 +28,10 @@ export class UserStatusService implements OnDestroy {
   }
 
   private handleBeforeUnload = (event: Event) => {
-    const changeUserStatusDto: ChangeUserStatusDto = {
-      id: this.userId,
-      status: 0
-    };
     const url = `${this.baseUrl}/User/ChangeUserStatus`;
-    const blob = new Blob([JSON.stringify(changeUserStatusDto)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(Status.Offline)], { type: 'application/json' });
     navigator.sendBeacon(url, blob);
-    this.signalRService.sendChangeUserStatus(changeUserStatusDto);
+    // this.signalRService.sendChangeUserStatus(Status.Offline);
   };
 
   ngOnDestroy(): void {
@@ -42,22 +39,5 @@ export class UserStatusService implements OnDestroy {
       window.removeEventListener('beforeunload', this.handleBeforeUnload);
       window.removeEventListener('unload', this.handleBeforeUnload);
     }
-  }
-
-  // @HostListener('window:beforeunload', ['$event'])
-  // onBeforeUnload(event: BeforeUnloadEvent){
-  //   setTimeout(()=>{
-  //     const changeUserStatusDto: ChangeUserStatusDto = {
-  //       id: this.userId,
-  //       status: 0
-  //     };
-  //     // const url = `${this.baseUrl}/User/ChangeUserStatus`;
-  //     // const blob = new Blob([JSON.stringify(changeUserStatusDto)], { type: 'application/json' });
-  //     // navigator.sendBeacon(url, blob);
-  //     // this.signalRService.sendChangeUserStatus(changeUserStatusDto);
-  //     this.userService.changeUserStatus(changeUserStatusDto).subscribe(() => {
-  //     });
-  //   }, 0);
-  // }
-  
+  }  
 }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthDto } from '../models/auth-dto';
 import { tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { jwtDecode } from 'jwt-decode';
+import { URLS } from '../shared/config/api.config';
+import { ApiService } from './api.service';
 
 
 @Injectable({
@@ -12,17 +13,32 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
   baseUrl: string = environment.apiUrl;
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private apiService: ApiService) { }
 
   login(loginData: AuthDto) {
-    const url = `${this.baseUrl}/Auth/login`;
-    return this.http.post<any>(url, loginData).pipe(
+    const url = URLS.AuthLogin;
+    return this.apiService.post<any>(url, loginData).pipe(
       tap(response => {
-        if (response && response.token) {
-          this.setToken(response.token);
+        if (response.success) {
+          this.setToken(response.data);
         }
       })
     );
+  }
+
+  logOut() {
+    this.clearSession();
+    this.router.navigate(['/login']);
+  }
+
+  changePassword(currentPassword: string, newPassword: string, confirmNewPassword: string) {
+    const url = URLS.AuthChangePassword;
+    const passwordPayload = { 
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      confirmNewPassword: confirmNewPassword
+     };
+    return this.apiService.post<any>(url, passwordPayload);
   }
 
   private isBrowser(): boolean {

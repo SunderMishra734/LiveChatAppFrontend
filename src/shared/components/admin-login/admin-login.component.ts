@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { AuthDto } from '../../models/auth-dto';
+import { AuthDto } from '../../../models/auth-dto';
+import { AdminService } from '../../../services/admin.service';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ToasterMessageComponent } from '../../shared/components/toaster-message/toaster-message.component';
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { FormsModule } from '@angular/forms';
+import { LoaderComponent } from '../loader/loader.component';
+import { ToasterMessageComponent } from '../toaster-message/toaster-message.component';
 
 @Component({
-  selector: 'app-auth',
+  selector: 'app-admin-login',
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule, ToasterMessageComponent, LoaderComponent],
-  providers: [AuthService],
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css'
+  providers: [AdminService],
+  templateUrl: './admin-login.component.html',
+  styleUrl: './admin-login.component.css'
 })
-export class AuthComponent {
+export class AdminLoginComponent {
   isSignInVisible: boolean = true;
   strEmail: string = '';
   strPassword: string = '';
@@ -27,6 +27,8 @@ export class AuthComponent {
   emptyPassword: boolean = false;
   actionType: number = 0;
   isTaosterVisible: boolean = false;
+  mainMssg: string = '';
+  descriptionMssg: string = '';
   rememberMe: boolean = false;
   invalidNewEmail: boolean = false;
   isEmailFocused: boolean = false;
@@ -35,7 +37,7 @@ export class AuthComponent {
   isShowEyeVisible: boolean = true;
   isLoading: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private adminService: AdminService) { }
 
   signInFn() {
     this.invalidNewEmail = false;
@@ -60,19 +62,29 @@ export class AuthComponent {
           email: this.strEmail,
           password: this.strPassword
         }
-        this.authService.login(this.loginData).subscribe({
-          next: () => {
+        this.adminService.adminLogin(this.loginData).subscribe({
+          next: (data) => {
             this.isLoading = false;
-            this.router.navigate(['/app/chat']);
+            if (data) {
+              this.router.navigate(['/admin/app']);
+            }
+            this.errorMessage = 'Invalid credentials, please try again.';
+            this.mainMssg = 'Invalid Credential';
+            this.descriptionMssg = 'Entered email and password are incorrect.';
+            this.strEmail = '';
+            this.strPassword = '';
+            this.showToasterMessage(2);
           },
           error: (error) => {
             this.isLoading = false;
             this.errorMessage = 'Invalid credentials, please try again.';
+            this.mainMssg = 'Invalid Credential';
+            this.descriptionMssg = 'Entered email and password are incorrect.';
             this.strEmail = '';
             this.strPassword = '';
             this.showToasterMessage(2);
           }
-        })
+        });
       }
       else {
         this.invalidEmail = true;
@@ -110,6 +122,8 @@ export class AuthComponent {
   showToasterMessage(actType: number) {
     this.isTaosterVisible = true;
     this.actionType = actType;
+    // this.mainMssg = this.mainMssg;
+    // this.descriptionMssg = this.descriptionMssg;
     setTimeout(() => {
       this.closeToasterMessage();
     }, 2500);
@@ -129,5 +143,9 @@ export class AuthComponent {
   togglePasswordVisibility() {
     this.isPasswordVisible = !this.isPasswordVisible;
     this.isShowEyeVisible = !this.isShowEyeVisible;
+  }
+
+  rememberMeFn() {
+    this.rememberMe = !this.rememberMe;
   }
 }

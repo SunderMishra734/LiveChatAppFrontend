@@ -1,11 +1,12 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { ChangeUserStatusDto, UserDetailDto } from '../../models/user-detail-dto';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { SharedUserService } from '../../services/shared-user.service';
 import { SignalrService } from '../../services/signalr.service';
+import { Status } from '../../models/enums.enum';
+import { UserStatusDto } from '../../models/user-detail-dto';
 
 @Component({
   selector: 'app-main-app',
@@ -19,19 +20,29 @@ export class MainAppComponent {
   loading: boolean = false;
   isUserProfileVisible: boolean = false;
   searchQuery: string = '';
-  userDetails?: UserDetailDto;
+  userDetails: any;
   userId: any;
   userFullName: string = "";
   userEmail: string = "";
-  changeUserStatusDto!: ChangeUserStatusDto;
+  profilePic: string = "";
+  changeUserStatusDto!: UserStatusDto;
 
   constructor(private router: Router, private elementRef: ElementRef, private authService: AuthService, private userService: UserService, private sharedUserService: SharedUserService, private signalRService: SignalrService) { }
 
   ngOnInit(): void {
-    this.getUserId();  // Get the user ID on initialization
+    this.getUserId();
     if (this.userId) {
-      this.getUserDetails(this.userId);  // Fetch user details if userId is available
+      this.getUserDetails();
     }
+    // Subscribe to shared userDetails
+    this.sharedUserService.currentUserDetails.subscribe(details => {
+      if (details) {
+        this.userDetails = details;
+        this.userFullName = details.fullName;
+        this.userEmail = details.email;
+        this.profilePic = details.profilePic;
+      }
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -57,14 +68,8 @@ export class MainAppComponent {
   }
 
   logOutFn() {
-    this.router.navigate(['login']);
-    this.changeUserStatusDto = {
-      id: Number(this.userId),
-      status: 0
-    };
-    this.userService.changeUserStatus(this.changeUserStatusDto).subscribe(() => {
-    });
-    this.signalRService.sendChangeUserStatus(this.changeUserStatusDto);
+    this.userService.changeUserStatus(Status.Offline).subscribe();
+    this.authService.logOut();
   }
 
   getUserId(): void {
@@ -73,22 +78,17 @@ export class MainAppComponent {
     this.signalRService.startConnection();
   }
 
-  getUserDetails(userId: number): void {
-    this.userService.getUserDetails(userId).subscribe({
+  getUserDetails(): void {
+    this.userService.getUserDetails().subscribe({
       next: (data) => {
-        this.userDetails = data;
-        this.sharedUserService.updateUserDetails(this.userDetails);
-        this.userFullName = this.userDetails.fullName;
-        this.userEmail = this.userDetails.email;
-        this.changeUserStatusDto = {
-          id: Number(this.userId),
-          status: 1
-        };
-        this.userService.changeUserStatus(this.changeUserStatusDto).subscribe(() => {
-          setTimeout(() => {
-            this.signalRService.sendChangeUserStatus(this.changeUserStatusDto);
-          }, 3000);
-        });
+        if (data.success) {
+          this.userDetails = data.data;
+          this.sharedUserService.updateUserDetails(this.userDetails);
+          this.userFullName = this.userDetails.fullName;
+          this.userEmail = this.userDetails.email;
+          this.profilePic = this.userDetails.profilePic;
+          this.userService.changeUserStatus(Status.Online).subscribe();
+        }
       },
       error: (err) => {
         console.error('Error fetching user details:', err);

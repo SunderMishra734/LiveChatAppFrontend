@@ -1,0 +1,75 @@
+<div class="lg-main-cont-cls">
+    <div class="lg-lft-cont-cls">
+        <div class="lg-logo-cls">
+            <div class="logo-cls">
+                <span>LiveChatApp</span>
+            </div>
+        </div>
+        <div class="lg-main-cls">
+            <div class="header-cls">
+                <div class="sign-newacc-cls active-cls" (click)="signInFn()">Admin Login</div>
+            </div>
+            <div class="lg-cnt-cls">
+                <div class="inp-cnt-cls" [ngClass]="{ 'focused': isEmailFocused }">
+                    <i class="fa fa-envelope-o common-icon-cls"></i>
+                    <input type="text" placeholder="E-mail" [(ngModel)]="strEmail" (input)="emailOnChange()"
+                        (keydown.enter)="emailInput(pswdInp)" (focus)="isEmailFocused = true"
+                        (blur)="isEmailFocused = false">
+                </div>
+                @if(emptyEmail){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Email is required.</span>
+                </div>
+                }
+                @if(invalidEmail){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Invalid email.</span>
+                </div>
+                }
+                <div class="inp-cnt-cls" [ngClass]="{ 'focused': isPasswordFocused }">
+                    <i class="fa fa-lock common-icon-cls"></i>
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
+                        [(ngModel)]="strPassword" (input)="passwordOnChange()" (keydown.enter)="loginFn()"
+                        (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" #pswdInp>
+                    @if(isShowEyeVisible){
+                    <i class="fa fa-eye common-icon-cls eye-icon-com-cls" style="cursor: pointer;"
+                        (click)="togglePasswordVisibility()"></i>
+                    }
+                    @else {
+                    <i class="fa fa-eye-slash common-icon-cls eye-icon-com-cls" style="cursor: pointer;"
+                        (click)="togglePasswordVisibility()"></i>
+                    }
+                </div>
+                @if(emptyPassword){
+                <div class="error-cls">
+                    <i class="fa fa-exclamation-circle error-icon-cls"></i>
+                    <span>Password is required.</span>
+                </div>
+                }
+                <!-- <div class="check-cnt-cls" style="display: flex;">
+                    <input type="checkbox" hidden id="rememberMe" style="vertical-align: middle;"
+                        [(ngModel)]="rememberMe">
+                    <div class="common-checkbox-cont-cls">
+                        @if(rememberMe){
+                        <i class="fa fa-check-square common-checkbox-cls"></i>
+                        }
+                        @else{
+                        <i class="fa fa-square-o common-checkbox-cls"></i>
+                        }
+                        <label for="rememberMe" class="common-checkbox-label-cls" (click)="rememberMeFn()">Remember
+                            me</label>
+                    </div>
+                </div> -->
+                <div class="login-cls" (click)="loginFn()">Login</div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg" [descriptionMssg]="descriptionMssg"></app-toaster-message>
+}
+@if (isLoading) {
+<app-loader></app-loader>
+}

@@ -1,0 +1,215 @@
+.lg-main-cont-cls {
+    display: flex;
+    height: 100vh;
+    background-color: rgb(71, 73, 84);
+    font-size: 16px;
+}
+
+.lg-lft-cont-cls {
+    width: 100%;
+}
+
+
+.lg-sep-cls {
+    width: 2%;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.sep-cls {
+    height: 100%;
+    width: 1px;
+    background-color: #ffffff;
+}
+
+.lg-rgt-cont-cls {
+    width: 49%;
+    color: #ffffff;
+    padding: 0px 5%;
+    margin-top: 100px;
+}
+
+.logo-icon-cls {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    box-sizing: content-box;
+    line-height: 40px;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.lg-main-cls {
+    width: 375px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow:
+        3.4px 3.4px 17px rgba(0, 0, 0, 0.022),
+        8.7px 8.7px 43.1px rgba(0, 0, 0, 0.031),
+        17.7px 17.7px 87.9px rgba(0, 0, 0, 0.039),
+        36.5px 36.5px 181px rgba(0, 0, 0, 0.048),
+        100px 100px 496px rgba(0, 0, 0, 0.07);
+    margin: auto;
+    margin-top: 120px;
+}
+
+.header-cls {
+    width: 100%;
+}
+
+.sign-newacc-cls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    font-size: 22px;
+}
+
+.active-cls {
+    background-color: rgb(210, 216, 216);
+}
+
+.lg-cnt-cls {
+    padding: 20px;
+}
+
+.inp-cnt-cls {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    margin-block: 10px;
+    border: 1px solid rgb(192 197 197);
+    border-radius: 4px;
+}
+
+.inp-cnt-cls img {
+    width: 10%;
+}
+
+.inp-cnt-cls input {
+    width: 85%;
+    outline: none;
+}
+
+.check-cnt-cls {
+    padding: 5px 0px 10px;
+}
+
+.common-icon-cls {
+    color: rgb(192 197 197);
+    font-size: 16px;
+    box-sizing: content-box;
+    line-height: 36px;
+    text-align: center;
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.eye-icon-com-cls {
+    cursor: pointer;
+    border-left: 1px solid rgb(192 197 197);
+}
+
+.login-cls {
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(47, 136, 154);
+    border-radius: 4px;
+    width: 100%;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.error-cls {
+    color: red;
+}
+
+.error-icon-cls {
+    color: rgb(251, 109, 109);
+    font-size: 18px;
+    box-sizing: content-box;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-left: 3px;
+}
+
+.lg-left-common-cls {
+    margin: 15px 0px;
+}
+
+.focused {
+    border: 1px solid #000;
+}
+
+
+
+.common-subhead-cls {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Extra Small Devices (Phones) */
+@media (max-width: 599px) {
+
+    /* Extra small styles */
+    .lg-sep-cls {
+        display: none;
+    }
+
+    .lg-rgt-cont-cls {
+        display: none;
+    }
+
+    .lg-lft-cont-cls{
+        width: 100%;
+    }
+
+}
+
+/* Small Devices (Tablets in Portrait) */
+@media (min-width: 600px) and (max-width: 899px) {
+
+    /* Small device styles */
+    .lg-sep-cls {
+        display: none;
+    }
+
+    .lg-rgt-cont-cls {
+        display: none;
+    }
+}
+
+/* Medium Devices (Tablets in Landscape or Small Laptops) */
+@media (min-width: 900px) and (max-width: 1199px) {
+
+    /* Medium device styles */
+    .lg-sep-cls {
+        display: none;
+    }
+
+}
+
+/* Large Devices (Laptops/Desktops) */
+@media (min-width: 1200px) {
+
+    /* Large device styles */
+    .welcome-mssg-cls {
+        font-size: 1.625em;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+}

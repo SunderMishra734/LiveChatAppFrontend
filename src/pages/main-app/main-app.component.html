@@ -38,14 +38,24 @@
                 <div style="display: flex;align-items: center;gap: 5px;">
                     <i class="fa fa-bell-o nf-icon-cls"></i>
                     <div style="position: relative;" #userProfileContainer>
-                        <div style="display: flex;" (click)="userProfileFn()">
+                        <div style="display: flex; gap: 5px;" (click)="userProfileFn()">
+                            @if(profilePic){
+                            <img [src]="profilePic" alt="Profile" class="user-icon-cls" />
+                            }
+                            @else {
                             <i class="fa fa-user user-icon-cls"></i>
+                            }
                             <div style="cursor: pointer;">{{userFullName}}</div>
                         </div>
                         @if(isUserProfileVisible){
                         <section class="profile-section-cls">
                             <div style="display: flex;gap: 10px;margin-bottom: 10px;">
+                                @if(profilePic){
+                                <img [src]="profilePic" alt="Profile" class="user-icon-cls" />
+                                }
+                                @else {
                                 <i class="fa fa-user user-icon-cls"></i>
+                                }
                                 <div>
                                     <div>{{userFullName}}</div>
                                     <div style="color: #655555;">{{userEmail}}</div>

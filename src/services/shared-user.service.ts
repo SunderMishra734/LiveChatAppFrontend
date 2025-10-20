@@ -22,4 +22,8 @@ export class SharedUserService {
   addLoggedInUserId(userId: number): void{
     this.userIdSource.next(userId);
   }
+
+  getCurrentUserDetails(): UserDetailDto | null {
+    return this.userDetailsSource.getValue();
+  }
 }

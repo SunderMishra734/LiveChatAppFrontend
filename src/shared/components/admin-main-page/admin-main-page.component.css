@@ -1,0 +1,108 @@
+.header-cls {
+    height: 70px;
+    background-color: #9093a0;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.header-cls span {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.main-body-cls {
+    padding: 10px 15px;
+}
+
+.icons-cont-cls {
+    display: flex;
+    justify-content: space-around;
+}
+
+.edit-icon-cls,
+.delete-icon-cls {
+    font-size: 20px;
+    box-sizing: content-box;
+    line-height: 25px;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.edit-icon-cls:hover,
+.delete-icon-cls:hover {
+    background-color: #dedfe7;
+}
+
+.edit-icon-cls {
+    color: rgb(113 131 113);
+}
+
+.delete-icon-cls {
+    color: rgb(244, 67, 54);
+}
+
+.create-cont-cls {
+    padding-block: 10px;
+}
+
+.create-btn-cls {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #81848f;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.create-btn-cls:hover {
+    background-color: #4f5569;
+}
+
+.create-btn-cls:active {
+    background-color: #4f5569;
+}
+
+.input-cls {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.create-edit-form {
+    display: grid;
+}
+
+.create-edit-form div div {
+    width: 50%;
+    display: grid;
+}
+
+.create-edit-form div {
+    display: flex;
+    gap: 10px;
+}

@@ -13,7 +13,7 @@ import { SignalrService } from '../../../services/signalr.service';
   styleUrl: './chat-main-content.component.css'
 })
 export class ChatMainContentComponent {
-  @Input() chattingUser: ChatListDto | any;
+  @Input() chattingUser?: ChatListDto;
   @Input() isUserSelected: boolean = false;
   @Input() loggedInUserId: number = 0;
   @ViewChild('messageContainer') messageContainer: any;
@@ -28,15 +28,16 @@ export class ChatMainContentComponent {
 
   ngOnInit() {
     this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
-    this.getMessages(this.loggedInUserId, this.chattingUser.userID);
+    console.log("Chatting User:", this.chattingUser);
+    this.getMessages(this.chattingUser!.userId);
     this.signalRService.receiveMessages(messageDtoData => {
       if (this.currentUserId == messageDtoData.loggedInUserId && this.loggedInUserId == messageDtoData.contactUserId) {
         this.messages?.push(messageDtoData);
       }
     });
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      if (this.currentUserId == changeUserStatus.id) {
-        this.chattingUser.onlineStatus = changeUserStatus.status;
+      if (this.currentUserId == changeUserStatus.status) {
+        this.chattingUser!.onlineStatus = changeUserStatus.status;
         this.status = changeUserStatus.status === 1 ? 'Online' : 'Offline';
       }
     });
@@ -45,12 +46,12 @@ export class ChatMainContentComponent {
   ngOnChanges(): void {
     this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      if (this.currentUserId == changeUserStatus.id) {
-        this.chattingUser.onlineStatus = changeUserStatus.status;
+      if (this.currentUserId == changeUserStatus.status) {
+        this.chattingUser!.onlineStatus = changeUserStatus.status;
         this.status = changeUserStatus.status === 1 ? 'Online' : 'Offline';
       }
     });
-    this.getMessages(this.loggedInUserId, this.chattingUser.userID);
+    this.getMessages(this.chattingUser!.userId);
   }
 
   ngAfterViewChecked(): void {
@@ -74,9 +75,11 @@ export class ChatMainContentComponent {
         isRead: false
       }
       this.chatService.saveMessages(this.message).subscribe({
-        next: (response) => {
-          this.messages?.push(response);
-          this.signalRService.sendMessage(response);
+        next: (res) => {
+          if (res.success) {
+            this.messages?.push(res.data);
+            this.signalRService.sendMessage(res.data);
+          }
         },
         error: (error) => {
           console.error("Error sending message:", error);
@@ -86,15 +89,16 @@ export class ChatMainContentComponent {
     }
   }
 
-  getMessages(loggedInUserId: number, contactUserId: number) {
-    this.messageRequestDto = {
-      loggedInUserId: loggedInUserId,
-      contactUserId: contactUserId
-    };
+  getMessages(contactUserId: number) {
     this.currentUserId = contactUserId;
-    this.chatService.getMessages(this.messageRequestDto).subscribe({
-      next: (response) => {
-        this.messages = response;
+    this.chatService.getMessages(contactUserId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.messages = res.data;
+        }
+        else {
+          this.messages = [];
+        }
       },
       error: (error) => {
         console.error("Error sending message:", error);

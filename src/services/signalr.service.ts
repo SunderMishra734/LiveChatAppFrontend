@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
 import { MessageDto } from '../models/chat';
 import { environment } from '../environments/environment';
-import { ChangeUserStatusDto } from '../models/user-detail-dto';
+import { UserStatusDto } from '../models/user-detail-dto';
+import { Status } from '../models/enums.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class SignalrService {
     this.hubConnection.on('ReceiveMessage', callback);
   }
 
-  receiveChangeUserStatus(callback: (changeUserStatusDto: ChangeUserStatusDto) => void) {
+  receiveChangeUserStatus(callback: (userStatusDto: UserStatusDto) => void) {
     this.hubConnection.on('ReceiveChangeUserStatus', callback);
   }
 
@@ -44,13 +44,13 @@ export class SignalrService {
       .catch(err => console.error(err));
   }
 
-  public sendChangeUserStatus(changeUserStatusDto: ChangeUserStatusDto) {
+  public sendChangeUserStatus(status: Status) {
     if (!this.hubConnection || this.hubConnection.state !== signalR.HubConnectionState.Connected) {
       console.error('SignalR is not connected. Cannot send message.');
       return;
     }
 
-    this.hubConnection.invoke("SendChangeUserStatus", changeUserStatusDto)
+    this.hubConnection.invoke("SendChangeUserStatus", status.valueOf())
       .catch(err => console.error(err));
   }
 }

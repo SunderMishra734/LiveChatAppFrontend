@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../environments/environment';
-import { ChatListDto, MessageDto, MessageRequestDto } from '../models/chat';
+import { MessageDto, MessageRequestDto } from '../models/chat';
+import { ApiService } from './api.service';
+import { URLS } from '../shared/config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +11,21 @@ import { ChatListDto, MessageDto, MessageRequestDto } from '../models/chat';
 export class ChatService {
   baseUrl: string = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private apiService: ApiService) { }
 
-  getAllChatUser(userId: number): Observable<ChatListDto[]> {
-    const url = `${this.baseUrl}/chat/GetAllChattedUser/${userId}`;
-    return this.http.get<ChatListDto[]>(url);
+  getAllChatUser(): Observable<any> {
+    const url = URLS.GetAllChat;
+    return this.apiService.get<any>(url);
   }
 
-  getMessages(messageRequestDto: MessageRequestDto): Observable<MessageDto[]> {
-    const url = `${this.baseUrl}/chat/GetMessages`;
-    return this.http.post<MessageDto[]>(url, messageRequestDto);
+  getMessages(contactUserId: number): Observable<any> {
+    const url = URLS.GetMessages;
+    const params = { contactUserId: contactUserId };
+    return this.apiService.get<any>(url, params);
   }
 
-  saveMessages(MessageDto: MessageDto): Observable<MessageDto>{
-    const url = `${this.baseUrl}/chat/SaveMessages`;
-    return this.http.post<MessageDto>(url, MessageDto);
+  saveMessages(MessageDto: MessageDto): Observable<any> {
+    const url = URLS.SaveMessages;
+    return this.apiService.post<any>(url, MessageDto);
   }
 }

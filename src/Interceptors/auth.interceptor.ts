@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { AdminService } from '../services/admin.service';
 
 @Injectable()
 export class authInterceptor implements HttpInterceptor{
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private adminService: AdminService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();

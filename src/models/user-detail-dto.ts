@@ -1,3 +1,5 @@
+import { Gender } from "./enums.enum";
+
 export interface UserDetailDto {
     fullName: string;
     email: string;
@@ -12,9 +14,11 @@ export interface UserDetailDto {
     timeZone: string;
     updatedAt: Date;
     profilePic: string;
+    gender: Gender;
 }
 
-export interface ChangeUserStatusDto{
-    id: number;
+export interface UserStatusDto{
+    corporateId: number;
+    userId: number;
     status: number;
 }
