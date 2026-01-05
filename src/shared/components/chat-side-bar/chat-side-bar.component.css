@@ -8,7 +8,6 @@ aside {
     height: 100%;
     background-color: #9093a0;
     color: #ffffff;
-    position: relative;
     overflow-y: auto;
 }
 
@@ -39,7 +38,6 @@ app-chat-main-content {
 .status-cont-cls {
     width: 13px;
     height: 13px;
-
     border-radius: 50%;
     position: absolute;
     right: -1px;
@@ -96,12 +94,14 @@ app-chat-main-content {
 }
 
 .add-new-chat-btn-cls {
-    position: absolute;
+    position: sticky;
     bottom: 20px;
-    right: 20px;
+    margin-left: auto;
+    margin-right: 20px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     border-radius: 50%;
+    width: 65px;
 }
 
 .add-new-chat-btn-cls:hover {
