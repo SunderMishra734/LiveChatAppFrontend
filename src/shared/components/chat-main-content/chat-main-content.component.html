@@ -1,4 +1,4 @@
-<div style="height: 100%;">
+<div style="height: 100%;display: flex;flex-direction: column;">
     <div class="chat-main-head-cont-cls com-dis-fl-cls">
         <div style="display: flex; align-items: center;gap: 10px;">
             <div class="user-img-cls">
@@ -55,22 +55,25 @@
     <div class="seperator-cls"></div>
     <div class="chat-main-footter-cont-cls com-dis-fl-cls">
         <div class="type-mssg-cont-cls com-dis-fl-cls">
-            <div>
-                <input class="inp-mssg-cls" placeholder="Type a new message..." spellcheck="false"
-                    autocapitalize="false" [(ngModel)]="newMessage" (keydown)="handleMessageInput($event)">
-                <!-- <textarea class="inp-mssg-cls" placeholder="Type a new message..." spellcheck="false"
-                    autocapitalize="false" (keydown)="handleMessageInput($event)">
-            </textarea> -->
+            <div style="max-height: 100px; overflow-y: auto; flex: 1;">
+                <div class="inp-mssg-cls input-div-cls" aria-autocomplete="list" contenteditable="true" role="textbox" spellcheck="true" tabindex="10" aria-placeholder="Type a new message..." data-placeholder="Type a new message..." #chatInput (keyup)="checkEmpty(chatInput)" (keydown)="handleMessageInput($event, chatInput)"></div>
             </div>
-            <div class="common-commu-cont-cls">
-                <i class="fa fa-smile-o common-communication-img-cls"></i>
+            <div class="common-commu-cont-cls emoji-container" #emojiContainer>
+                <i class="fa fa-smile-o common-communication-img-cls" (click)="toggleEmojiPicker($event)"></i>
+                <!-- Emoji Popup -->
+                <div class="emoji-popup" *ngIf="showEmojiPicker">
+                    <span *ngFor="let emoji of emojis"
+                        (click)="addEmoji(emoji, chatInput)">
+                        {{emoji}}
+                    </span>
+                </div>
             </div>
             <div class="common-commu-cont-cls">
                 <i class="fa fa-plus common-communication-img-cls"></i>
             </div>
         </div>
         <div class="common-commu-cont-cls">
-            <i class="fa fa-paper-plane-o common-communication-img-cls"></i>
+            <i class="fa fa-paper-plane-o common-communication-img-cls" (click)="send(chatInput)"></i>
         </div>
     </div>
 </div>

@@ -8,9 +8,11 @@ import { BehaviorSubject } from 'rxjs';
 export class SharedUserService {
   private userDetailsSource = new BehaviorSubject<UserDetailDto | any>(null);
   private userIdSource = new BehaviorSubject<number>(0);
+  private searchQuerySource = new BehaviorSubject<string>('');
 
   currentUserDetails = this.userDetailsSource.asObservable();
   loggedInUserId = this.userIdSource.asObservable();
+  searchQuery$ = this.searchQuerySource.asObservable();
 
   constructor() { }
 
@@ -21,6 +23,10 @@ export class SharedUserService {
 
   addLoggedInUserId(userId: number): void{
     this.userIdSource.next(userId);
+  }
+
+  updateSearchQuery(query: string): void {
+    this.searchQuerySource.next(query);
   }
 
   getCurrentUserDetails(): UserDetailDto | null {

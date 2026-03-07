@@ -141,8 +141,8 @@
 
 
 .chat-main-footter-cont-cls {
-    height: 65px;
-    overflow-y: auto;
+    min-height: 65px;
+    max-height: 130px;
     padding: 9.5px 20px;
     gap: 5px;
 }
@@ -152,6 +152,7 @@
     padding: 5px 10px;
     border: 1px solid rgb(114, 118, 133);
     border-radius: 5px;
+    align-items: flex-end;
 }
 
 .type-mssg-cont-cls div:first-child {
@@ -165,3 +166,48 @@
     background-color: inherit;
 }
 
+.input-div-cls {
+    max-height: 11.76em;
+    min-height: 1.47em;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.input-div-cls:empty:before {
+    content: attr(data-placeholder);
+    color: gray;
+    pointer-events: none;
+}
+
+.emoji-container {
+    position: relative;
+}
+
+.emoji-popup {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    width: 220px;
+    max-height: 150px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 111;
+}
+
+.emoji-popup span {
+    cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+}
+
+.emoji-popup span:hover {
+    transform: scale(1.2);
+}

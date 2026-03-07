@@ -1,7 +1,8 @@
 <div class="chat-side-bar-main-cls">
     <aside>
         <div>
-            @for(chattingUser of allChatUser; track chattingUser){
+            @if(filteredChatUsers?.length){
+            @for(chattingUser of filteredChatUsers; track chattingUser){
             <div class="common-chat-tiles-cls" [ngClass]="{'active-chat-tiles-cls': isSelected(chattingUser)}"
                 (click)="selectUser(chattingUser)">
                 <div style="display: flex; gap: 10px;">
@@ -26,11 +27,26 @@
                         </div>
                     </div>
                     <div>
-                        <div>{{chattingUser.fullName}}</div>
-                        <div>{{chattingUser.lastMessage}}</div>
+                        <div [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
+                            {{chattingUser.fullName}}
+                        </div>
+                        <div [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
+                            {{chattingUser.lastMessage}}
+                        </div>
                     </div>
                 </div>
-                <div><span>{{ chattingUser.lastMessageTime | date:'shortTime' }}</span></div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span>{{ chattingUser.lastMessageTime | date:'shortTime' }}</span>
+                    @if(chattingUser.unreadCount && chattingUser.unreadCount > 0){
+                    <span class="unread-badge-cls">{{ chattingUser.unreadCount }}</span>
+                    }
+                </div>
+            </div>
+            }
+            }
+            @else if(currentSearchQuery){
+            <div style="padding: 15px 10px;">
+                No contact and last message found.
             </div>
             }
         </div>
@@ -41,7 +57,7 @@
     <div class="chat-main-cont-cls">
         @if(isUserSelected){
         <app-chat-main-content [chattingUser]="selectedUser" [loggedInUserId]="loggedInUserId"
-            [isUserSelected]="isUserSelected"></app-chat-main-content>
+            [isUserSelected]="isUserSelected" (messageSent)="onMessageSent($event)"></app-chat-main-content>
         }
         @else {
         <div class="no-user-selected-page-cls">

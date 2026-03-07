@@ -33,7 +33,7 @@
                     <i class="fa fa-search common-icon-cls"
                         style="font-size: 16px;line-height: 33px; height: 33px; width: 33px;"></i>
                     <input type="search" placeholder="search" style="font-size: 16px;outline: none;"
-                        [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+                        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)" (keyup.enter)="onSearch()">
                 </div>
                 <div style="display: flex;align-items: center;gap: 5px;">
                     <i class="fa fa-bell-o nf-icon-cls"></i>

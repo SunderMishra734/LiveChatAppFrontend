@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ChatListDto, MessageDto, MessageRequestDto } from '../../../models/chat';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,13 +16,21 @@ export class ChatMainContentComponent {
   @Input() chattingUser?: ChatListDto;
   @Input() isUserSelected: boolean = false;
   @Input() loggedInUserId: number = 0;
+  @Output() messageSent = new EventEmitter<MessageDto>();
   @ViewChild('messageContainer') messageContainer: any;
+  @ViewChild('textArea') textArea!: any;
   messages?: MessageDto[];
   message: MessageDto | any;
   newMessage: string = '';
   status: string = '';
   currentUserId: number = 0;
   messageRequestDto?: MessageRequestDto;
+  showEmojiPicker = false;
+  emojis: string[] = [
+    "😀", "😁", "😂", "🤣", "😊", "😍", "😘", "😎",
+    "😢", "😭", "😡", "👍", "🙏", "🔥", "❤️", "🎉"
+  ];
+  @ViewChild('emojiContainer') emojiContainer!: ElementRef;
 
   constructor(private chatService: ChatService, private signalRService: SignalrService) { }
 
@@ -58,14 +66,44 @@ export class ChatMainContentComponent {
     this.scrollToBottom();
   }
 
-  handleMessageInput(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault(); // Prevent new line
-      this.sendMessage();
-      this.scrollToBottom();
-    }
+  ngAfterViewInit() {
+    this.textArea.nativeElement.addEventListener('input', () => {
+      const el = this.textArea.nativeElement;
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    });
   }
 
+  // handleMessageInput(event: KeyboardEvent): void {
+  //   if (event.key === 'Enter' && !event.shiftKey) {
+  //     event.preventDefault();
+  //     this.sendMessage();
+  //     this.scrollToBottom();
+  //   }
+  // }
+
+  handleMessageInput(event: KeyboardEvent, chatInput: HTMLElement): void {
+
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.newMessage = chatInput.innerText.trim();
+      if (this.newMessage) {
+        this.sendMessage();
+        this.scrollToBottom();
+        // clear input
+        chatInput.innerHTML = '';
+      }
+    }
+  }
+  send(chatInput: HTMLElement): void {
+    this.newMessage = chatInput.innerText.trim();
+    if (this.newMessage) {
+      this.sendMessage();
+      this.scrollToBottom();
+      // clear input
+      chatInput.innerHTML = '';
+    }
+  }
   sendMessage(): void {
     if (this.newMessage.trim()) {
       this.message = {
@@ -79,6 +117,7 @@ export class ChatMainContentComponent {
           if (res.success) {
             this.messages?.push(res.data);
             this.signalRService.sendMessage(res.data);
+            this.messageSent.emit(res.data);
           }
         },
         error: (error) => {
@@ -99,6 +138,7 @@ export class ChatMainContentComponent {
         else {
           this.messages = [];
         }
+        this.scrollToBottom();
       },
       error: (error) => {
         console.error("Error sending message:", error);
@@ -110,5 +150,32 @@ export class ChatMainContentComponent {
     if (this.messageContainer) {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
     }
+  }
+
+  checkEmpty(element: HTMLElement) {
+    if (element.innerText.trim() === '') {
+      element.innerHTML = '';
+    }
+  }
+
+  toggleEmojiPicker(event: Event) {
+    event.stopPropagation();
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(emoji: string, chatInput: HTMLElement) {
+
+    chatInput.innerText += emoji;
+    chatInput.focus();
+
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+
+    if (!this.emojiContainer.nativeElement.contains(event.target)) {
+      this.showEmojiPicker = false;
+    }
+
   }
 }

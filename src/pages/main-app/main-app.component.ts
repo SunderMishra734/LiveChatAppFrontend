@@ -30,6 +30,7 @@ export class MainAppComponent {
   constructor(private router: Router, private elementRef: ElementRef, private authService: AuthService, private userService: UserService, private sharedUserService: SharedUserService, private signalRService: SignalrService) { }
 
   ngOnInit(): void {
+    this.sharedUserService.updateSearchQuery(this.searchQuery);
     this.getUserId();
     if (this.userId) {
       this.getUserDetails();
@@ -50,6 +51,11 @@ export class MainAppComponent {
     if (this.isUserProfileVisible && !this.userProfileContainer.nativeElement.contains(event.target)) {
       this.isUserProfileVisible = false;
     }
+  }
+
+  onSearchChange(value: string): void {
+    this.searchQuery = value;
+    this.sharedUserService.updateSearchQuery(this.searchQuery);
   }
 
   onSearch(): void {

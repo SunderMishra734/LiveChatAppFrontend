@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatMainContentComponent } from "../chat-main-content/chat-main-content.component";
-import { ChatListDto, ChattingUser } from '../../../models/chat';
+import { ChatListDto, ChattingUser, MessageDto } from '../../../models/chat';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.service';
 import { SharedUserService } from '../../../services/shared-user.service';
@@ -18,9 +18,11 @@ export class ChatSideBarComponent {
   selectedUser: any;
   isUserSelected: boolean = false;
   allChatUser?: ChatListDto[];
+  filteredChatUsers?: ChatListDto[];
   loggedInUserId: number = 0;
   isAllUserPopVisible: boolean = false;
   allUser: any;
+  currentSearchQuery: string = '';
 
   constructor(private chatService: ChatService, private sharedUserService: SharedUserService, private signalRService: SignalrService, private userService: UserService) { }
 
@@ -29,9 +31,17 @@ export class ChatSideBarComponent {
       this.loggedInUserId = userId;
       this.chatService.getAllChatUser().subscribe(res => {
         if (res.success) {
-          this.allChatUser = res.data;
+            this.allChatUser = res.data.map((user: ChatListDto) => ({
+            ...user,
+            unreadCount: 0
+          }));
+          this.applyFilter();
         }
       });
+    });
+    this.sharedUserService.searchQuery$.subscribe(query => {
+      this.currentSearchQuery = query;
+      this.applyFilter();
     });
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
       this.allChatUser!.forEach(element => {
@@ -39,6 +49,13 @@ export class ChatSideBarComponent {
           element.onlineStatus = changeUserStatus.status;
         }
       });
+    });
+
+    this.signalRService.receiveMessages(messageDtoData => {
+      // Only handle messages where the logged-in user is the receiver
+      if (messageDtoData.contactUserId == this.loggedInUserId) {
+        this.handleIncomingMessage(messageDtoData);
+      }
     });
   }
 
@@ -55,6 +72,15 @@ export class ChatSideBarComponent {
   selectUser(user: ChatListDto): void {
     this.selectedUser = user;
     this.isUserSelected = true;
+    // Mark messages as read for this user
+    if (user.unreadCount && user.unreadCount > 0) {
+      user.unreadCount = 0;
+      const index = this.allChatUser?.findIndex(u => u.userId === user.userId);
+      if (index !== undefined && index !== -1 && this.allChatUser) {
+        this.allChatUser[index] = { ...this.allChatUser[index], unreadCount: 0, isRead: true };
+      }
+      this.applyFilter();
+    }
   }
 
   isSelected(user: ChatListDto): boolean {
@@ -81,13 +107,84 @@ export class ChatSideBarComponent {
         lastSeen: new Date(),
         onlineStatus: user.onlineStatus,
         lastMessageTime: new Date(),
-        isRead: false
+        isRead: false,
+        unreadCount: 0
       };
       this.selectedUser = newUser;
       this.allChatUser = [...(this.allChatUser ?? []), newUser];
+      this.applyFilter();
     }
     this.isUserSelected = true;
     this.isAllUserPopVisible = false;
+  }
+
+  onMessageSent(message: MessageDto): void {
+    if (!this.allChatUser || !message) {
+      return;
+    }
+    const contactId = message.contactUserId;
+
+    const index = this.allChatUser.findIndex(u => u.userId === contactId);
+    if (index === -1) {
+      return;
+    }
+
+    const user = this.allChatUser[index];
+    const updatedUser: ChatListDto = {
+      ...user,
+      lastMessage: message.message,
+      lastMessageTime: message.timeStamp,
+      isRead: true,
+      unreadCount: 0
+    };
+
+    const remaining = this.allChatUser.filter((_, i) => i !== index);
+    this.allChatUser = [updatedUser, ...remaining];
+    this.applyFilter();
+  }
+
+  private handleIncomingMessage(message: MessageDto): void {
+    if (!this.allChatUser) {
+      return;
+    }
+
+    const contactId = message.loggedInUserId; // sender id
+    const index = this.allChatUser.findIndex(u => u.userId === contactId);
+    if (index === -1) {
+      return;
+    }
+
+    const user = this.allChatUser[index];
+    const isActiveChat = this.selectedUser?.userId === contactId;
+
+    const updatedUser: ChatListDto = {
+      ...user,
+      lastMessage: message.message,
+      lastMessageTime: message.timeStamp,
+      isRead: isActiveChat,
+      unreadCount: isActiveChat ? 0 : (user.unreadCount ?? 0) + 1
+    };
+
+    const remaining = this.allChatUser.filter((_, i) => i !== index);
+    this.allChatUser = [updatedUser, ...remaining];
+    this.applyFilter();
+  }
+
+  private applyFilter(): void {
+    if (!this.allChatUser) {
+      this.filteredChatUsers = [];
+      return;
+    }
+    const term = this.currentSearchQuery.trim().toLowerCase();
+    if (!term) {
+      this.filteredChatUsers = [...this.allChatUser];
+      return;
+    }
+    this.filteredChatUsers = this.allChatUser.filter(user => {
+      const name = user.fullName?.toLowerCase() ?? '';
+      const lastMessage = user.lastMessage?.toLowerCase() ?? '';
+      return name.includes(term) || lastMessage.includes(term);
+    });
   }
 
 }

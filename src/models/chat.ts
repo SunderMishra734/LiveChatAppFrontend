@@ -49,6 +49,7 @@ export interface ChatListDto {
     lastMessage: string;
     lastMessageTime: Date,
     isRead: boolean;
+    unreadCount?: number;
 }
 
 export interface MessageRequestDto {
