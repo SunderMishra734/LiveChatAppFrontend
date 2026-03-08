@@ -17,8 +17,10 @@ export class ChatMainContentComponent {
   @Input() isUserSelected: boolean = false;
   @Input() loggedInUserId: number = 0;
   @Output() messageSent = new EventEmitter<MessageDto>();
+  @Output() closeChat = new EventEmitter<void>();
   @ViewChild('messageContainer') messageContainer: any;
   @ViewChild('textArea') textArea!: any;
+  @ViewChild('dotsMenuContainer') dotsMenuContainer!: ElementRef;
   messages?: MessageDto[];
   message: MessageDto | any;
   newMessage: string = '';
@@ -33,6 +35,9 @@ export class ChatMainContentComponent {
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   isContactInfoVisible: boolean = false;
   isProfileImageModalVisible: boolean = false;
+  isMenuVisible: boolean = false;
+  isSearchPanelVisible: boolean = false;
+  searchQuery: string = '';
 
   constructor(private chatService: ChatService, private signalRService: SignalrService) { }
 
@@ -199,8 +204,47 @@ export class ChatMainContentComponent {
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
-    if (!this.emojiContainer.nativeElement.contains(event.target)) {
+    if (this.emojiContainer?.nativeElement && !this.emojiContainer.nativeElement.contains(event.target)) {
       this.showEmojiPicker = false;
+    }
+    if (this.dotsMenuContainer?.nativeElement && !this.dotsMenuContainer.nativeElement.contains(event.target)) {
+      this.isMenuVisible = false;
+    }
+  }
+
+  toggleMenu(): void {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
+  onContactInfoMenu(): void {
+    this.isMenuVisible = false;
+    this.toggleContactInfo();
+  }
+
+  onCloseChatMenu(): void {
+    this.isMenuVisible = false;
+    this.closeChat.emit();
+  }
+
+  openSearchPanel(): void {
+    this.isSearchPanelVisible = true;
+  }
+
+  closeSearchPanel(): void {
+    this.isSearchPanelVisible = false;
+    this.searchQuery = '';
+  }
+
+  getFilteredMessages(): MessageDto[] {
+    if (!this.messages || !this.searchQuery.trim()) return [];
+    const term = this.searchQuery.trim().toLowerCase();
+    return this.messages.filter(m => (m.message || '').toLowerCase().includes(term));
+  }
+
+  scrollToMessage(messageId: number): void {
+    const el = document.getElementById('msg-' + messageId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 

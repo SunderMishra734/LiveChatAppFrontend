@@ -69,6 +69,11 @@ export class ChatSideBarComponent {
     });
   }
 
+  onCloseChat(): void {
+    this.isUserSelected = false;
+    this.selectedUser = undefined;
+  }
+
   selectUser(user: ChatListDto): void {
     this.selectedUser = user;
     this.isUserSelected = true;

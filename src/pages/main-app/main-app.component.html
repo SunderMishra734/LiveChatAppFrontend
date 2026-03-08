@@ -29,13 +29,16 @@
     <div class="main-cont-cls">
         <section class="header-sec-cls">
             <header>
+                @if(isSearchVisible) {
                 <div class="search-cont-cls">
                     <i class="fa fa-search common-icon-cls"
                         style="font-size: 16px;line-height: 33px; height: 33px; width: 33px;"></i>
                     <input type="search" placeholder="search" style="font-size: 16px;outline: none;"
-                        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)" (keyup.enter)="onSearch()">
+                        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
                 </div>
-                <div style="display: flex;align-items: center;gap: 5px;">
+                }
+                <div style="display: flex;align-items: center;gap: 5px;"
+                    [style.margin-left]="!isSearchVisible ? 'auto' : '0'">
                     <i class="fa fa-bell-o nf-icon-cls"></i>
                     <div style="position: relative;" #userProfileContainer>
                         <div style="display: flex; gap: 5px;" (click)="userProfileFn()">

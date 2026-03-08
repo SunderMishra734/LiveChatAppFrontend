@@ -1,6 +1,7 @@
 <!-- Chat Container -->
 @if(!isContactInfoVisible) {
-    <div style="height: 100%;display: flex;flex-direction: column;">
+    <div class="chat-with-search-wrapper-cls">
+    <div class="chat-main-area-cls" style="height: 100%;display: flex;flex-direction: column;">
         <div class="chat-main-head-cont-cls com-dis-fl-cls">
             <div style="display: flex; align-items: center;gap: 10px; cursor: pointer;" (click)="toggleContactInfo()">
                 <div class="user-img-cls">
@@ -22,14 +23,33 @@
                 </div>
             </div>
             <div class="com-dis-fl-cls" style="gap: 8px;">
-                <div class="common-commu-cont-cls">
-                    <i class="fa fa-phone common-communication-img-cls"></i>
+                <div class="common-commu-cont-cls" (click)="openSearchPanel()">
+                    <i class="fa fa-search common-communication-img-cls"></i>
                 </div>
-                <div class="common-commu-cont-cls">
-                    <i class="fa fa-video-camera common-communication-img-cls"></i>
-                </div>
-                <div class="common-commu-cont-cls">
-                    <i class="fa fa-folder common-communication-img-cls"></i>
+                <div class="chat-header-menu-wrap-cls" #dotsMenuContainer>
+                    <div class="common-commu-cont-cls" (click)="toggleMenu()">
+                        <i class="fa fa-ellipsis-v common-communication-img-cls"></i>
+                    </div>
+                    @if(isMenuVisible){
+                    <div class="chat-header-dropdown-cls">
+                        <div class="chat-header-dropdown-item-cls" (click)="onContactInfoMenu()">
+                            <i class="fa fa-info-circle chat-header-dropdown-icon-cls"></i>
+                            <span>Contact info</span>
+                        </div>
+                        <div class="chat-header-dropdown-item-cls" (click)="onCloseChatMenu()">
+                            <i class="fa fa-times-circle chat-header-dropdown-icon-cls"></i>
+                            <span>Close chat</span>
+                        </div>
+                        <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls">
+                            <i class="fa fa-minus-circle chat-header-dropdown-icon-cls"></i>
+                            <span>Clear chat</span>
+                        </div>
+                        <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls">
+                            <i class="fa fa-trash-o chat-header-dropdown-icon-cls"></i>
+                            <span>Delete chat</span>
+                        </div>
+                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -39,7 +59,7 @@
             <div class="date-separator-cls">{{group.dateLabel}}</div>
             @for(message of group.messages; track message.id){
             @if(message.loggedInUserId == loggedInUserId){
-            <div class="common-chat-cont-cls">
+            <div class="common-chat-cont-cls" [id]="'msg-' + message.id">
                 <div class="com-dis-fl-cls my-chat-cls">
                     <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
                     <div class="common-chat-cls my-chat-cont-cls">{{message.message}}</div>
@@ -47,7 +67,7 @@
             </div>
             }
             @else if(message.loggedInUserId === currentUserId) {
-            <div class="common-chat-cont-cls">
+            <div class="common-chat-cont-cls" [id]="'msg-' + message.id">
                 <div class="com-dis-fl-cls your-chat-cls">
                     <div class="common-chat-cls your-chat-cont-cls">{{message.message}}</div>
                     <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
@@ -81,6 +101,41 @@
                 <i class="fa fa-paper-plane-o common-communication-img-cls" (click)="send(chatInput)"></i>
             </div>
         </div>
+    </div>
+    @if(isSearchPanelVisible){
+    <div class="search-panel-cls">
+        <div class="search-panel-header-cls com-dis-fl-cls">
+            <div class="common-commu-cont-cls" (click)="closeSearchPanel()" aria-label="Close">
+                <i class="fa fa-times search-panel-close-icon-cls"></i>
+            </div>
+            <h2 class="search-panel-title-cls">Search messages</h2>
+        </div>
+        <div class="search-panel-input-wrap-cls">
+            <i class="fa fa-calendar search-panel-input-icon-cls"></i>
+            <i class="fa fa-search search-panel-input-icon-cls"></i>
+            <input type="text" class="search-panel-input-cls" placeholder="Search" [(ngModel)]="searchQuery" />
+        </div>
+        <div class="search-panel-body-cls">
+            @if(!searchQuery.trim()){
+            <p class="search-panel-hint-cls">Search for messages with {{loggedInUserId === currentUserId ? 'yourself' : (chattingUser?.fullName || 'this chat')}}.</p>
+            }
+            @else if(getFilteredMessages().length === 0){
+            <p class="search-panel-hint-cls">No messages found.</p>
+            }
+            @else {
+            <div class="search-panel-results-cls">
+                @for(msg of getFilteredMessages(); track msg.id){
+                <div class="search-panel-result-item-cls" [ngClass]="{'search-result-mine-cls': msg.loggedInUserId === loggedInUserId}"
+                    (click)="scrollToMessage(msg.id)">
+                    <div class="search-result-time-cls">{{msg.timeStamp | date:'shortTime'}}</div>
+                    <div class="search-result-bubble-cls">{{msg.message}}</div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+    }
     </div>
 }
 <!-- Contact info Container -->

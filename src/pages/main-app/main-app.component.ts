@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { SharedUserService } from '../../services/shared-user.service';
@@ -26,8 +27,20 @@ export class MainAppComponent {
   userEmail: string = "";
   profilePic: string = "";
   changeUserStatusDto!: UserStatusDto;
+  isSearchVisible: boolean = true;
 
-  constructor(private router: Router, private elementRef: ElementRef, private authService: AuthService, private userService: UserService, private sharedUserService: SharedUserService, private signalRService: SignalrService) { }
+  constructor(private router: Router, private elementRef: ElementRef, private authService: AuthService, private userService: UserService, private sharedUserService: SharedUserService, private signalRService: SignalrService) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      // Hide on profile and setting pages
+      if (event.urlAfterRedirects.includes('/app/profile') || event.urlAfterRedirects.includes('/app/setting')) {
+        this.isSearchVisible = false;
+      } else {
+        this.isSearchVisible = true;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.sharedUserService.updateSearchQuery(this.searchQuery);
@@ -56,12 +69,6 @@ export class MainAppComponent {
   onSearchChange(value: string): void {
     this.searchQuery = value;
     this.sharedUserService.updateSearchQuery(this.searchQuery);
-  }
-
-  onSearch(): void {
-    if (this.searchQuery.trim()) {
-      this.router.navigate(['app/search'], { queryParams: { q: this.searchQuery } });
-    }
   }
 
   userProfileFn() {

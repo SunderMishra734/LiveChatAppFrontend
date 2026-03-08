@@ -57,7 +57,7 @@
     <div class="chat-main-cont-cls">
         @if(isUserSelected){
         <app-chat-main-content [chattingUser]="selectedUser" [loggedInUserId]="loggedInUserId"
-            [isUserSelected]="isUserSelected" (messageSent)="onMessageSent($event)"></app-chat-main-content>
+            [isUserSelected]="isUserSelected" (messageSent)="onMessageSent($event)" (closeChat)="onCloseChat()"></app-chat-main-content>
         }
         @else {
         <div class="no-user-selected-page-cls">
