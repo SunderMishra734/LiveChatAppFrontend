@@ -152,6 +152,42 @@ export class ChatMainContentComponent {
     }
   }
 
+  getMessagesGroupedByDate(): { dateLabel: string; messages: MessageDto[] }[] {
+    if (!this.messages?.length) return [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const groups: { dateLabel: string; messages: MessageDto[] }[] = [];
+    let currentDateKey = '';
+    let currentGroup: { dateLabel: string; messages: MessageDto[] } | null = null;
+
+    for (const msg of this.messages) {
+      const d = new Date(msg.timeStamp);
+      d.setHours(0, 0, 0, 0);
+      const dateKey = d.getTime().toString();
+
+      if (dateKey !== currentDateKey) {
+        currentDateKey = dateKey;
+        let label: string;
+        if (d.getTime() === today.getTime()) {
+          label = 'Today';
+        } else if (d.getTime() === yesterday.getTime()) {
+          label = 'Yesterday';
+        } else {
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          label = `${day}/${month}/${d.getFullYear()}`;
+        }
+        currentGroup = { dateLabel: label, messages: [] };
+        groups.push(currentGroup);
+      }
+      currentGroup!.messages.push(msg);
+    }
+    return groups;
+  }
+
   checkEmpty(element: HTMLElement) {
     if (element.innerText.trim() === '') {
       element.innerHTML = '';

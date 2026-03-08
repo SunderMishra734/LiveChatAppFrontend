@@ -33,7 +33,9 @@
     </div>
     <div class="seperator-cls"></div>
     <div class="chat-main-content-cont-cls" #messageContainer>
-        @for(message of messages; track message){
+        @for(group of getMessagesGroupedByDate(); track group.dateLabel){
+        <div class="date-separator-cls">{{group.dateLabel}}</div>
+        @for(message of group.messages; track message.id){
         @if(message.loggedInUserId == loggedInUserId){
         <div class="common-chat-cont-cls">
             <div class="com-dis-fl-cls my-chat-cls">
@@ -49,6 +51,7 @@
                 <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
             </div>
         </div>
+        }
         }
         }
     </div>

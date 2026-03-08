@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '@ctrl/ngx-emoji-mart/picker';
-
 * {
     margin: 0px;
     padding: 0px;
