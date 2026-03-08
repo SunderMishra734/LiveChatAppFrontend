@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToasterMessageComponent } from '../../shared/components/toaster-message/toaster-message.component';
+import { SharedUserService } from '../../services/shared-user.service';
+import { AuthService } from '../../services/auth.service';
+import { UserDetailDto } from '../../models/user-detail-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-setting-page',
@@ -33,7 +37,97 @@ export class SettingPageComponent {
   descriptionMssg: string = '';
   // end: toaster variable
 
-  constructor(private userService: UserService, private fb: FormBuilder) { }
+  currentUserDetails: UserDetailDto | any = null;
+  searchQuery: string = '';
+  isShowChangePassword: boolean = false;
+  changePasswordForm!: FormGroup;
+
+  settingsMenuItems = [
+    { title: 'Account', desc: 'Change password, Security notifications, account info', icon: 'fa-key' },
+    { title: 'Privacy', desc: 'Blocked contacts, disappearing messages', icon: 'fa-lock' },
+    { title: 'Help and feedback', desc: 'Help centre, contact us, privacy policy', icon: 'fa-question-circle' }
+  ];
+
+  get filteredSettingsMenuItems() {
+    if (!this.searchQuery) {
+      return this.settingsMenuItems;
+    }
+    const lowerQuery = this.searchQuery.toLowerCase();
+    return this.settingsMenuItems.filter(item => 
+      item.title.toLowerCase().includes(lowerQuery) || 
+      item.desc.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private sharedUserService: SharedUserService,
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.sharedUserService.currentUserDetails.subscribe(details => {
+      if (details) {
+        this.currentUserDetails = details;
+      }
+    });
+    this.initChangePasswordForm();
+  }
+
+  initChangePasswordForm() {
+    this.changePasswordForm = this.fb.group({
+      currentPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordsMatchValidator });
+  }
+
+  passwordsMatchValidator(formGroup: FormGroup) {
+    const newPassword = formGroup.get('newPassword')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+    return newPassword === confirmPassword ? null : { passwordMismatch: true };
+  }
+
+  changePassword() {
+    if (this.changePasswordForm.invalid) {
+      this.changePasswordForm.markAllAsTouched();
+      return;
+    }
+    this.authService.changePassword(this.changePasswordForm.value.currentPassword, this.changePasswordForm.value.newPassword, this.changePasswordForm.value.confirmPassword).subscribe({
+      next: () => {
+        this.mainMssg = 'Password Changed!';
+        this.descriptionMssg = 'Your password has been updated.';
+        this.showToasterMessage(1);
+        this.isShowChangePassword = false;
+        this.changePasswordForm.reset();
+      },
+      error: () => {
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'Failed to change password.';
+        this.showToasterMessage(2);
+      }
+    });
+  }
+
+  activeView: string = 'main';
+
+  onMenuClick(item: any) {
+    if (item.title === 'Account') {
+      this.activeView = 'account';
+    }
+  }
+
+  goBackToMain() {
+    this.activeView = 'main';
+    this.isCreateUserShow = false;
+  }
+
+  logout() {
+    this.authService.logOut();
+    this.router.navigate(['/login']);
+  }
 
   createNewUser() {
     this.isCreateUserShow = true;

@@ -29,7 +29,6 @@ export class ProfilePageComponent {
   isSaveBtnVisible: boolean = false;
   userDetails?: UserDetailDto;
   profileForm!: FormGroup;
-  changePasswordForm!: FormGroup;
   userRoles = Object.entries(UserRole)
     .filter(([key, value]) => !isNaN(Number(value)))
     .map(([key, value]) => ({ key, value }));
@@ -47,7 +46,6 @@ export class ProfilePageComponent {
   mainMssg: string = '';
   descriptionMssg: string = '';
   // end: toaster variable
-  isShowChangePassword: boolean = false;
   isFileChanged: boolean = false;
   fileName: string = '';
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -67,7 +65,6 @@ export class ProfilePageComponent {
       this.userDetails = userDetails;
       this.initForm(userDetails);
     });
-    this.initChangePasswordForm();
   }
 
   initForm(userDetails?: UserDetailDto) {
@@ -95,14 +92,6 @@ export class ProfilePageComponent {
     this.profileForm.valueChanges.subscribe(() => {
       this.isEdited = JSON.stringify(this.originalFormValue) !== JSON.stringify(this.profileForm.getRawValue());
     });
-  }
-
-  initChangePasswordForm() {
-    this.changePasswordForm = this.fb.group({
-      currentPassword: ['', [Validators.required, Validators.minLength(6)]],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
-    }, { validators: this.passwordsMatchValidator });
   }
 
   editFn() {
@@ -196,33 +185,6 @@ export class ProfilePageComponent {
 
   closeToasterMessage() {
     this.isTaosterVisible = false;
-  }
-
-  passwordsMatchValidator(formGroup: FormGroup) {
-    const newPassword = formGroup.get('newPassword')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
-    return newPassword === confirmPassword ? null : { passwordMismatch: true };
-  }
-
-  changePassword() {
-    if (this.changePasswordForm.invalid) {
-      this.changePasswordForm.markAllAsTouched();
-      return;
-    }
-    this.authService.changePassword(this.changePasswordForm.value.currentPassword, this.changePasswordForm.value.newPassword, this.changePasswordForm.value.confirmPassword).subscribe({
-      next: () => {
-        this.mainMssg = 'Password Changed!';
-        this.descriptionMssg = 'Your password has been updated.';
-        this.showToasterMessage(1);
-        this.isShowChangePassword = false;
-        this.changePasswordForm.reset();
-      },
-      error: () => {
-        this.mainMssg = 'Error!';
-        this.descriptionMssg = 'Failed to change password.';
-        this.showToasterMessage(2);
-      }
-    });
   }
 
   onFileSelected(event: any) {

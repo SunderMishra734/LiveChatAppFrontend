@@ -118,60 +118,6 @@
             </div>
         </div>
     </form>
-    <div class="seperation-cls"></div>
-    <div class="block-cont-cls">
-        <div>
-            <span class="common-header-txt-cls">Account Details</span>
-        </div>
-        @if(!isShowChangePassword){
-        <div style="display: flex;justify-content: flex-start;gap: 10px;">
-            <div class="back-btn-cls common-btn-cls" (click)="isShowChangePassword = true">
-                <span>Change Password</span>
-            </div>
-        </div>
-        }
-        @if(isShowChangePassword){
-        <form [formGroup]="changePasswordForm" *ngIf="isShowChangePassword">
-            <div class="common-side-inp-cont-cls">
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label class="common-label-cls">Current Password:</label>
-                    <input type="password" class="common-inp-cls" formControlName="currentPassword">
-                    <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched"
-                        class="error">
-                        Current password is required (min 6 chars)
-                    </div>
-                </div>
-
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label class="common-label-cls">New Password:</label>
-                    <input type="password" class="common-inp-cls" formControlName="newPassword">
-                    <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched"
-                        class="error">
-                        New password is required (min 6 chars)
-                    </div>
-                </div>
-
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label class="common-label-cls">Confirm New Password:</label>
-                    <input type="password" class="common-inp-cls" formControlName="confirmPassword">
-                    <div *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched"
-                        class="error">
-                        Passwords do not match
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; justify-content: flex-start; gap: 10px;">
-                <div class="back-btn-cls common-btn-cls" (click)="changePassword()">
-                    <span>Save</span>
-                </div>
-                <div class="back-btn-cls common-btn-cls cancel-btn" (click)="isShowChangePassword = false">
-                    <span>Cancel</span>
-                </div>
-            </div>
-        </form>
-        }
-    </div>
 </div>
 
 @if (isTaosterVisible) {

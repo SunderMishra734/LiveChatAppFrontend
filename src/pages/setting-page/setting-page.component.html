@@ -1,84 +1,230 @@
-<div class="setting-page-container">
-    @if(!isCreateUserShow){
-    <div style="display: flex;justify-content: flex-start;">
-        <div class="back-btn-cls common-btn-cls" (click)="createNewUser()">
-            <span>Create New User</span>
+<div class="settings-wrapper-cls">
+    @if(activeView === 'main') {
+    <!-- Header -->
+    <div class="settings-header-cls">
+        <h2>Settings</h2>
+    </div>
+
+    <!-- Search Box -->
+    <div class="settings-search-container-cls">
+        <div class="settings-search-wrapper-cls">
+            <i class="fa fa-search settings-search-icon-cls"></i>
+            <input type="text" class="settings-search-input-cls" placeholder="Search settings"
+                [(ngModel)]="searchQuery">
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="settings-profile-card-cls">
+        <div class="profile-avatar-container-cls">
+            @if(currentUserDetails?.profilePic) {
+            <img [src]="currentUserDetails?.profilePic" alt="Profile" class="settings-profile-img-cls" />
+            }
+            @else {
+            <i class="fa fa-user settings-default-user-icon-cls"></i>
+            }
+        </div>
+        <div class="settings-profile-info-cls">
+            <div class="settings-profile-name-cls">{{currentUserDetails?.fullName || 'User Name'}}</div>
+            <div class="settings-profile-status-cls">{{currentUserDetails?.profileStatus || 'Hey there! I am using Live
+                Chat App.'}}</div>
+        </div>
+    </div>
+
+    <!-- Settings Menu List -->
+    <div class="settings-menu-list-cls">
+        @for(item of filteredSettingsMenuItems; track item.title) {
+        <div class="settings-menu-item-cls" (click)="onMenuClick(item)">
+            <div class="settings-icon-container-cls">
+                <i class="fa {{item.icon}}"></i>
+            </div>
+            <div class="settings-item-content-cls">
+                <div class="settings-item-title-cls">{{item.title}}</div>
+                <div class="settings-item-desc-cls">{{item.desc}}</div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Log Out Button -->
+    <div class="settings-menu-item-cls settings-logout-item-cls" (click)="logout()">
+        <div class="settings-icon-container-cls settings-logout-icon-cls">
+            <i class="fa fa-sign-out"></i>
+        </div>
+        <div class="settings-item-content-cls">
+            <div class="settings-item-title-cls settings-logout-text-cls">Log out</div>
         </div>
     </div>
     }
-    @if(isCreateUserShow){
-    <div class="block-cont-cls">
-        <div>
-            <span class="common-header-txt-cls">User Details</span>
+
+    @if(activeView === 'account') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Account</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <div class="block-cont-cls">
+            <div style="margin-bottom: 20px;">
+                <div class="common-header-txt-cls">Create New User</div>
+                <div class="settings-item-desc-cls" style="margin-top: 8px;">
+                    Add a new user to the system. Provide their details, assign a role, and set up their profile.
+                </div>
+            </div>
+            @if(!isCreateUserShow){
+            <div style="display: flex;justify-content: flex-start;">
+                <div class="back-btn-cls common-btn-cls" (click)="createNewUser()">
+                    <span>Create New User</span>
+                </div>
+            </div>
+            }
         </div>
-        <form [formGroup]="userForm" (ngSubmit)="createUser()">
-            <div class="common-side-inp-cont-cls">
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">User Name</label>
-                    <input type="text" class="common-inp-cls" formControlName="userName">
-                    <div *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.invalid" class="error">User Name is required</div>
+        
+        @if(isCreateUserShow){
+        <div class="block-cont-cls">
+            <div>
+                <span class="common-header-txt-cls">User Details</span>
+            </div>
+            <form [formGroup]="userForm" (ngSubmit)="createUser()">
+                <div class="common-side-inp-cont-cls">
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">User Name</label>
+                        <input type="text" class="common-inp-cls" formControlName="userName">
+                        <div *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.invalid"
+                            class="error">User Name is required</div>
+                    </div>
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Email</label>
+                        <input type="text" class="common-inp-cls" formControlName="email">
+                        <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="error">
+                            Valid Email is required</div>
+                    </div>
                 </div>
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Email</label>
-                    <input type="text" class="common-inp-cls" formControlName="email">
-                    <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="error">Valid Email is required</div>
+                <div class="common-side-inp-cont-cls">
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Full Name</label>
+                        <input type="text" class="common-inp-cls" formControlName="fullName">
+                        <div *ngIf="userForm.get('fullName')?.touched && userForm.get('fullName')?.invalid"
+                            class="error">Full Name is required</div>
+                    </div>
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Contact No</label>
+                        <input type="text" class="common-inp-cls" formControlName="phoneNumber">
+                        <div *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid"
+                            class="error">Contact No is required and must be 10 digits</div>
+                    </div>
+                </div>
+                <div class="common-side-inp-cont-cls">
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Gender</label>
+                        <select class="common-inp-cls" formControlName="gender">
+                            <option value="">Select Gender</option>
+                            <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
+                        </select>
+                        <div *ngIf="userForm.get('gender')?.touched && userForm.get('gender')?.invalid" class="error">
+                            Gender is required</div>
+                    </div>
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Role</label>
+                        <select class="common-inp-cls" formControlName="role">
+                            <option value="">Select Role</option>
+                            <option *ngFor="let ur of userRoles" [value]="ur.value">{{ ur.key }}</option>
+                        </select>
+                        <div *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid" class="error">Role
+                            is required</div>
+                    </div>
+                </div>
+                <div class="common-side-inp-cont-cls">
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Date of Birth</label>
+                        <input type="date" class="common-inp-cls" formControlName="dateOfBirth">
+                        <div *ngIf="userForm.get('dateOfBirth')?.touched && userForm.get('dateOfBirth')?.invalid"
+                            class="error">Date of Birth is required</div>
+                    </div>
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label for="" class="common-label-cls">Profile Pic</label>
+                        <input type="text" class="common-inp-cls" formControlName="profilePic">
+                    </div>
+                </div>
+                <div style="display: flex;justify-content: flex-start;gap: 10px;">
+                    <button class="back-btn-cls common-btn-cls" type="submit">
+                        <span>Create</span>
+                    </button>
+                    <button class="back-btn-cls common-btn-cls cancel-btn" type="button"
+                        (click)="isCreateUserShow = false">
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        }
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1d7db;" />
+
+        <div class="block-cont-cls">
+            <div style="margin-bottom: 20px;">
+                <div class="common-header-txt-cls">Change Password</div>
+                <div class="settings-item-desc-cls" style="margin-top: 8px;">
+                    To keep your account secure, we recommend updating your password periodically. Click Change Password to proceed.
                 </div>
             </div>
-            <div class="common-side-inp-cont-cls">
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Full Name</label>
-                    <input type="text" class="common-inp-cls" formControlName="fullName">
-                    <div *ngIf="userForm.get('fullName')?.touched && userForm.get('fullName')?.invalid" class="error">Full Name is required</div>
-                </div>
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Contact No</label>
-                    <input type="text" class="common-inp-cls" formControlName="phoneNumber">
-                    <div *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.invalid" class="error">Contact No is required and must be 10 digits</div>
-                </div>
-            </div>
-            <div class="common-side-inp-cont-cls">
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Gender</label>
-                    <select class="common-inp-cls" formControlName="gender">
-                        <option value="">Select Gender</option>
-                        <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
-                    </select>
-                    <div *ngIf="userForm.get('gender')?.touched && userForm.get('gender')?.invalid" class="error">Gender is required</div>
-                </div>
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Role</label>
-                    <select class="common-inp-cls" formControlName="role">
-                        <option value="">Select Role</option>
-                        <option *ngFor="let ur of userRoles" [value]="ur.value">{{ ur.key }}</option>
-                    </select>
-                    <div *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid" class="error">Role is required</div>
-                </div>
-            </div>
-            <div class="common-side-inp-cont-cls">
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Date of Birth</label>
-                    <input type="date" class="common-inp-cls" formControlName="dateOfBirth">
-                    <div *ngIf="userForm.get('dateOfBirth')?.touched && userForm.get('dateOfBirth')?.invalid" class="error">Date of Birth is required</div>
-                </div>
-                <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
-                    <label for="" class="common-label-cls">Profile Pic</label>
-                    <input type="text" class="common-inp-cls" formControlName="profilePic">
-                </div>
-            </div>
+            @if(!isShowChangePassword){
             <div style="display: flex;justify-content: flex-start;gap: 10px;">
-                <button class="back-btn-cls common-btn-cls" type="submit">
-                    <span>Create</span>
-                </button>
-                <button class="back-btn-cls common-btn-cls cancel-btn" type="button" (click)="isCreateUserShow = false">
-                    <span>Cancel</span>
-                </button>
+                <div class="back-btn-cls common-btn-cls" (click)="isShowChangePassword = true">
+                    <span>Change Password</span>
+                </div>
             </div>
-        </form>
+            }
+            @if(isShowChangePassword){
+            <form [formGroup]="changePasswordForm" *ngIf="isShowChangePassword">
+                <div class="common-side-inp-cont-cls">
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label class="common-label-cls">Current Password:</label>
+                        <input type="password" class="common-inp-cls" formControlName="currentPassword">
+                        <div *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched"
+                            class="error">
+                            Current password is required (min 6 chars)
+                        </div>
+                    </div>
+
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label class="common-label-cls">New Password:</label>
+                        <input type="password" class="common-inp-cls" formControlName="newPassword">
+                        <div *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched"
+                            class="error">
+                            New password is required (min 6 chars)
+                        </div>
+                    </div>
+
+                    <div class="class-common-cont-cls class-name-cont-cls common-side-inp-cls">
+                        <label class="common-label-cls">Confirm New Password:</label>
+                        <input type="password" class="common-inp-cls" formControlName="confirmPassword">
+                        <div *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched"
+                            class="error">
+                            Passwords do not match
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-start; gap: 10px;">
+                    <div class="back-btn-cls common-btn-cls" (click)="changePassword()">
+                        <span>Save Password</span>
+                    </div>
+                    <div class="back-btn-cls common-btn-cls cancel-btn"
+                        (click)="isShowChangePassword = false; changePasswordForm.reset();">
+                        <span>Cancel</span>
+                    </div>
+                </div>
+            </form>
+            }
+        </div>
+
     </div>
     }
 </div>
 
 @if (isTaosterVisible) {
 <app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
-  [descriptionMssg]="descriptionMssg"></app-toaster-message>
+    [descriptionMssg]="descriptionMssg"></app-toaster-message>
 }
