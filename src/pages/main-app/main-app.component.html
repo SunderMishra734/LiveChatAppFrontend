@@ -41,30 +41,37 @@
                     [style.margin-left]="!isSearchVisible ? 'auto' : '0'">
                     <i class="fa fa-bell-o nf-icon-cls"></i>
                     <div style="position: relative;" #userProfileContainer>
-                        <div style="display: flex; gap: 5px;" (click)="userProfileFn()">
+                        <div class="header-user-trigger" (click)="userProfileFn()">
                             @if(profilePic){
                             <img [src]="profilePic" alt="Profile" class="user-icon-cls" />
                             }
                             @else {
                             <i class="fa fa-user user-icon-cls"></i>
                             }
-                            <div style="cursor: pointer;">{{userFullName}}</div>
+                            <div class="header-user-name">{{userFullName}}</div>
+                            <i class="fa fa-caret-down" style="color: #667781; font-size: 14px; margin-left: 4px;"></i>
                         </div>
                         @if(isUserProfileVisible){
                         <section class="profile-section-cls">
-                            <div style="display: flex;gap: 10px;margin-bottom: 10px;">
-                                @if(profilePic){
-                                <img [src]="profilePic" alt="Profile" class="user-icon-cls" />
-                                }
-                                @else {
-                                <i class="fa fa-user user-icon-cls"></i>
-                                }
-                                <div>
-                                    <div>{{userFullName}}</div>
-                                    <div style="color: #655555;">{{userEmail}}</div>
+                            <div class="profile-popup-header">
+                                <div class="profile-popup-avatar">
+                                    @if(profilePic){
+                                    <img [src]="profilePic" alt="Profile" class="popup-img-cls" />
+                                    }
+                                    @else {
+                                    <i class="fa fa-user popup-user-icon-cls"></i>
+                                    }
+                                </div>
+                                <div class="profile-popup-info">
+                                    <div class="profile-popup-name">{{userFullName}}</div>
+                                    <div class="profile-popup-email">{{userEmail}}</div>
                                 </div>
                             </div>
-                            <div class="view-prof-cls" (click)="showProfileFn()">View Profile</div>
+                            <div class="profile-popup-actions">
+                                <button class="view-prof-btn-cls" (click)="showProfileFn()">
+                                    <i class="fa fa-user-circle-o" style="margin-right: 8px;"></i> View Profile
+                                </button>
+                            </div>
                         </section>
                         }
                     </div>
