@@ -1,57 +1,50 @@
 <div class="chat-side-bar-main-cls">
     <aside>
-        <div>
+        <div class="chat-list-scroll-container">
             @if(filteredChatUsers?.length){
-            @for(chattingUser of filteredChatUsers; track chattingUser){
-            <div class="common-chat-tiles-cls" [ngClass]="{'active-chat-tiles-cls': isSelected(chattingUser)}"
-                (click)="selectUser(chattingUser)">
-                <div style="display: flex; gap: 10px;">
-                    <div class="chat-tiles-img-cls">
-                        @if(chattingUser.profilePicture){
-                        <img [src]="chattingUser.profilePicture" alt="Profile" class="profile-img-cls" />
-                        }
-                        @else{
-                        <i class="fa fa-user user-icon-cls"></i>
-                        }
-                        <div class="status-cont-cls"
-                            [ngClass]="{'online-status-cls': chattingUser.onlineStatus == 1, 'offline-status-cls': chattingUser.onlineStatus == 0}">
-                            <div class="common-icon-cls">
-                                @if(chattingUser.onlineStatus == 1){
-                                <i class="fa fa-check common-status-icon-cls"></i>
-
-                                }
-                                @else if(chattingUser.onlineStatus == 0) {
-                                <i class="fa fa-remove common-status-icon-cls"></i>
-                                }
+                @for(chattingUser of filteredChatUsers; track chattingUser){
+                <div class="common-chat-tiles-cls" [ngClass]="{'active-chat-tiles-cls': isSelected(chattingUser)}"
+                    (click)="selectUser(chattingUser)">
+                    <div style="display: flex; flex: 1; align-items: center; min-width: 0;">
+                        <div class="chat-tiles-img-cls">
+                            @if(chattingUser.profilePicture){
+                            <img [src]="chattingUser.profilePicture" alt="Profile" class="profile-img-cls" />
+                            }
+                            @else{
+                            <i class="fa fa-user user-icon-cls"></i>
+                            }
+                            <div class="status-cont-cls"
+                                [ngClass]="{'online-status-cls': chattingUser.onlineStatus == 1, 'offline-status-cls': chattingUser.onlineStatus == 0}">
+                            </div>
+                        </div>
+                        <div class="chat-details-col">
+                            <div class="chat-user-name" [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
+                                {{chattingUser.fullName}}
+                            </div>
+                            <div class="chat-last-message" [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
+                                {{chattingUser.lastMessage}}
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
-                            {{chattingUser.fullName}}
-                        </div>
-                        <div [ngClass]="{'unread-chat-text-cls': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
-                            {{chattingUser.lastMessage}}
-                        </div>
+                    <div class="chat-meta-col">
+                        <span class="chat-time" [ngClass]="{'unread-time': chattingUser.unreadCount && chattingUser.unreadCount > 0}">
+                            {{ chattingUser.lastMessageTime | date:'shortTime' }}
+                        </span>
+                        @if(chattingUser.unreadCount && chattingUser.unreadCount > 0){
+                        <span class="unread-badge-cls">{{ chattingUser.unreadCount }}</span>
+                        }
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span>{{ chattingUser.lastMessageTime | date:'shortTime' }}</span>
-                    @if(chattingUser.unreadCount && chattingUser.unreadCount > 0){
-                    <span class="unread-badge-cls">{{ chattingUser.unreadCount }}</span>
-                    }
-                </div>
-            </div>
-            }
+                }
             }
             @else if(currentSearchQuery){
-            <div style="padding: 15px 10px;">
-                No contact and last message found.
+            <div style="padding: 24px 16px; text-align: center; color: #54656f;">
+                No chats, contacts or messages found.
             </div>
             }
         </div>
         <div class="add-new-chat-btn-cls" (click)="showAllUserPop()">
-            <i class="fa fa-plus-circle add-circle-cls"></i>
+            <i class="fa fa-plus add-circle-cls"></i>
         </div>
     </aside>
     <div class="chat-main-cont-cls">
@@ -71,15 +64,29 @@
 <div class="all-user-popup-cls">
     <div class="popup-overlay" (click)="isAllUserPopVisible = false"></div>
     <div class="popup-content">
-        <h3>Select a user to start chat</h3>
+        <h3>New chat</h3>
         <div class="popup-user-list">
-            @for(user of allUser; track user){
-            <div class="popup-user-item" (click)="selectUserFromPopup(user)">
-                <span>{{user.fullName}}</span>
-            </div>
+            @if(allUser && allUser.length > 0) {
+                @for(user of allUser; track user){
+                <div class="popup-user-item" (click)="selectUserFromPopup(user)">
+                    <div class="popup-user-img-wrap">
+                        @if(user.profilePic){
+                            <img [src]="user.profilePic" alt="Profile" class="profile-img-cls" />
+                        }
+                        @else {
+                            <i class="fa fa-user popup-user-icon"></i>
+                        }
+                    </div>
+                    <span class="popup-user-name">{{user.fullName}}</span>
+                </div>
+                }
+            } @else {
+                <div class="popup-empty-state">
+                    No new contacts available.
+                </div>
             }
         </div>
-        <button class="popup-close-btn" (click)="isAllUserPopVisible = false">Close</button>
+        <button class="popup-close-btn" (click)="isAllUserPopVisible = false">Cancel</button>
     </div>
 </div>
 }

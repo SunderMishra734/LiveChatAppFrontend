@@ -96,7 +96,11 @@ export class ChatSideBarComponent {
     this.isAllUserPopVisible = true;
     this.userService.getAllUser().subscribe(res => {
       if (res.success) {
-        this.allUser = res.data;
+        // Filter out logged in user and users we already have a chat with
+        this.allUser = res.data.filter((u: any) => {
+          if (u.userId === this.loggedInUserId) return false;
+          return !this.allChatUser?.some(chatUser => chatUser.userId === u.userId);
+        });
       }
     });
   }
