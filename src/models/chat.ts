@@ -44,12 +44,14 @@ export interface ChatListDto {
     userId: number;
     fullName: string;
     profilePicture: string;
+    profileStatus?: string;
     lastSeen: Date;
     onlineStatus: number;
     lastMessage: string;
     lastMessageTime: Date,
     isRead: boolean;
     unreadCount?: number;
+    phoneNumber?: string;
 }
 
 export interface MessageRequestDto {

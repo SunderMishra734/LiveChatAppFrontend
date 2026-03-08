@@ -31,12 +31,13 @@ export class ChatMainContentComponent {
     "😢", "😭", "😡", "👍", "🙏", "🔥", "❤️", "🎉"
   ];
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
+  isContactInfoVisible: boolean = false;
+  isProfileImageModalVisible: boolean = false;
 
   constructor(private chatService: ChatService, private signalRService: SignalrService) { }
 
   ngOnInit() {
     this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
-    console.log("Chatting User:", this.chattingUser);
     this.getMessages(this.chattingUser!.userId);
     this.signalRService.receiveMessages(messageDtoData => {
       if (this.currentUserId == messageDtoData.loggedInUserId && this.loggedInUserId == messageDtoData.contactUserId) {
@@ -60,6 +61,7 @@ export class ChatMainContentComponent {
       }
     });
     this.getMessages(this.chattingUser!.userId);
+    this.isContactInfoVisible = false;
   }
 
   ngAfterViewChecked(): void {
@@ -74,16 +76,7 @@ export class ChatMainContentComponent {
     });
   }
 
-  // handleMessageInput(event: KeyboardEvent): void {
-  //   if (event.key === 'Enter' && !event.shiftKey) {
-  //     event.preventDefault();
-  //     this.sendMessage();
-  //     this.scrollToBottom();
-  //   }
-  // }
-
   handleMessageInput(event: KeyboardEvent, chatInput: HTMLElement): void {
-
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       this.newMessage = chatInput.innerText.trim();
@@ -200,18 +193,28 @@ export class ChatMainContentComponent {
   }
 
   addEmoji(emoji: string, chatInput: HTMLElement) {
-
     chatInput.innerText += emoji;
     chatInput.focus();
-
   }
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: Event) {
-
     if (!this.emojiContainer.nativeElement.contains(event.target)) {
       this.showEmojiPicker = false;
     }
+  }
 
+  toggleContactInfo() {
+    this.isContactInfoVisible = !this.isContactInfoVisible;
+  }
+
+  openProfileImageModal(): void {
+    if (this.chattingUser?.profilePicture) {
+      this.isProfileImageModalVisible = true;
+    }
+  }
+
+  closeProfileImageModal(): void {
+    this.isProfileImageModalVisible = false;
   }
 }

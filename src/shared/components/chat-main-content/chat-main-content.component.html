@@ -1,82 +1,154 @@
-<div style="height: 100%;display: flex;flex-direction: column;">
-    <div class="chat-main-head-cont-cls com-dis-fl-cls">
-        <div style="display: flex; align-items: center;gap: 10px;">
-            <div class="user-img-cls">
-                @if(chattingUser?.profilePicture){
-                <img [src]="chattingUser?.profilePicture" alt="Profile" class="profile-img-cls" />
-                }
-                @else{
-                <i class="fa fa-user user-icon-cls"></i>
-                }
-            </div>
-            <div>
-                <div class="user-name-cls">{{chattingUser?.fullName}}</div>
-                <div class="user-status-cls com-dis-fl-cls">
-                    <div class="status-cls"
-                        [ngClass]="{'online-status-cls': chattingUser?.onlineStatus == 1, 'offline-status-cls': chattingUser?.onlineStatus == 0}">
+<!-- Chat Container -->
+@if(!isContactInfoVisible) {
+    <div style="height: 100%;display: flex;flex-direction: column;">
+        <div class="chat-main-head-cont-cls com-dis-fl-cls">
+            <div style="display: flex; align-items: center;gap: 10px; cursor: pointer;" (click)="toggleContactInfo()">
+                <div class="user-img-cls">
+                    @if(chattingUser?.profilePicture){
+                    <img [src]="chattingUser?.profilePicture" alt="Profile" class="profile-img-cls" />
+                    }
+                    @else{
+                    <i class="fa fa-user user-icon-cls"></i>
+                    }
+                </div>
+                <div>
+                    <div class="user-name-cls">{{chattingUser?.fullName}}</div>
+                    <div class="user-status-cls com-dis-fl-cls">
+                        <div class="status-cls"
+                            [ngClass]="{'online-status-cls': chattingUser?.onlineStatus == 1, 'offline-status-cls': chattingUser?.onlineStatus == 0}">
+                        </div>
+                        <span>{{status}}</span>
                     </div>
-                    <span>{{status}}</span>
+                </div>
+            </div>
+            <div class="com-dis-fl-cls" style="gap: 8px;">
+                <div class="common-commu-cont-cls">
+                    <i class="fa fa-phone common-communication-img-cls"></i>
+                </div>
+                <div class="common-commu-cont-cls">
+                    <i class="fa fa-video-camera common-communication-img-cls"></i>
+                </div>
+                <div class="common-commu-cont-cls">
+                    <i class="fa fa-folder common-communication-img-cls"></i>
                 </div>
             </div>
         </div>
-        <div class="com-dis-fl-cls" style="gap: 8px;">
-            <div class="common-commu-cont-cls">
-                <i class="fa fa-phone common-communication-img-cls"></i>
+        <div class="seperator-cls"></div>
+        <div class="chat-main-content-cont-cls" #messageContainer>
+            @for(group of getMessagesGroupedByDate(); track group.dateLabel){
+            <div class="date-separator-cls">{{group.dateLabel}}</div>
+            @for(message of group.messages; track message.id){
+            @if(message.loggedInUserId == loggedInUserId){
+            <div class="common-chat-cont-cls">
+                <div class="com-dis-fl-cls my-chat-cls">
+                    <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                    <div class="common-chat-cls my-chat-cont-cls">{{message.message}}</div>
+                </div>
             </div>
-            <div class="common-commu-cont-cls">
-                <i class="fa fa-video-camera common-communication-img-cls"></i>
+            }
+            @else if(message.loggedInUserId === currentUserId) {
+            <div class="common-chat-cont-cls">
+                <div class="com-dis-fl-cls your-chat-cls">
+                    <div class="common-chat-cls your-chat-cont-cls">{{message.message}}</div>
+                    <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                </div>
             </div>
-            <div class="common-commu-cont-cls">
-                <i class="fa fa-folder common-communication-img-cls"></i>
-            </div>
+            }
+            }
+            }
         </div>
-    </div>
-    <div class="seperator-cls"></div>
-    <div class="chat-main-content-cont-cls" #messageContainer>
-        @for(group of getMessagesGroupedByDate(); track group.dateLabel){
-        <div class="date-separator-cls">{{group.dateLabel}}</div>
-        @for(message of group.messages; track message.id){
-        @if(message.loggedInUserId == loggedInUserId){
-        <div class="common-chat-cont-cls">
-            <div class="com-dis-fl-cls my-chat-cls">
-                <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
-                <div class="common-chat-cls my-chat-cont-cls">{{message.message}}</div>
-            </div>
-        </div>
-        }
-        @else if(message.loggedInUserId === currentUserId) {
-        <div class="common-chat-cont-cls">
-            <div class="com-dis-fl-cls your-chat-cls">
-                <div class="common-chat-cls your-chat-cont-cls">{{message.message}}</div>
-                <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
-            </div>
-        </div>
-        }
-        }
-        }
-    </div>
-    <div class="seperator-cls"></div>
-    <div class="chat-main-footter-cont-cls com-dis-fl-cls">
-        <div class="type-mssg-cont-cls com-dis-fl-cls">
-            <div style="max-height: 100px; overflow-y: auto; flex: 1;">
-                <div class="inp-mssg-cls input-div-cls" aria-autocomplete="list" contenteditable="true" role="textbox" spellcheck="true" tabindex="10" aria-placeholder="Type a new message..." data-placeholder="Type a new message..." #chatInput (keyup)="checkEmpty(chatInput)" (keydown)="handleMessageInput($event, chatInput)"></div>
-            </div>
-            <div class="common-commu-cont-cls emoji-container" #emojiContainer>
-                <i class="fa fa-smile-o common-communication-img-cls" (click)="toggleEmojiPicker($event)"></i>
-                <!-- Emoji Popup -->
-                <div class="emoji-popup" *ngIf="showEmojiPicker">
-                    <span *ngFor="let emoji of emojis"
-                        (click)="addEmoji(emoji, chatInput)">
-                        {{emoji}}
-                    </span>
+        <div class="seperator-cls"></div>
+        <div class="chat-main-footter-cont-cls com-dis-fl-cls">
+            <div class="type-mssg-cont-cls com-dis-fl-cls">
+                <div style="max-height: 100px; overflow-y: auto; flex: 1;">
+                    <div class="inp-mssg-cls input-div-cls" aria-autocomplete="list" contenteditable="true" role="textbox" spellcheck="true" tabindex="10" aria-placeholder="Type a new message..." data-placeholder="Type a new message..." #chatInput (keyup)="checkEmpty(chatInput)" (keydown)="handleMessageInput($event, chatInput)"></div>
+                </div>
+                <div class="common-commu-cont-cls emoji-container" #emojiContainer>
+                    <i class="fa fa-smile-o common-communication-img-cls" (click)="toggleEmojiPicker($event)"></i>
+                    <!-- Emoji Popup -->
+                    <div class="emoji-popup" *ngIf="showEmojiPicker">
+                        <span *ngFor="let emoji of emojis"
+                            (click)="addEmoji(emoji, chatInput)">
+                            {{emoji}}
+                        </span>
+                    </div>
+                </div>
+                <div class="common-commu-cont-cls">
+                    <i class="fa fa-plus common-communication-img-cls"></i>
                 </div>
             </div>
             <div class="common-commu-cont-cls">
-                <i class="fa fa-plus common-communication-img-cls"></i>
+                <i class="fa fa-paper-plane-o common-communication-img-cls" (click)="send(chatInput)"></i>
             </div>
         </div>
-        <div class="common-commu-cont-cls">
-            <i class="fa fa-paper-plane-o common-communication-img-cls" (click)="send(chatInput)"></i>
+    </div>
+}
+<!-- Contact info Container -->
+@else {
+    <div class="contact-info-cont-cls">
+        <div class="contact-info-header-cls com-dis-fl-cls">
+            <div class="common-commu-cont-cls" (click)="toggleContactInfo()" aria-label="Close">
+                <i class="fa fa-times contact-info-close-icon-cls"></i>
+            </div>
+            <h2 class="contact-info-title-cls">Contact info</h2>
+        </div>
+        <div class="seperator-cls"></div>
+        <div class="contact-info-body-cls">
+            <div class="contact-info-profile-section-cls">
+                <div class="contact-info-avatar-cls"
+                    [class.contact-info-avatar-clickable-cls]="chattingUser?.profilePicture"
+                    (click)="openProfileImageModal()">
+                    @if(chattingUser?.profilePicture){
+                    <img [src]="chattingUser?.profilePicture ?? ''" alt="Profile" class="profile-img-cls" />
+                    }
+                    @else {
+                    <i class="fa fa-user contact-info-user-icon-cls"></i>
+                    }
+                </div>
+                <div class="contact-info-name-cls">{{chattingUser?.fullName}}</div>
+                <div class="contact-info-phone-cls">{{chattingUser?.phoneNumber || '—'}}</div>
+            </div>
+            <div class="contact-info-about-section-cls">
+                <h3 class="contact-info-about-heading-cls">About</h3>
+                <p class="contact-info-about-text-cls">{{chattingUser?.profileStatus || 'No status'}}</p>
+            </div>
+            <div class="contact-info-actions-cls">
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                    <i class="fa fa-minus-circle contact-info-action-icon-cls"></i>
+                    <span>Clear chat</span>
+                </div>
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                    <i class="fa fa-ban contact-info-action-icon-cls"></i>
+                    <span>Block {{chattingUser?.fullName || 'user'}}</span>
+                </div>
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                    <i class="fa fa-thumbs-down contact-info-action-icon-cls"></i>
+                    <span>Report {{chattingUser?.fullName || 'user'}}</span>
+                </div>
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                    <i class="fa fa-trash-o contact-info-action-icon-cls"></i>
+                    <span>Delete chat</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if(isProfileImageModalVisible && chattingUser?.profilePicture){
+<div class="profile-image-modal-overlay-cls" (click)="closeProfileImageModal()">
+    <div class="profile-image-modal-cont-cls" (click)="$event.stopPropagation()">
+        <div class="profile-image-modal-header-cls com-dis-fl-cls">
+            <div class="profile-image-modal-title-cls com-dis-fl-cls">
+                <img [src]="chattingUser?.profilePicture ?? ''" alt="" class="profile-image-modal-thumb-cls" />
+                <span>{{chattingUser?.fullName}}</span>
+            </div>
+            <div class="common-commu-cont-cls" (click)="closeProfileImageModal()" aria-label="Close">
+                <i class="fa fa-times profile-image-modal-close-icon-cls"></i>
+            </div>
+        </div>
+        <div class="profile-image-modal-body-cls">
+            <img [src]="chattingUser?.profilePicture ?? ''" alt="Profile" class="profile-image-modal-img-cls" />
         </div>
     </div>
 </div>
+}
