@@ -1,4 +1,4 @@
-<div class="chat-side-bar-main-cls">
+<div class="chat-side-bar-main-cls" [ngClass]="{'mobile-chat-active': isUserSelected}">
     <aside>
         <div class="chat-list-scroll-container">
             @if(filteredChatUsers?.length){

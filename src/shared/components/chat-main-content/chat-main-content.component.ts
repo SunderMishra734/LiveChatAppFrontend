@@ -38,6 +38,9 @@ export class ChatMainContentComponent {
   isMenuVisible: boolean = false;
   isSearchPanelVisible: boolean = false;
   searchQuery: string = '';
+  searchResults: MessageDto[] = [];
+  currentMatchIndex: number = -1;
+  searchHighlightTimeout: any = null;
 
   constructor(private chatService: ChatService, private signalRService: SignalrService) { }
 
@@ -67,10 +70,6 @@ export class ChatMainContentComponent {
     });
     this.getMessages(this.chattingUser!.userId);
     this.isContactInfoVisible = false;
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
   }
 
   ngAfterViewInit() {
@@ -228,24 +227,99 @@ export class ChatMainContentComponent {
 
   openSearchPanel(): void {
     this.isSearchPanelVisible = true;
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.currentMatchIndex = -1;
   }
 
   closeSearchPanel(): void {
     this.isSearchPanelVisible = false;
     this.searchQuery = '';
+    this.searchResults = [];
+    this.currentMatchIndex = -1;
+    this.clearHighlight();
   }
 
-  getFilteredMessages(): MessageDto[] {
-    if (!this.messages || !this.searchQuery.trim()) return [];
+  onSearchInput(): void {
+    // Reset matches as user types to require enter to search
+    this.searchResults = [];
+    this.currentMatchIndex = -1;
+    this.clearHighlight();
+  }
+
+  executeSearch(): void {
+    if (!this.messages || !this.searchQuery.trim()) {
+      this.searchResults = [];
+      this.currentMatchIndex = -1;
+      return;
+    }
+    
     const term = this.searchQuery.trim().toLowerCase();
-    return this.messages.filter(m => (m.message || '').toLowerCase().includes(term));
+    // Reverse array to put newest matches first like WhatsApp
+    this.searchResults = [...this.messages].reverse().filter(m => 
+      (m.message || '').toLowerCase().includes(term)
+    );
+
+    if (this.searchResults.length > 0) {
+      this.currentMatchIndex = 0;
+      this.jumpToCurrentMatch();
+    } else {
+      this.currentMatchIndex = -1;
+    }
+  }
+
+  nextSearchMatch(): void {
+    if (this.searchResults.length === 0) return;
+    this.currentMatchIndex = (this.currentMatchIndex + 1) % this.searchResults.length;
+    this.jumpToCurrentMatch();
+  }
+
+  prevSearchMatch(): void {
+    if (this.searchResults.length === 0) return;
+    this.currentMatchIndex = (this.currentMatchIndex - 1 + this.searchResults.length) % this.searchResults.length;
+    this.jumpToCurrentMatch();
+  }
+
+  jumpToCurrentMatch(): void {
+    const message = this.searchResults[this.currentMatchIndex];
+    if (message) {
+      this.scrollToMessage(message.id);
+      this.highlightMessage(message.id);
+    }
   }
 
   scrollToMessage(messageId: number): void {
-    const el = document.getElementById('msg-' + messageId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    setTimeout(() => {
+        const el = document.getElementById('msg-' + messageId);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 50);
+  }
+
+  highlightMessage(messageId: number): void {
+    this.clearHighlight();
+    setTimeout(() => {
+        const el = document.getElementById('msg-' + messageId);
+        if (el) {
+            // Apply a temporary background class to the actual bubble based on sender
+            const bubble = el.querySelector('.common-chat-cls');
+            if(bubble) {
+                bubble.classList.add('search-highlight-active');
+            }
+            
+            // Remove highlight after 2 seconds
+            if(this.searchHighlightTimeout) clearTimeout(this.searchHighlightTimeout);
+            this.searchHighlightTimeout = setTimeout(() => {
+                this.clearHighlight();
+            }, 2000);
+        }
+    }, 100);
+  }
+
+  clearHighlight(): void {
+    const highlighted = document.querySelectorAll('.search-highlight-active');
+    highlighted.forEach(el => el.classList.remove('search-highlight-active'));
   }
 
   toggleContactInfo() {

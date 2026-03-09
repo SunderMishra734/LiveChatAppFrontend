@@ -9,10 +9,12 @@ export class SharedUserService {
   private userDetailsSource = new BehaviorSubject<UserDetailDto | any>(null);
   private userIdSource = new BehaviorSubject<number>(0);
   private searchQuerySource = new BehaviorSubject<string>('');
+  private chatActiveSource = new BehaviorSubject<boolean>(false);
 
   currentUserDetails = this.userDetailsSource.asObservable();
   loggedInUserId = this.userIdSource.asObservable();
   searchQuery$ = this.searchQuerySource.asObservable();
+  chatActive$ = this.chatActiveSource.asObservable();
 
   constructor() { }
 
@@ -27,6 +29,10 @@ export class SharedUserService {
 
   updateSearchQuery(query: string): void {
     this.searchQuerySource.next(query);
+  }
+
+  setChatActive(isActive: boolean): void {
+    this.chatActiveSource.next(isActive);
   }
 
   getCurrentUserDetails(): UserDetailDto | null {

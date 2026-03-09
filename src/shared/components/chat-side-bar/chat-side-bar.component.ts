@@ -69,14 +69,20 @@ export class ChatSideBarComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.sharedUserService.setChatActive(false);
+  }
+
   onCloseChat(): void {
     this.isUserSelected = false;
     this.selectedUser = undefined;
+    this.sharedUserService.setChatActive(false);
   }
 
   selectUser(user: ChatListDto): void {
     this.selectedUser = user;
     this.isUserSelected = true;
+    this.sharedUserService.setChatActive(true);
     // Mark messages as read for this user
     if (user.unreadCount && user.unreadCount > 0) {
       user.unreadCount = 0;
@@ -124,6 +130,7 @@ export class ChatSideBarComponent {
       this.applyFilter();
     }
     this.isUserSelected = true;
+    this.sharedUserService.setChatActive(true);
     this.isAllUserPopVisible = false;
   }
 

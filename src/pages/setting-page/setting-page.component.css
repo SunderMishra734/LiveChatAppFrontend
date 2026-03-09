@@ -209,3 +209,46 @@
     color: #111b21;
     margin: 0;
 }
+
+/* ========================================= */
+/* RESPONSIVE DESIGN                         */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    .settings-wrapper-cls {
+        padding: 16px;
+    }
+
+    .settings-profile-card-cls {
+        padding: 12px;
+        margin-bottom: 24px;
+    }
+
+    /* Stack the side-by-side inputs on mobile for Create User & Password */
+    .common-side-inp-cont-cls {
+        flex-direction: column;
+        gap: 0; 
+    }
+
+    .common-side-inp-cls {
+        width: 100%;
+        margin-bottom: 15px; /* Add spacing between stacked inputs */
+    }
+
+    .class-common-cont-cls {
+        margin-block: 0;
+    }
+
+    .block-cont-cls {
+        padding: 16px;
+        margin-top: 20px;
+    }
+    
+    .settings-subview-header-cls {
+        margin-bottom: 16px;
+    }
+
+    .settings-search-container-cls {
+        margin-bottom: 20px;
+    }
+}

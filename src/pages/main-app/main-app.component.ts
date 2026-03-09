@@ -28,6 +28,7 @@ export class MainAppComponent {
   profilePic: string = "";
   changeUserStatusDto!: UserStatusDto;
   isSearchVisible: boolean = true;
+  isChatActive: boolean = false;
 
   constructor(private router: Router, private elementRef: ElementRef, private authService: AuthService, private userService: UserService, private sharedUserService: SharedUserService, private signalRService: SignalrService) {
     this.router.events.pipe(
@@ -56,6 +57,11 @@ export class MainAppComponent {
         this.userEmail = details.email;
         this.profilePic = details.profilePic;
       }
+    });
+
+    // Track active chat state to conditionally hide overlapping panels
+    this.sharedUserService.chatActive$.subscribe(isActive => {
+      this.isChatActive = isActive;
     });
   }
 

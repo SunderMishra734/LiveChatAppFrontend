@@ -229,3 +229,45 @@ select.profile-input:disabled {
 .enable-profile-cls:hover .pr-image-cls {
     box-shadow: 0 4px 12px rgba(0, 168, 132, 0.15);
 }
+
+/* ========================================= */
+/* RESPONSIVE DESIGN                         */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    .class-main-cont-cls {
+        padding: 16px;
+    }
+
+    .profile-header-card, .profile-details-card {
+        padding: 20px;
+    }
+
+    .profile-info-row {
+        gap: 16px;
+    }
+
+    .pr-name-cls {
+        font-size: 22px;
+    }
+
+    .pr-image-cls {
+        width: 100px;
+        height: 100px;
+        font-size: 48px;
+        line-height: 100px;
+    }
+
+    .profile-pic-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .profile-actions-wrapper {
+        justify-content: stretch;
+    }
+
+    .profile-actions-wrapper .profile-btn {
+        flex: 1;
+    }
+}

@@ -344,3 +344,31 @@ app-chat-main-content {
     color: #25d366;
     font-weight: 500;
 }
+
+/* ========================================= */
+/* RESPONSIVE DESIGN                         */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    aside {
+        width: 100%; /* Take full width on mobile when visible */
+        min-width: unset;
+        border-right: none;
+    }
+
+    /* Hide chat sidebar if a chat is actively selected on mobile */
+    .chat-side-bar-main-cls.mobile-chat-active aside {
+        display: none !important;
+    }
+
+    .chat-main-cont-cls {
+        display: none; /* Hide main content by default on mobile */
+    }
+
+    /* Show main content full width if a chat is actively selected */
+    .chat-side-bar-main-cls.mobile-chat-active .chat-main-cont-cls {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+}

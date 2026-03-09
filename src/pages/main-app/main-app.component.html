@@ -3,25 +3,71 @@
         <header>
             <div class="lg-logo-cls">
                 <div class="logo-cls">
-                    <span></span>
+                    <!-- Brand initial or small logo if needed -->
+                    <span style="font-weight: 700; font-size: 24px; color: white;">Lc.</span>
                 </div>
             </div>
         </header>
         <nav>
-            <ul>
+            <ul class="nav-top">
                 <li routerLinkActive="active-nav-cls">
-                    <a routerLink="chat"><i class='fa fa-comments-o common-icon-cls'></i></a>
+                    <a routerLink="chat" title="Chat" class="nav-link">
+                        <i class='fa fa-comments-o common-icon-cls'></i>
+                    </a>
                 </li>
                 <li routerLinkActive="active-nav-cls">
-                    <a routerLink="profile"><i class="fa fa-user common-icon-cls"></i></a>
+                    <a routerLink="profile" title="Profile" class="nav-link">
+                        <i class="fa fa-user common-icon-cls"></i>
+                    </a>
                 </li>
                 <li routerLinkActive="active-nav-cls">
-                    <a routerLink="setting"><i class="fa fa-cog common-icon-cls"></i></a>
+                    <a routerLink="setting" title="Settings" class="nav-link">
+                        <i class="fa fa-cog common-icon-cls"></i>
+                    </a>
+                </li>
+                <!-- NEW bottom nav profile icon (mobile only) -->
+                <li class="mobile-nav-profile-li" style="display: none;">
+                    <a (click)="userProfileFn()" title="My Profile" class="nav-link">
+                        @if(profilePic){
+                            <img [src]="profilePic" alt="Profile" class="mobile-nav-user-icon" />
+                        }
+                        @else {
+                            <i class="fa fa-user-circle common-icon-cls"></i>
+                        }
+                    </a>
+                    @if(isUserProfileVisible) {
+                        <section class="profile-section-cls mobile-profile-popup">
+                            <div class="profile-popup-header">
+                                <div class="profile-popup-avatar">
+                                    @if(profilePic){
+                                    <img [src]="profilePic" alt="Profile" class="popup-img-cls" />
+                                    }
+                                    @else {
+                                    <i class="fa fa-user popup-user-icon-cls"></i>
+                                    }
+                                </div>
+                                <div class="profile-popup-info">
+                                    <div class="profile-popup-name">{{userFullName}}</div>
+                                    <div class="profile-popup-email">{{userEmail}}</div>
+                                </div>
+                            </div>
+                            <div class="profile-popup-actions">
+                                <button class="view-prof-btn-cls" style="margin-bottom: 8px;" (click)="showProfileFn()">
+                                    <i class="fa fa-user-circle-o" style="margin-right: 8px;"></i> View Profile
+                                </button>
+                                <button class="view-prof-btn-cls logout-btn-override" (click)="logOutFn()">
+                                    <i class="fa fa-sign-out" style="margin-right: 8px;"></i> Logout
+                                </button>
+                            </div>
+                        </section>
+                    }
                 </li>
             </ul>
-            <ul>
+            <ul class="nav-bottom">
                 <li>
-                    <a (click)="logOutFn()"><i class="fa fa-sign-out common-icon-cls" (click)="logOutFn()"></i></a>
+                    <a (click)="logOutFn()" title="Log Out" class="nav-link logout-link">
+                        <i class="fa fa-sign-out common-icon-cls"></i>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -32,25 +78,41 @@
                 @if(isSearchVisible) {
                 <div class="search-cont-cls">
                     <i class="fa fa-search common-icon-cls"
-                        style="font-size: 16px;line-height: 33px; height: 33px; width: 33px;"></i>
+                        style="font-size: 16px;line-height: 33px; height: 33px; width: 33px; color: #667781; background: transparent;"></i>
                     <input type="search" placeholder="search" style="font-size: 16px;outline: none;"
                         [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
                 </div>
                 }
-                <div style="display: flex;align-items: center;gap: 5px;"
+                <div class="header-actions-wrapper" style="display: flex;align-items: center;gap: 5px;"
                     [style.margin-left]="!isSearchVisible ? 'auto' : '0'">
-                    <i class="fa fa-bell-o nf-icon-cls"></i>
-                    <div style="position: relative;" #userProfileContainer>
-                        <div class="header-user-trigger" (click)="userProfileFn()">
-                            @if(profilePic){
-                            <img [src]="profilePic" alt="Profile" class="user-icon-cls" />
-                            }
-                            @else {
-                            <i class="fa fa-user user-icon-cls"></i>
-                            }
-                            <div class="header-user-name">{{userFullName}}</div>
-                            <i class="fa fa-caret-down" style="color: #667781; font-size: 14px; margin-left: 4px;"></i>
+                    
+                    <!-- Mobile Logo and Search (hidden on desktop) -->
+                    <div class="mobile-header-logo-cls">
+                        <div class="mobile-logo-wrap">
+                            <span class="mobile-brand-text">Live Chat App</span>
                         </div>
+                        @if(isSearchVisible && !isChatActive) {
+                        <div class="mobile-search-cont-cls">
+                            <i class="fa fa-search" style="color: #667781;"></i>
+                            <input type="search" placeholder="Search..." [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
+                        </div>
+                        }
+                    </div>
+
+                    <div class="desktop-header-actions-cls" style="display: flex; align-items: center; gap: 5px;">
+                        <i class="fa fa-bell-o nf-icon-cls"></i>
+                        <div style="position: relative;" #userProfileContainer>
+                            <div class="header-user-trigger" (click)="userProfileFn()">
+                                @if(profilePic){
+                                <img [src]="profilePic" alt="Profile" class="user-icon-cls"
+                                    style="background: transparent;" />
+                                }
+                                @else {
+                                <i class="fa fa-user user-icon-cls" style="color: #667781; background: transparent;"></i>
+                                }
+                                <div class="header-user-name">{{userFullName}}</div>
+                                <i class="fa fa-caret-down" style="color: #667781; font-size: 14px; margin-left: 4px;"></i>
+                            </div>
                         @if(isUserProfileVisible){
                         <section class="profile-section-cls">
                             <div class="profile-popup-header">
@@ -75,6 +137,7 @@
                         </section>
                         }
                     </div>
+                 </div> <!-- close desktop actions -->
                 </div>
             </header>
         </section>

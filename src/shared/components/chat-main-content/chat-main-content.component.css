@@ -138,123 +138,80 @@
     min-width: 0;
 }
 
-.search-panel-cls {
-    width: 320px;
-    min-width: 280px;
-    background-color: #ffffff;
+/* --- NEW IN-CHAT SEARCH HEADER --- */
+.active-search-header-cls {
     display: flex;
-    flex-direction: column;
-    border-left: 1px solid rgb(200, 202, 210);
-}
-
-.search-panel-header-cls {
-    padding: 12px 16px;
     align-items: center;
+    width: 100%;
+    height: 100%;
     gap: 12px;
 }
 
-.search-panel-close-icon-cls {
+.active-search-back-btn {
     color: rgb(114, 118, 133);
     font-size: 20px;
     cursor: pointer;
-    width: 28px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
 }
 
-.search-panel-close-icon-cls:hover {
-    color: rgb(80, 84, 96);
+.active-search-back-btn:hover {
+    background-color: rgba(11, 20, 26, 0.05);
 }
 
-.search-panel-title-cls {
-    font-size: 18px;
-    font-weight: 600;
-    color: rgb(50, 52, 60);
-}
-
-.search-panel-input-wrap-cls {
-    margin: 12px 16px;
+.active-search-input-wrap {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
     background-color: #f0f0f0;
-    border: 1px solid rgb(200, 202, 210);
     border-radius: 8px;
+    padding: 8px 12px;
 }
 
-.search-panel-input-icon-cls {
-    color: rgb(114, 118, 133);
-    font-size: 14px;
-}
-
-.search-panel-input-cls {
-    flex: 1;
+.active-search-input-wrap input {
+    width: 100%;
     border: none;
     outline: none;
     background: transparent;
-    color: rgb(50, 52, 60);
     font-size: 15px;
-}
-
-.search-panel-input-cls::placeholder {
-    color: rgb(114, 118, 133);
-}
-
-.search-panel-body-cls {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 16px 16px;
-}
-
-.search-panel-hint-cls {
-    color: rgb(114, 118, 133);
-    font-size: 14px;
-    padding: 20px 0;
-    margin: 0;
-}
-
-.search-panel-results-cls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.search-panel-result-item-cls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    cursor: pointer;
-}
-
-.search-panel-result-item-cls:hover {
-    opacity: 0.9;
-}
-
-.search-panel-result-item-cls.search-result-mine-cls {
-    align-items: flex-end;
-}
-
-.search-result-time-cls {
-    font-size: 11px;
-    color: rgb(114, 118, 133);
-    margin-bottom: 4px;
-}
-
-.search-result-bubble-cls {
-    padding: 8px 12px;
-    border-radius: 8px;
-    background-color: aliceblue;
     color: rgb(50, 52, 60);
-    font-size: 14px;
-    max-width: 100%;
 }
 
-.search-panel-result-item-cls.search-result-mine-cls .search-result-bubble-cls {
-    background-color: #9b9595;
-    color: #ffffff;
+.active-search-nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-results-count {
+    font-size: 13px;
+    color: rgb(114, 118, 133);
+    white-space: nowrap;
+}
+
+.search-nav-btn {
+    color: rgb(114, 118, 133);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.search-nav-btn:hover {
+    color: rgb(50, 52, 60);
+}
+
+.search-nav-btn.disabled {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Chat bubble temporary highlight class */
+.search-highlight-active {
+    background-color: #ffeb3b !important;
+    color: #111b21 !important;
+    transition: background-color 0.3s ease;
 }
 
 .seperator-cls {
@@ -637,4 +594,85 @@
     width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN                         */
+/* ========================================= */
+
+.mobile-back-btn-cls {
+    display: none; /* Hidden by default on desktop */
+    font-size: 20px;
+    color: rgb(114, 118, 133);
+    padding: 8px;
+    margin-right: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.mobile-back-btn-cls:hover {
+    background-color: rgba(11, 20, 26, 0.05);
+}
+
+@media (max-width: 768px) {
+    /* Show mobile back button to leave chat */
+    .mobile-back-btn-cls {
+        display: block;
+    }
+
+    /* Active search header resizes cleanly */
+    .active-search-header-cls {
+        gap: 6px;
+    }
+    
+    .active-search-input-wrap {
+        padding: 6px 10px;
+    }
+    
+    .search-results-count {
+        display: none; /* Hide count text on small screens, rely on arrows */
+    }
+    
+    .search-nav-btn {
+        padding: 8px;
+    }
+    
+    /* Contact info sidebar overlay full screen */
+    .contact-info-cont-cls {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 100;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Reduce header paddings slightly */
+    .chat-main-head-cont-cls {
+        padding: 8px 12px;
+    }
+    
+    .chat-main-content-cont-cls {
+        padding: 16px 12px;
+    }
+
+    .user-img-cls {
+        width: 44px;
+        height: 44px;
+    }
+
+    .user-name-cls {
+        font-size: 16px;
+    }
+
+    /* Footer message type area */
+    .chat-main-footter-cont-cls {
+        padding: 8px 12px;
+    }
+
+    .type-mssg-cont-cls {
+        width: 95%; /* Make more space for send button */
+        padding: 8px 12px;
+    }
 }
