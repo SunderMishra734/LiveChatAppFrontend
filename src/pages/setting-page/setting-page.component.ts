@@ -41,6 +41,9 @@ export class SettingPageComponent {
   searchQuery: string = '';
   isShowChangePassword: boolean = false;
   changePasswordForm!: FormGroup;
+  isAdmin: boolean = false;
+  showSecurityNotifications: boolean = true;
+  isDeleteModalVisible: boolean = false;
 
   settingsMenuItems = [
     { title: 'Account', desc: 'Change password, Security notifications, account info', icon: 'fa-key' },
@@ -53,8 +56,8 @@ export class SettingPageComponent {
       return this.settingsMenuItems;
     }
     const lowerQuery = this.searchQuery.toLowerCase();
-    return this.settingsMenuItems.filter(item => 
-      item.title.toLowerCase().includes(lowerQuery) || 
+    return this.settingsMenuItems.filter(item =>
+      item.title.toLowerCase().includes(lowerQuery) ||
       item.desc.toLowerCase().includes(lowerQuery)
     );
   }
@@ -71,6 +74,7 @@ export class SettingPageComponent {
     this.sharedUserService.currentUserDetails.subscribe(details => {
       if (details) {
         this.currentUserDetails = details;
+        this.isAdmin = details.userRole === UserRole.Admin;
       }
     });
     this.initChangePasswordForm();
@@ -186,5 +190,34 @@ export class SettingPageComponent {
 
   closeToasterMessage() {
     this.isTaosterVisible = false;
+  }
+
+  deleteAccount() {
+    this.isDeleteModalVisible = true;
+  }
+
+  confirmDelete() {
+    if (this.currentUserDetails?.userId) {
+      this.isDeleteModalVisible = false;
+      // this.userService.deleteUser(this.currentUserDetails.userId).subscribe({
+      //   next: () => {
+      //     this.mainMssg = 'Account Deleted!';
+      //     this.descriptionMssg = 'Your account has been successfully removed.';
+      //     this.showToasterMessage(1);
+      //     setTimeout(() => {
+      //       this.logout();
+      //     }, 2000);
+      //   },
+      //   error: (err) => {
+      //     this.mainMssg = 'Error!';
+      //     this.descriptionMssg = 'Failed to delete account. Please try again.';
+      //     this.showToasterMessage(2);
+      //   }
+      // });
+    }
+  }
+
+  closeDeleteModal() {
+    this.isDeleteModalVisible = false;
   }
 }

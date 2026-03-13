@@ -65,6 +65,7 @@
     </div>
 
     <div class="settings-subview-content-cls">
+        @if(isAdmin){
         <div class="block-cont-cls">
             <div style="margin-bottom: 20px;">
                 <div class="common-header-txt-cls">Create New User</div>
@@ -80,6 +81,7 @@
             </div>
             }
         </div>
+        }
         
         @if(isCreateUserShow){
         <div class="block-cont-cls">
@@ -159,9 +161,9 @@
             </form>
         </div>
         }
-
+        @if(isAdmin){
         <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1d7db;" />
-
+        }
         <div class="block-cont-cls">
             <div style="margin-bottom: 20px;">
                 <div class="common-header-txt-cls">Change Password</div>
@@ -219,10 +221,59 @@
             </form>
             }
         </div>
-
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1d7db;" />
+        <div class="block-cont-cls">
+            <div style="margin-bottom: 20px;">
+                <div class="common-header-txt-cls">Delete Account</div>
+                <div class="settings-item-desc-cls" style="margin-top: 8px;">
+                    Deleting your account is irreversible. All your data will be permanently removed. If you are sure, click Delete Account.
+                </div>
+            </div>
+            <div style="display: flex;justify-content: flex-start;gap: 10px;">
+                <div class="back-btn-cls common-btn-cls danger-btn" (click)="deleteAccount()">
+                    <span>Delete Account</span>
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1d7db;" />
+        <div class="block-cont-cls">
+            <div class="security-section-cls">
+                <div class="security-icon-container-cls">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="security-content-cls">
+                    <div class="security-title-cls">Show security notifications on this computer</div>
+                    <div class="security-desc-cls">
+                        Get notified when your security code changes for a contact's phone. If you have multiple devices, this setting must be enabled on each device where you want to get notifications.
+                    </div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" [(ngModel)]="showSecurityNotifications">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
     </div>
     }
 </div>
+
+@if (isDeleteModalVisible) {
+<div class="modal-overlay-cls" (click)="closeDeleteModal()">
+    <div class="modal-container-cls" (click)="$event.stopPropagation()">
+        <div class="modal-header-cls">
+            <i class="fa fa-exclamation-triangle warning-icon-cls"></i>
+            <h3>Delete Account?</h3>
+        </div>
+        <div class="modal-body-cls">
+            <p>Are you sure you want to delete your account? This action is <strong>irreversible</strong>, and all your data, including chat history and profile information, will be <strong>permanently removed</strong>.</p>
+        </div>
+        <div class="modal-footer-cls">
+            <button class="modal-btn-cls cancel-modal-btn-cls" (click)="closeDeleteModal()">Cancel</button>
+            <button class="modal-btn-cls confirm-modal-btn-cls" (click)="confirmDelete()">Delete Anyway</button>
+        </div>
+    </div>
+</div>
+}
 
 @if (isTaosterVisible) {
 <app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"

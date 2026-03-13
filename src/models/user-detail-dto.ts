@@ -15,6 +15,7 @@ export interface UserDetailDto {
     updatedAt: Date;
     profilePic: string;
     gender: Gender;
+    userRole: number;
 }
 
 export interface UserStatusDto{

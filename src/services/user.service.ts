@@ -53,4 +53,9 @@ export class UserService {
     const url = URLS.DeleteFile;
     return this.apiService.post(url, fileData);
   }
+
+  deleteUser(userId: number): Observable<any> {
+    const url = URLS.DeleteUser;
+    return this.apiService.post(url, userId);
+  }
 }
