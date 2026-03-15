@@ -531,4 +531,265 @@ input:checked + .slider.round {
 
 .status-active {
     color: #008069;
-}
+}
+
+/* Help Centre FAQ Styling */
+.faq-list-cls {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 10px 0;
+}
+
+.faq-item-cls {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.faq-item-cls:last-child {
+    border-bottom: none;
+}
+
+.faq-question-cls {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111b21;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.faq-answer-label-cls {
+    font-size: 14px;
+    font-weight: 600;
+    color: #54656f;
+    margin-bottom: 4px;
+}
+
+.faq-answer-cls {
+    font-size: 14.5px;
+    color: #54656f;
+    line-height: 1.6;
+}
+
+/* Terms and Privacy Policy Styling */
+.policy-container-cls {
+    padding-bottom: 30px;
+}
+
+.policy-heading-cls {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111b21;
+    margin: 25px 0 10px 0;
+}
+
+.policy-date-cls {
+    font-size: 13.5px;
+    color: #54656f;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.policy-section-cls {
+    margin-top: 20px;
+}
+
+.policy-subheading-cls {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111b21;
+    margin-bottom: 8px;
+}
+
+.policy-text-cls {
+    font-size: 14.5px;
+    color: #54656f;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.policy-bullet-cls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.policy-bullet-cls div {
+    font-size: 14.5px;
+    color: #54656f;
+    line-height: 1.5;
+}
+
+.policy-divider-cls {
+    margin: 30px 0;
+    border: 0;
+    border-top: 1px solid #d1d7db;
+}
+
+/* Feedback Modal Styling */
+.feedback-modal-cls {
+    width: 95%;
+    max-width: 580px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feedback-modal-cls .modal-header-cls {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.header-content h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #111b21;
+    flex: 1;
+}
+
+.close-icon-cls {
+    font-size: 20px;
+    color: #54656f;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.feedback-desc-cls {
+    font-size: 14px;
+    color: #54656f;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.feedback-body-cls {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.form-group-cls {
+    margin-bottom: 16px;
+}
+
+.select-inp-cls {
+    height: 40px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.textarea-inp-cls {
+    resize: none;
+    padding-top: 10px;
+}
+
+.error-msg {
+    color: #ea0038;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.star-rating-cls {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.star-rating-cls i {
+    font-size: 24px;
+    color: #ffd700;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.star-rating-cls i:hover {
+    transform: scale(1.2);
+}
+
+.feedback-footer-cls {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f2f5;
+}
+
+.submit-feedback-btn {
+    width: 100%;
+    background-color: #008069;
+    color: white;
+    font-weight: 600;
+}
+
+/* Success View Styling */
+.success-view-cls {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.success-icon-container {
+    margin-bottom: 20px;
+}
+
+.success-check-icon {
+    font-size: 60px;
+    color: #00a884;
+}
+
+.success-view-cls h3 {
+    font-size: 22px;
+    color: #111b21;
+    margin-bottom: 12px;
+}
+
+.success-view-cls p {
+    font-size: 15px;
+    color: #54656f;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.ok-btn {
+    width: 120px;
+    background-color: #008069;
+}
+
+@media (max-width: 480px) {
+    .feedback-modal-cls {
+        padding: 16px;
+        width: 92%;
+    }
+
+    .feedback-body-cls {
+        max-height: 60vh;
+    }
+
+    .header-content h3 {
+        font-size: 18px;
+    }
+
+    .feedback-desc-cls {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .form-group-cls {
+        margin-bottom: 12px;
+    }
+
+    .star-rating-cls i {
+        font-size: 20px;
+    }
+}
+

@@ -44,6 +44,52 @@ export class SettingPageComponent {
   isAdmin: boolean = false;
   showSecurityNotifications: boolean = true;
   isDeleteModalVisible: boolean = false;
+  isFeedbackModalVisible: boolean = false;
+  isFeedbackSubmitted: boolean = false;
+  feedbackForm!: FormGroup;
+  userRating: number = 0;
+  faqs = [
+    {
+      question: '1. How do I create an account in LiveChatApp?',
+      answer: 'To create an account, open the registration page, enter your required details such as name, email, and password, and complete the verification process. Once registered, you can start chatting with other users.'
+    },
+    {
+      question: '2. How can I change my profile information?',
+      answer: 'Go to Settings → Profile, where you can update your name, profile picture, and status message. After making changes, save them to update your profile.'
+    },
+    {
+      question: '3. How do I change my password?',
+      answer: 'Navigate to Settings → Security → Change Password. Enter your current password and your new password, then confirm the changes.'
+    },
+    {
+      question: '4. What should I do if I forget my password?',
+      answer: 'Click on Forgot Password on the login page and follow the instructions to reset your password using your registered email.'
+    },
+    {
+      question: '5. How can I block or unblock a user?',
+      answer: 'Open the user\'s profile or chat options and select Block User. To unblock, go to Settings → Privacy → Blocked Users and remove the user from the blocked list.'
+    },
+    {
+      question: '6. Can I delete my chat messages?',
+      answer: 'Yes, you can delete messages by selecting the message and choosing the Delete option. This will remove the message from your chat history.'
+    },
+    {
+      question: '7. How can I update my status?',
+      answer: 'Go to Profile Settings and update your About or Status message. Your contacts will be able to see your updated status.'
+    },
+    {
+      question: '8. How can I report a problem in LiveChatApp?',
+      answer: 'If you encounter an issue, go to Help & Feedback → Contact Us and describe the problem. Our support team will review your request and assist you.'
+    },
+    {
+      question: '9. Is my data secure on LiveChatApp?',
+      answer: 'Yes, we take security seriously. Your account and messages are protected using modern security practices to keep your data safe.'
+    },
+    {
+      question: '10. How can I delete my LiveChatApp account?',
+      answer: 'You can delete your account by going to Settings → Account → Delete Account. Please note that this action will permanently remove your account and chat data.'
+    }
+  ];
 
   settingsMenuItems = [
     { title: 'Account', desc: 'Account info, change password, Security notifications,', icon: 'fa-key' },
@@ -78,6 +124,7 @@ export class SettingPageComponent {
       }
     });
     this.initChangePasswordForm();
+    this.initFeedbackForm();
   }
 
   initChangePasswordForm() {
@@ -86,6 +133,15 @@ export class SettingPageComponent {
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator });
+  }
+
+  initFeedbackForm() {
+    this.feedbackForm = this.fb.group({
+      type: ['general', [Validators.required]],
+      subject: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      email: ['', [Validators.email]]
+    });
   }
 
   passwordsMatchValidator(formGroup: FormGroup) {
@@ -120,11 +176,61 @@ export class SettingPageComponent {
   onMenuClick(item: any) {
     if (item.title === 'Account') {
       this.activeView = 'account';
+    } else if (item.title === 'Help and feedback') {
+      this.activeView = 'help';
+    }
+  }
+
+  openHelpCentre() {
+    this.activeView = 'help-centre';
+  }
+
+  openTermsPolicy() {
+    this.activeView = 'terms-policy';
+  }
+
+  openFeedbackModal() {
+    this.isFeedbackModalVisible = true;
+    this.isFeedbackSubmitted = false;
+    this.userRating = 0;
+    this.initFeedbackForm();
+  }
+
+  openContactUs() {
+    this.activeView = 'contact-us';
+  }
+
+  closeFeedbackModal() {
+    this.isFeedbackModalVisible = false;
+    this.isFeedbackSubmitted = false;
+  }
+
+  setRating(rating: number) {
+    this.userRating = rating;
+  }
+
+  submitFeedback() {
+    if (this.feedbackForm.valid) {
+      // Mocking successful submission
+      console.log('Feedback submitted:', {
+        ...this.feedbackForm.value,
+        rating: this.userRating
+      });
+      this.isFeedbackSubmitted = true;
+    } else {
+      Object.keys(this.feedbackForm.controls).forEach(key => {
+        const control = this.feedbackForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 
   goBackToMain() {
-    this.activeView = 'main';
+    if (this.activeView === 'help-centre' || this.activeView === 'terms-policy' || this.activeView === 'contact-us') {
+      this.activeView = 'help';
+    } else {
+      this.activeView = 'main';
+    }
     this.isCreateUserShow = false;
   }
 

@@ -313,6 +313,239 @@
         </div>
     </div>
     }
+
+    @if(activeView === 'help') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Help and feedback</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <div class="settings-menu-list-cls">
+            <div class="settings-menu-item-cls" (click)="openHelpCentre()">
+                <div class="settings-icon-container-cls">
+                    <i class="fa fa-question-circle"></i>
+                </div>
+                <div class="settings-item-content-cls">
+                    <div class="settings-item-title-cls" style="font-weight: 500;">Help Centre</div>
+                    <div class="settings-item-desc-cls">Frequently asked questions</div>
+                </div>
+            </div>
+
+            <div class="settings-menu-item-cls" (click)="openContactUs()">
+                <div class="settings-icon-container-cls">
+                    <i class="fa fa-comment-o"></i>
+                </div>
+                <div class="settings-item-content-cls">
+                    <div class="settings-item-title-cls" style="font-weight: 500;">Contact us</div>
+                    <div class="settings-item-desc-cls">Get in touch with our support team for any questions or assistance.</div>
+                </div>
+            </div>
+
+            <div class="settings-menu-item-cls" (click)="openFeedbackModal()">
+                <div class="settings-icon-container-cls">
+                    <i class="fa fa-bug"></i>
+                </div>
+                <div class="settings-item-content-cls">
+                    <div class="settings-item-title-cls" style="font-weight: 500;">Send feedback</div>
+                    <div class="settings-item-desc-cls">Technical issues, suggestions</div>
+                </div>
+            </div>
+
+            <div class="settings-menu-item-cls" (click)="openTermsPolicy()">
+                <div class="settings-icon-container-cls">
+                    <i class="fa fa-file-text-o"></i>
+                </div>
+                <div class="settings-item-content-cls">
+                    <div class="settings-item-title-cls" style="font-weight: 500;">Terms and Privacy Policy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if(activeView === 'help-centre') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Help Centre</h2>
+    </div>
+
+    <div class="settings-subview-content-cls" style="overflow-y: auto; max-height: calc(100vh - 120px); padding-right: 10px;">
+        <div class="faq-list-cls">
+            @for(faq of faqs; track faq.question) {
+                <div class="faq-item-cls">
+                    <div class="faq-question-cls">{{faq.question}}</div>
+                    <div class="faq-answer-label-cls">Answer:</div>
+                    <div class="faq-answer-cls">{{faq.answer}}</div>
+                </div>
+            }
+        </div>
+    </div>
+    }
+
+    @if(activeView === 'terms-policy') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Terms and Privacy Policy</h2>
+    </div>
+
+    <div class="settings-subview-content-cls" style="overflow-y: auto; max-height: calc(100vh - 120px); padding-right: 15px;">
+        <div class="policy-container-cls">
+            <h3 class="policy-heading-cls">Terms of Service</h3>
+            <div class="policy-date-cls">Last Updated: March 2026</div>
+            <p class="policy-text-cls">Welcome to LiveChatApp. By accessing or using LiveChatApp, you agree to comply with the following terms and conditions.</p>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">1. Acceptance of Terms</div>
+                <p class="policy-text-cls">By creating an account or using LiveChatApp, you agree to follow these Terms of Service. If you do not agree with any part of these terms, please do not use the application.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">2. User Account</div>
+                <p class="policy-text-cls">To use certain features of LiveChatApp, you may need to create an account. You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">3. Acceptable Use</div>
+                <p class="policy-text-cls">You agree not to use LiveChatApp for any unlawful or harmful activities, including but not limited to:</p>
+                <div class="policy-bullet-cls">
+                    <div>• <b>Sending spam or unsolicited messages</b></div>
+                    <div>• <b>Sharing harmful, abusive, or offensive content</b></div>
+                    <div>• <b>Attempting to hack, disrupt, or misuse the platform</b></div>
+                    <div>• <b>Violating any applicable laws or regulations</b></div>
+                </div>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">4. User Content</div>
+                <p class="policy-text-cls">Users are responsible for the messages and content they share through LiveChatApp. We do not claim ownership of user content but reserve the right to remove content that violates these terms.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">5. Account Suspension</div>
+                <p class="policy-text-cls">We reserve the right to suspend or terminate accounts that violate these Terms of Service or misuse the platform.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">6. Changes to the Service</div>
+                <p class="policy-text-cls">LiveChatApp may update, modify, or discontinue certain features at any time without prior notice.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">7. Limitation of Liability</div>
+                <p class="policy-text-cls">LiveChatApp is provided "as is" without warranties of any kind. We are not responsible for any damages or losses resulting from the use of the application.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">8. Changes to Terms</div>
+                <p class="policy-text-cls">We may update these Terms of Service from time to time. Continued use of the application after updates means you accept the revised terms.</p>
+            </div>
+
+            <hr class="policy-divider-cls" />
+
+            <h3 class="policy-heading-cls">Privacy Policy</h3>
+            <div class="policy-date-cls">Last Updated: March 2026</div>
+            <p class="policy-text-cls">Your privacy is important to us. This Privacy Policy explains how LiveChatApp collects, uses, and protects your information.</p>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">1. Information We Collect</div>
+                <p class="policy-text-cls">When you use LiveChatApp, we may collect the following information:</p>
+                <div class="policy-bullet-cls">
+                    <div>• <b>Name and profile information</b></div>
+                    <div>• <b>Email address or phone number</b></div>
+                    <div>• <b>Profile picture</b></div>
+                    <div>• <b>Messages and chat activity</b></div>
+                    <div>• <b>Device and login information</b></div>
+                </div>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">2. How We Use Your Information</div>
+                <p class="policy-text-cls">We use your information to:</p>
+                <div class="policy-bullet-cls">
+                    <div>• <b>Provide and improve the LiveChatApp service</b></div>
+                    <div>• <b>Allow users to communicate with each other</b></div>
+                    <div>• <b>Maintain account security</b></div>
+                    <div>• <b>Provide support and respond to user inquiries</b></div>
+                </div>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">3. Data Security</div>
+                <p class="policy-text-cls">We implement appropriate security measures to protect your personal information from unauthorized access, misuse, or disclosure.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">4. Sharing of Information</div>
+                <p class="policy-text-cls">We do not sell or rent your personal information to third parties. Information may only be shared if required by law or to protect the safety of users.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">5. User Control</div>
+                <p class="policy-text-cls">Users can update their profile information or delete their accounts through the account settings.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">6. Cookies and Tracking</div>
+                <p class="policy-text-cls">LiveChatApp may use cookies or similar technologies to improve the user experience and maintain session security.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">7. Children's Privacy</div>
+                <p class="policy-text-cls">LiveChatApp is not intended for children under the age of 13, and we do not knowingly collect information from children.</p>
+            </div>
+
+            <div class="policy-section-cls">
+                <div class="policy-subheading-cls">8. Changes to Privacy Policy</div>
+                <p class="policy-text-cls">We may update this Privacy Policy from time to time. Users will be notified of significant changes through the application.</p>
+            </div>
+
+            <hr class="policy-divider-cls" />
+
+            <h3 class="policy-heading-cls">Contact Information</h3>
+            <div class="policy-text-cls" style="margin-top: 15px;">
+                <p>If you have any questions regarding these Terms or Privacy Policy, please contact us:</p>
+                <p><b>Email: support&#64;livechatapp.com</b></p>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if(activeView === 'contact-us') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Contact us</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <div class="account-info-list-cls">
+            <div class="info-row-cls">
+                <div class="info-content-cls">
+                    <div class="info-label-cls">Support Email</div>
+                    <div class="info-value-cls">support&#64;livechatapp.com</div>
+                </div>
+            </div>
+
+            <div class="info-row-cls">
+                <div class="info-content-cls">
+                    <div class="info-label-cls">Support Hours</div>
+                    <div class="info-value-cls">Monday – Friday, 9:00 AM – 6:00 PM</div>
+                </div>
+            </div>
+
+            <div class="info-row-cls">
+                <div class="info-content-cls">
+                    <div class="info-label-cls">Location</div>
+                    <div class="info-value-cls">Mumbai, India</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
 </div>
 
 @if (isDeleteModalVisible) {
@@ -329,6 +562,79 @@
             <button class="modal-btn-cls cancel-modal-btn-cls" (click)="closeDeleteModal()">Cancel</button>
             <button class="modal-btn-cls confirm-modal-btn-cls" (click)="confirmDelete()">Delete Anyway</button>
         </div>
+    </div>
+</div>
+}
+
+@if (isFeedbackModalVisible) {
+<div class="modal-overlay-cls" (click)="closeFeedbackModal()">
+    <div class="modal-container-cls feedback-modal-cls" (click)="$event.stopPropagation()">
+        @if (!isFeedbackSubmitted) {
+        <div class="modal-header-cls">
+            <div class="header-content">
+                <h3>Send Feedback</h3>
+                <i class="fa fa-times close-icon-cls" (click)="closeFeedbackModal()"></i>
+            </div>
+            <p class="feedback-desc-cls">We value your feedback. Let us know your thoughts, suggestions, or report any issues while using LiveChatApp. Your feedback helps us improve the application.</p>
+        </div>
+        <div class="modal-body-cls feedback-body-cls">
+            <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+                <div class="form-group-cls">
+                    <label class="common-label-cls">Feedback Type</label>
+                    <select class="common-inp-cls select-inp-cls" formControlName="type">
+                        <option value="bug">Bug Report</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="general">General Feedback</option>
+                    </select>
+                </div>
+
+                <div class="form-group-cls">
+                    <label class="common-label-cls">Subject</label>
+                    <input type="text" class="common-inp-cls" formControlName="subject" placeholder="What is it about?">
+                    <div class="error-msg" *ngIf="feedbackForm.get('subject')?.touched && feedbackForm.get('subject')?.errors?.['required']">
+                        Subject is required
+                    </div>
+                </div>
+
+                <div class="form-group-cls">
+                    <label class="common-label-cls">Description</label>
+                    <textarea class="common-inp-cls textarea-inp-cls" formControlName="description" rows="4" placeholder="Tell us more..."></textarea>
+                    <div class="error-msg" *ngIf="feedbackForm.get('description')?.touched && feedbackForm.get('description')?.errors?.['required']">
+                        Description is required
+                    </div>
+                </div>
+
+                <div class="form-group-cls">
+                    <label class="common-label-cls">Email (Optional)</label>
+                    <input type="email" class="common-inp-cls" formControlName="email" placeholder="email&#64;example.com">
+                    <div class="error-msg" *ngIf="feedbackForm.get('email')?.touched && feedbackForm.get('email')?.errors?.['email']">
+                        Invalid email format
+                    </div>
+                </div>
+
+                <div class="form-group-cls">
+                    <label class="common-label-cls">Rate your experience</label>
+                    <div class="star-rating-cls">
+                        <i class="fa" [class.fa-star]="userRating >= i" [class.fa-star-o]="userRating < i" 
+                           *ngFor="let i of [1, 2, 3, 4, 5]" (click)="setRating(i)"></i>
+                    </div>
+                </div>
+
+                <div class="modal-footer-cls feedback-footer-cls">
+                    <button type="submit" class="modal-btn-cls confirm-modal-btn-cls submit-feedback-btn">Submit Feedback</button>
+                </div>
+            </form>
+        </div>
+        } @else {
+        <div class="success-view-cls">
+            <div class="success-icon-container">
+                <i class="fa fa-check-circle success-check-icon"></i>
+            </div>
+            <h3>Thank you for your feedback!</h3>
+            <p>Our team will review your message and use it to improve LiveChatApp.</p>
+            <button class="modal-btn-cls confirm-modal-btn-cls ok-btn" (click)="closeFeedbackModal()">Ok</button>
+        </div>
+        }
     </div>
 </div>
 }
