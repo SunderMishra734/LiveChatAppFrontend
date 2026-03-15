@@ -48,6 +48,32 @@ export class SettingPageComponent {
   isFeedbackSubmitted: boolean = false;
   feedbackForm!: FormGroup;
   userRating: number = 0;
+  blockedContactsCount: number = 3; // Mocking 3 contacts initially
+  disappearingMessagesStatus: string = 'Off';
+  isUnblockModalVisible: boolean = false;
+  contactToUnblock: any = null;
+
+  blockedContacts = [
+    { name: 'John Doe', status: '', profilePic: '' },
+    { name: 'Official IIT × Masai', status: 'Official IIT × Masai channel | IIT-certified programmes with Masai | Upskill now, unlock career opportunities', profilePic: '' },
+    { name: 'Ricardo Gomez', status: '', profilePic: '' },
+    { name: 'Priya Sharma', status: '', profilePic: '' },
+    { name: 'Akash Verma', status: 'Hey there! I am using WhatsApp.', profilePic: '' },
+    { name: 'Sarah Wilson', status: '', profilePic: '' }
+  ];
+
+  contactSearchQuery: string = '';
+  allContacts = [
+    { name: 'Aman Upadhaya', status: 'Hey there! I am using WhatsApp.', profilePic: '' },
+    { name: 'Amar Singh', status: '', profilePic: '' },
+    { name: 'Amey Lr Clg Friend', status: 'Busy', profilePic: '' },
+    { name: 'Amit Bhai Gurudwara', status: '', profilePic: '' },
+    { name: 'Amit Kumar UPSC guide', status: '', profilePic: '' },
+    { name: 'Aniket Upadhyay School', status: '🇮🇳Here\'s a rainbow of wishes to start your day 😍🇮🇳', profilePic: '' },
+    { name: 'Anikey Pandey', status: '', profilePic: '' },
+    { name: 'Anil Yadav Dureit', status: '', profilePic: '' },
+    { name: 'Anjali Sharma', status: 'Available', profilePic: '' }
+  ];
   faqs = [
     {
       question: '1. How do I create an account in LiveChatApp?',
@@ -176,9 +202,48 @@ export class SettingPageComponent {
   onMenuClick(item: any) {
     if (item.title === 'Account') {
       this.activeView = 'account';
+    } else if (item.title === 'Privacy') {
+      this.activeView = 'privacy';
     } else if (item.title === 'Help and feedback') {
       this.activeView = 'help';
     }
+  }
+
+  openBlockedContacts() {
+    this.activeView = 'blocked-contacts';
+    this.blockedContactsCount = this.blockedContacts.length;
+  }
+
+  openDisappearingMessages() {
+    this.activeView = 'disappearing-messages';
+  }
+
+  openAddBlockedContact() {
+    this.activeView = 'add-blocked-contact';
+    this.contactSearchQuery = '';
+  }
+
+  getFilteredContacts() {
+    if (!this.contactSearchQuery) return this.allContacts;
+    return this.allContacts.filter(contact => 
+      contact.name.toLowerCase().includes(this.contactSearchQuery.toLowerCase())
+    );
+  }
+
+  blockContact(contact: any) {
+    if (!this.blockedContacts.find(c => c.name === contact.name)) {
+      this.blockedContacts.push(contact);
+      this.blockedContactsCount = this.blockedContacts.length;
+    }
+    this.activeView = 'blocked-contacts';
+    
+    this.mainMssg = 'Blocked!';
+    this.descriptionMssg = `${contact.name} has been added to blocked contacts.`;
+    this.showToasterMessage(1);
+  }
+
+  setDisappearingTimer(timer: string) {
+    this.disappearingMessagesStatus = timer;
   }
 
   openHelpCentre() {
@@ -198,6 +263,28 @@ export class SettingPageComponent {
 
   openContactUs() {
     this.activeView = 'contact-us';
+  }
+
+  openUnblockModal(contact: any) {
+    this.contactToUnblock = contact;
+    this.isUnblockModalVisible = true;
+  }
+
+  closeUnblockModal() {
+    this.isUnblockModalVisible = false;
+    this.contactToUnblock = null;
+  }
+
+  confirmUnblock() {
+    if (this.contactToUnblock) {
+      this.blockedContacts = this.blockedContacts.filter(c => c.name !== this.contactToUnblock.name);
+      this.blockedContactsCount = this.blockedContacts.length;
+      this.closeUnblockModal();
+      
+      this.mainMssg = 'Unblocked!';
+      this.descriptionMssg = `${this.contactToUnblock.name} has been unblocked.`;
+      this.showToasterMessage(1);
+    }
   }
 
   closeFeedbackModal() {
@@ -228,6 +315,10 @@ export class SettingPageComponent {
   goBackToMain() {
     if (this.activeView === 'help-centre' || this.activeView === 'terms-policy' || this.activeView === 'contact-us') {
       this.activeView = 'help';
+    } else if (this.activeView === 'disappearing-messages' || this.activeView === 'blocked-contacts') {
+      this.activeView = 'privacy';
+    } else if (this.activeView === 'add-blocked-contact') {
+      this.activeView = 'blocked-contacts';
     } else {
       this.activeView = 'main';
     }

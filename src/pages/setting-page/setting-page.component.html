@@ -300,7 +300,7 @@
                     <i class="fa fa-lock"></i>
                 </div>
                 <div class="security-content-cls">
-                    <div class="security-title-cls">Show security notifications on this computer</div>
+                    <div class="security-title-cls">Show security notifications on this device</div>
                     <div class="security-desc-cls">
                         Get notified when your security code changes for a contact's phone. If you have multiple devices, this setting must be enabled on each device where you want to get notifications.
                     </div>
@@ -310,6 +310,173 @@
                     <span class="slider round"></span>
                 </label>
             </div>
+        </div>
+    </div>
+    }
+
+    @if(activeView === 'privacy') {
+    <!-- Subview Header -->
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Privacy</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <div class="account-info-list-cls">
+            <!-- Blocked Contacts -->
+            <div class="info-row-cls" style="cursor: pointer;" (click)="openBlockedContacts()">
+                <div class="info-content-cls">
+                    <div class="info-label-cls">Blocked contacts</div>
+                    <div class="info-value-cls">{{blockedContactsCount}}</div>
+                </div>
+                <div class="info-action-cls">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <!-- Disappearing Messages -->
+            <div class="info-row-cls" style="cursor: pointer;" (click)="openDisappearingMessages()">
+                <div class="info-content-cls">
+                    <div class="info-label-cls">Disappearing messages</div>
+                    <div class="info-value-cls">{{disappearingMessagesStatus}}</div>
+                </div>
+                <div class="info-action-cls">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-item-desc-cls" style="margin-top: 20px; padding: 0 4px;">
+            Control your privacy settings, including who can see your profile and status, and manage your blocked contacts.
+        </div>
+    </div>
+    }
+
+    <!-- Blocked Contacts Subview -->
+    @if(activeView === 'blocked-contacts') {
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Blocked contacts</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <!-- Add Blocked Contact -->
+        <div class="add-blocked-row" (click)="openAddBlockedContact()">
+            <div class="add-icon-cont">
+                <i class="fa fa-user-plus"></i>
+            </div>
+            <div class="add-label">Add blocked contact</div>
+        </div>
+
+        <div class="blocked-list-container" *ngIf="blockedContacts.length > 0">
+            <div class="blocked-item-row" *ngFor="let contact of blockedContacts">
+                <div class="blocked-avatar-cont">
+                    <img *ngIf="contact.profilePic" [src]="contact.profilePic" alt="Profile">
+                    <i *ngIf="!contact.profilePic" class="fa fa-user"></i>
+                </div>
+                <div class="blocked-item-info">
+                    <div class="blocked-item-name">{{contact.name}}</div>
+                    <div class="blocked-item-status" *ngIf="contact.status">{{contact.status}}</div>
+                </div>
+                <div class="unblock-action-icon" (click)="openUnblockModal(contact)">
+                    <i class="fa fa-times"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="blocked-empty-state" *ngIf="blockedContacts.length === 0">
+            <div class="empty-icon-circle">
+                <div class="empty-avatar-icon">
+                    <i class="fa fa-user"></i>
+                    <div class="block-slash-icon">
+                        <i class="fa fa-ban"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-title">No blocked contacts yet</div>
+        </div>
+
+        <div class="blocked-footer-desc">
+            Blocked contacts will no longer be able to call you or send you messages
+        </div>
+        </div>
+    }
+
+    <!-- Add Blocked Contact Subview -->
+    @if(activeView === 'add-blocked-contact') {
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Add blocked contact</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <!-- Search Bar -->
+        <div class="contact-search-container">
+            <div class="contact-search-wrapper">
+                <i class="fa fa-search contact-search-icon"></i>
+                <input type="text" [(ngModel)]="contactSearchQuery" placeholder="Search contacts" class="contact-search-input">
+            </div>
+        </div>
+
+        <!-- Contact List -->
+        <div class="all-contacts-list">
+            <div class="contact-item-row" *ngFor="let contact of getFilteredContacts()" (click)="blockContact(contact)">
+                <div class="contact-avatar-cont">
+                    <img *ngIf="contact.profilePic" [src]="contact.profilePic" alt="Profile">
+                    <i *ngIf="!contact.profilePic" class="fa fa-user"></i>
+                </div>
+                <div class="contact-item-info">
+                    <div class="contact-item-name">{{contact.name}}</div>
+                    <div class="contact-item-status" *ngIf="contact.status">{{contact.status}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Disappearing Messages Subview -->
+    @if(activeView === 'disappearing-messages') {
+    <div class="settings-subview-header-cls">
+        <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
+        <h2>Disappearing messages</h2>
+    </div>
+
+    <div class="settings-subview-content-cls">
+        <div class="disappearing-header-label">Start new chats with disappearing messages</div>
+        
+        <div class="timer-options-list">
+            <div class="timer-option-row" (click)="setDisappearingTimer('24 hours')">
+                <div class="radio-outer" [class.radio-active]="disappearingMessagesStatus === '24 hours'">
+                    <div class="radio-inner" *ngIf="disappearingMessagesStatus === '24 hours'"></div>
+                </div>
+                <div class="timer-option-label">24 hours</div>
+            </div>
+
+            <div class="timer-option-row" (click)="setDisappearingTimer('7 days')">
+                <div class="radio-outer" [class.radio-active]="disappearingMessagesStatus === '7 days'">
+                    <div class="radio-inner" *ngIf="disappearingMessagesStatus === '7 days'"></div>
+                </div>
+                <div class="timer-option-label">7 days</div>
+            </div>
+
+            <div class="timer-option-row" (click)="setDisappearingTimer('90 days')">
+                <div class="radio-outer" [class.radio-active]="disappearingMessagesStatus === '90 days'">
+                    <div class="radio-inner" *ngIf="disappearingMessagesStatus === '90 days'"></div>
+                </div>
+                <div class="timer-option-label">90 days</div>
+            </div>
+
+            <div class="timer-option-row" (click)="setDisappearingTimer('Off')">
+                <div class="radio-outer" [class.radio-active]="disappearingMessagesStatus === 'Off'">
+                    <div class="radio-inner" *ngIf="disappearingMessagesStatus === 'Off'"></div>
+                </div>
+                <div class="timer-option-label">Off</div>
+            </div>
+        </div>
+
+        <div class="disappearing-desc-text">
+            When turned on, all new individual chats will start with disappearing messages set to the duration you select. This setting will not affect your existing chats.
         </div>
     </div>
     }
@@ -638,6 +805,19 @@
     </div>
 </div>
 }
+
+<!-- Unblock Confirmation Modal -->
+<div class="modal-overlay-cls" *ngIf="isUnblockModalVisible">
+    <div class="unblock-modal-cls">
+        <div class="unblock-modal-content">
+            Unblock {{contactToUnblock?.name}}?
+        </div>
+        <div class="unblock-modal-actions">
+            <button class="unblock-cancel-btn" (click)="closeUnblockModal()">Cancel</button>
+            <button class="unblock-confirm-btn" (click)="confirmUnblock()">Unblock</button>
+        </div>
+    </div>
+</div>
 
 @if (isTaosterVisible) {
 <app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"

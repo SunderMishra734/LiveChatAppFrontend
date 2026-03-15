@@ -628,6 +628,371 @@ input:checked + .slider.round {
     border-top: 1px solid #d1d7db;
 }
 
+/* Disappearing Messages Styling */
+.disappearing-header-label {
+    font-size: 14.5px;
+    color: #008069;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding: 0 4px;
+}
+
+.timer-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 30px;
+}
+
+.timer-option-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.timer-option-row:hover {
+    background-color: #f7f9fa;
+}
+
+.timer-option-row:last-child {
+    border-bottom: none;
+}
+
+.radio-outer {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #54656f;
+    border-radius: 50%;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+}
+
+.radio-active {
+    border-color: #00a884;
+}
+
+.radio-inner {
+    width: 10px;
+    height: 10px;
+    background-color: #00a884;
+    border-radius: 50%;
+}
+
+.timer-option-label {
+    font-size: 16px;
+    color: #111b21;
+}
+
+.disappearing-desc-text {
+    font-size: 14px;
+    color: #54656f;
+    line-height: 1.5;
+    padding: 0 4px;
+}
+
+/* Blocked Contacts Styling */
+.add-blocked-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.add-icon-cont {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #54656f;
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.add-label {
+    font-size: 16px;
+    color: #008069;
+    font-weight: 500;
+}
+
+.blocked-list-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.blocked-item-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 4px;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.blocked-avatar-cont {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #dfe5e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    overflow: hidden;
+}
+
+.blocked-avatar-cont i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.blocked-avatar-cont img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blocked-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.blocked-item-name {
+    font-size: 16px;
+    color: #111b21;
+    font-weight: 500;
+}
+
+.blocked-item-status {
+    font-size: 13px;
+    color: #667781;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.unblock-action-icon {
+    padding: 8px;
+    cursor: pointer;
+    color: #8696a0;
+    font-size: 20px;
+    transition: color 0.2s;
+}
+
+.unblock-action-icon:hover {
+    color: #ef4444;
+}
+
+.blocked-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.empty-icon-circle {
+    width: 120px;
+    height: 120px;
+    background-color: #f0f2f5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.empty-avatar-icon {
+    position: relative;
+    font-size: 60px;
+    color: #8696a0;
+}
+
+.block-slash-icon {
+    position: absolute;
+    bottom: 5px;
+    right: -5px;
+    font-size: 24px;
+    color: #8696a0;
+    background: #f0f2f5;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.empty-title {
+    font-size: 18px;
+    color: #667781;
+    font-weight: 400;
+}
+
+.blocked-footer-desc {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #667781;
+    text-align: center;
+    line-height: 1.5;
+    padding: 0 40px;
+}
+
+/* Add Blocked Contact Subview Styling */
+.contact-search-container {
+    padding: 12px 16px;
+    background-color: #fff;
+    margin-bottom: 8px;
+}
+
+.contact-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.contact-search-icon {
+    position: absolute;
+    left: 12px;
+    color: #54656f;
+    font-size: 14px;
+}
+
+.contact-search-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px 0 40px;
+    background-color: #f0f2f5;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    font-size: 15px;
+    color: #111b21;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.contact-search-input:focus {
+    background-color: #fff;
+    border-color: #00a884;
+}
+
+.all-contacts-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-item-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.contact-item-row:hover {
+    background-color: #f5f6f6;
+}
+
+.contact-avatar-cont {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #dfe5e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    overflow: hidden;
+}
+
+.contact-avatar-cont i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.contact-avatar-cont img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-item-name {
+    font-size: 16px;
+    color: #111b21;
+    font-weight: 500;
+}
+
+.contact-item-status {
+    font-size: 13px;
+    color: #667781;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Unblock Modal Styling */
+.unblock-modal-cls {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 24px;
+    border-radius: 3px; /* WhatsApp style */
+    box-shadow: 0 17px 50px 0 rgba(11, 20, 26, 0.19), 0 12px 15px 0 rgba(11, 20, 26, 0.24);
+}
+
+.unblock-modal-content {
+    font-size: 18px;
+    color: #111b21;
+    margin-bottom: 24px;
+}
+
+.unblock-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.unblock-cancel-btn {
+    background: none;
+    border: none;
+    color: #00a884;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 8px 16px;
+}
+
+.unblock-confirm-btn {
+    background: #00a884;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.2s;
+}
+
+.unblock-confirm-btn:hover {
+    background: #008f6f;
+}
+
 /* Feedback Modal Styling */
 .feedback-modal-cls {
     width: 95%;
