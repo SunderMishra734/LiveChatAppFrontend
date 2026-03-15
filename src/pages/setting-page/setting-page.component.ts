@@ -163,7 +163,7 @@ export class SettingPageComponent {
 
   initFeedbackForm() {
     this.feedbackForm = this.fb.group({
-      type: ['general', [Validators.required]],
+      feedbackType: [1, [Validators.required]],
       subject: ['', [Validators.required]],
       description: ['', [Validators.required]],
       email: ['', [Validators.email]]
@@ -298,12 +298,31 @@ export class SettingPageComponent {
 
   submitFeedback() {
     if (this.feedbackForm.valid) {
-      // Mocking successful submission
-      console.log('Feedback submitted:', {
+      const payload = {
         ...this.feedbackForm.value,
+        feedbackType: Number(this.feedbackForm.value.feedbackType),
         rating: this.userRating
+      };
+
+      this.userService.submitFeedback(payload).subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.isFeedbackSubmitted = true;
+            this.mainMssg = 'Success!';
+            this.descriptionMssg = 'Thank you for your feedback!';
+            this.showToasterMessage(1);
+          } else {
+            this.mainMssg = 'Something Went Wrong!';
+            this.descriptionMssg = res.message || 'Failed to submit feedback.';
+            this.showToasterMessage(2);
+          }
+        },
+        error: (err) => {
+          this.mainMssg = 'Something Went Wrong!';
+          this.descriptionMssg = 'Failed to submit feedback. Please try again later.';
+          this.showToasterMessage(2);
+        }
       });
-      this.isFeedbackSubmitted = true;
     } else {
       Object.keys(this.feedbackForm.controls).forEach(key => {
         const control = this.feedbackForm.get(key);

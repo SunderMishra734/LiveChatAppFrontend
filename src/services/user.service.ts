@@ -58,4 +58,9 @@ export class UserService {
     const url = URLS.DeleteUser;
     return this.apiService.delete(url, null);
   }
+
+  submitFeedback(feedbackData: any): Observable<any> {
+    const url = URLS.SubmitFeedback;
+    return this.apiService.post(url, feedbackData);
+  }
 }

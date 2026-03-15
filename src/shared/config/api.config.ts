@@ -31,4 +31,5 @@ export const URLS = Object({
     "SaveFile": `${baseUrl}/File/SaveFile`,
     "DeleteFile": `${baseUrl}/File/DeleteFile`,
     "UploadFile": `${baseUrl}/File/UploadFile`,
+    "SubmitFeedback": `${baseUrl}/Settings/SubmitFeedback`,
 });

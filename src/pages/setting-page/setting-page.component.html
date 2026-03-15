@@ -748,10 +748,10 @@
             <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
                 <div class="form-group-cls">
                     <label class="common-label-cls">Feedback Type</label>
-                    <select class="common-inp-cls select-inp-cls" formControlName="type">
-                        <option value="bug">Bug Report</option>
-                        <option value="feature">Feature Request</option>
-                        <option value="general">General Feedback</option>
+                    <select class="common-inp-cls select-inp-cls" formControlName="feedbackType">
+                        <option value="1">General Feedback</option>
+                        <option value="2">Feature Request</option>
+                        <option value="3">Bug Report</option>
                     </select>
                 </div>
 
