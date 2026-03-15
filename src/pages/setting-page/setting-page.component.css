@@ -465,3 +465,70 @@ input:checked + .slider.round {
         margin-bottom: 20px;
     }
 }
+
+/* Account Info Styling */
+.account-info-list-cls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.info-row-cls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.info-row-cls:last-child {
+    border-bottom: none;
+}
+
+.info-row-cls:hover {
+    background-color: #f7f9fa;
+}
+
+.info-row-cls:nth-child(-n+2) {
+    cursor: pointer;
+}
+
+.info-content-cls {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label-cls {
+    font-size: 13px;
+    color: #54656f;
+    font-weight: 400;
+}
+
+.info-value-cls {
+    font-size: 16px;
+    color: #111b21;
+    font-weight: 500;
+}
+
+.info-action-cls {
+    color: #54656f;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.info-row-cls:hover .info-action-cls {
+    background-color: #f0f2f5;
+}
+
+.copy-icon-cls {
+    cursor: pointer;
+}
+
+.status-active {
+    color: #008069;
+}

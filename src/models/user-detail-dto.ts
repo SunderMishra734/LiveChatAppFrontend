@@ -8,7 +8,7 @@ export interface UserDetailDto {
     address: string;
     dateOfBirth: string;
     profileStatus: string;
-    lastSeen: Date;
+    lastLogin: Date;
     onlineStatus: number;
     languagePreference: number;
     timeZone: string;
@@ -16,6 +16,8 @@ export interface UserDetailDto {
     profilePic: string;
     gender: Gender;
     userRole: number;
+    createdAt: Date;
+    accountStatus: boolean;
 }
 
 export interface UserStatusDto{

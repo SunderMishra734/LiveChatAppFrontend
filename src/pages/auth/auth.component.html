@@ -21,7 +21,7 @@
                         <i class="fa fa-envelope-o common-icon-cls"></i>
                         <input type="text" placeholder="E-mail" [(ngModel)]="strEmail" (input)="emailOnChange()"
                             (keydown.enter)="emailInput(pswdInp)" (focus)="isEmailFocused = true"
-                            (blur)="isEmailFocused = false">
+                            (blur)="isEmailFocused = false" autocomplete="username">
                     </div>
                     @if(emptyEmail){
                     <div class="error-cls fade-in">
@@ -39,7 +39,7 @@
                         <i class="fa fa-lock common-icon-cls"></i>
                         <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
                             [(ngModel)]="strPassword" (input)="passwordOnChange()" (keydown.enter)="loginFn()"
-                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" #pswdInp>
+                            (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" #pswdInp autocomplete="current-password">
                         @if(isShowEyeVisible){
                         <i class="fa fa-eye common-icon-cls eye-icon-com-cls" style="cursor: pointer;"
                             (click)="togglePasswordVisibility()"></i>

@@ -63,8 +63,66 @@
         <i class="fa fa-arrow-left settings-back-icon-cls" (click)="goBackToMain()"></i>
         <h2>Account</h2>
     </div>
-
+    
     <div class="settings-subview-content-cls">
+        <div class="block-cont-cls">
+            <div style="margin-bottom: 20px;">
+                <div class="common-header-txt-cls">Account Info</div>
+                <div class="settings-item-desc-cls" style="margin-top: 8px;">
+                    Important information related to your LiveChatApp account. This includes your email address, phone number, and other details. Keeping this information up to date ensures you can recover your account if needed and receive important notifications.
+                </div>
+            </div>
+            <div class="account-info-list-cls">
+                <!-- Registered Email -->
+                <div class="info-row-cls" (click)="copyToClipboard(currentUserDetails?.email, 'Registered Email')">
+                    <div class="info-content-cls">
+                        <div class="info-label-cls">Registered Email</div>
+                        <div class="info-value-cls">{{currentUserDetails?.email || 'shivam@email.com'}}</div>
+                    </div>
+                    <div class="info-action-cls">
+                        <i class="fa fa-copy copy-icon-cls"></i>
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="info-row-cls" (click)="copyToClipboard(currentUserDetails?.phoneNumber, 'Phone Number')">
+                    <div class="info-content-cls">
+                        <div class="info-label-cls">Phone Number</div>
+                        <div class="info-value-cls">{{currentUserDetails?.phoneNumber || '+91 XXXXX XXXXX'}}</div>
+                    </div>
+                    <div class="info-action-cls">
+                        <i class="fa fa-copy copy-icon-cls"></i>
+                    </div>
+                </div>
+
+                <!-- Account Creation Date -->
+                <div class="info-row-cls">
+                    <div class="info-content-cls">
+                        <div class="info-label-cls">Account Creation Date</div>
+                        <div class="info-value-cls">{{(currentUserDetails?.createdAt | date: 'dd MMM yyyy') || '12 Aug 2025'}}</div>
+                    </div>
+                </div>
+
+                <!-- Last Login -->
+                <div class="info-row-cls">
+                    <div class="info-content-cls">
+                        <div class="info-label-cls">Last Login</div>
+                        <div class="info-value-cls">{{(currentUserDetails?.lastLogin | date: 'dd MMM yyyy, h:mm a') || '15 Mar 2026, 10:30 AM'}}</div>
+                    </div>
+                </div>
+
+                <!-- Account Status -->
+                <div class="info-row-cls">
+                    <div class="info-content-cls">
+                        <div class="info-label-cls">Account Status</div>
+                        <div class="info-value-cls" [class.status-active]="currentUserDetails?.accountStatus">
+                            {{currentUserDetails?.accountStatus ? 'Active' : 'Inactive'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1d7db;" />
         @if(isAdmin){
         <div class="block-cont-cls">
             <div style="margin-bottom: 20px;">

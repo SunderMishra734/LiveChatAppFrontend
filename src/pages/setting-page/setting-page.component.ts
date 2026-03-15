@@ -46,7 +46,7 @@ export class SettingPageComponent {
   isDeleteModalVisible: boolean = false;
 
   settingsMenuItems = [
-    { title: 'Account', desc: 'Change password, Security notifications, account info', icon: 'fa-key' },
+    { title: 'Account', desc: 'Account info, change password, Security notifications,', icon: 'fa-key' },
     { title: 'Privacy', desc: 'Blocked contacts, disappearing messages', icon: 'fa-lock' },
     { title: 'Help and feedback', desc: 'Help centre, contact us, privacy policy', icon: 'fa-question-circle' }
   ];
@@ -199,25 +199,22 @@ export class SettingPageComponent {
   confirmDelete() {
     if (this.currentUserDetails?.userId) {
       this.isDeleteModalVisible = false;
-      // this.userService.deleteUser(this.currentUserDetails.userId).subscribe({
-      //   next: () => {
-      //     this.mainMssg = 'Account Deleted!';
-      //     this.descriptionMssg = 'Your account has been successfully removed.';
-      //     this.showToasterMessage(1);
-      //     setTimeout(() => {
-      //       this.logout();
-      //     }, 2000);
-      //   },
-      //   error: (err) => {
-      //     this.mainMssg = 'Error!';
-      //     this.descriptionMssg = 'Failed to delete account. Please try again.';
-      //     this.showToasterMessage(2);
-      //   }
-      // });
     }
   }
 
   closeDeleteModal() {
     this.isDeleteModalVisible = false;
+  }
+
+  copyToClipboard(text: string, fieldName: string) {
+    if (text) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.mainMssg = `${fieldName} Copied!`;
+        this.descriptionMssg = `${text} has been copied to your clipboard.`;
+        this.showToasterMessage(1);
+      }).catch(err => {
+        console.error('Could not copy text: ', err);
+      });
+    }
   }
 }
