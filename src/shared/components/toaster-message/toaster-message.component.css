@@ -21,6 +21,7 @@
     position: fixed;
     top: 2%;
     right: 2%;
+    z-index: 9999; /* Higher than any page content */
     transition: opacity 1s ease-out;
     animation-name: showToaster;
     animation-duration: 3s;
