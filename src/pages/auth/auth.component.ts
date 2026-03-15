@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { finalize } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,6 +28,8 @@ export class AuthComponent {
   emptyPassword: boolean = false;
   actionType: number = 0;
   isTaosterVisible: boolean = false;
+  mainMssg: string = '';
+  descriptionMssg: string = '';
   rememberMe: boolean = false;
   invalidNewEmail: boolean = false;
   isEmailFocused: boolean = false;
@@ -60,16 +63,25 @@ export class AuthComponent {
           email: this.strEmail,
           password: this.strPassword
         }
-        this.authService.login(this.loginData).subscribe({
-          next: () => {
-            this.isLoading = false;
-            this.router.navigate(['/app/chat']);
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.errorMessage = 'Invalid credentials, please try again.';
+        this.authService.login(this.loginData).pipe(
+          finalize(() => {
             this.strEmail = '';
             this.strPassword = '';
+            this.isLoading = false;
+          })
+        ).subscribe({
+          next: (res) => {
+            if (res.success) {
+              this.router.navigate(['/app/chat']);
+            } else {
+              this.mainMssg = 'Invalid Credentials';
+              this.descriptionMssg = res.message || 'Entered email and password are incorrect.';
+              this.showToasterMessage(2);
+            }
+          },
+          error: (error) => {
+            this.mainMssg = 'Error';
+            this.descriptionMssg = 'An unexpected error occurred. Please try again later.';
             this.showToasterMessage(2);
           }
         })

@@ -102,7 +102,7 @@
     </div>
 </div>
 @if (isTaosterVisible) {
-<app-toaster-message [actionType]="actionType"></app-toaster-message>
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg" [descriptionMssg]="descriptionMssg"></app-toaster-message>
 }
 @if (isLoading) {
 <app-loader></app-loader>

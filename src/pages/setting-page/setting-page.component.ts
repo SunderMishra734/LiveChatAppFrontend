@@ -225,7 +225,7 @@ export class SettingPageComponent {
 
   getFilteredContacts() {
     if (!this.contactSearchQuery) return this.allContacts;
-    return this.allContacts.filter(contact => 
+    return this.allContacts.filter(contact =>
       contact.name.toLowerCase().includes(this.contactSearchQuery.toLowerCase())
     );
   }
@@ -236,7 +236,7 @@ export class SettingPageComponent {
       this.blockedContactsCount = this.blockedContacts.length;
     }
     this.activeView = 'blocked-contacts';
-    
+
     this.mainMssg = 'Blocked!';
     this.descriptionMssg = `${contact.name} has been added to blocked contacts.`;
     this.showToasterMessage(1);
@@ -280,7 +280,7 @@ export class SettingPageComponent {
       this.blockedContacts = this.blockedContacts.filter(c => c.name !== this.contactToUnblock.name);
       this.blockedContactsCount = this.blockedContacts.length;
       this.closeUnblockModal();
-      
+
       this.mainMssg = 'Unblocked!';
       this.descriptionMssg = `${this.contactToUnblock.name} has been unblocked.`;
       this.showToasterMessage(1);
@@ -394,9 +394,28 @@ export class SettingPageComponent {
   }
 
   confirmDelete() {
-    if (this.currentUserDetails?.userId) {
-      this.isDeleteModalVisible = false;
-    }
+    this.isDeleteModalVisible = false;
+    this.userService.deleteUser().subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.mainMssg = 'Account Deleted!';
+          this.descriptionMssg = 'Your account has been permanently removed.';
+          this.showToasterMessage(1);
+          setTimeout(() => {
+            this.logout();
+          }, 2000);
+        } else {
+          this.mainMssg = 'Something Went Wrong!';
+          this.descriptionMssg = res.message || 'Failed to delete account.';
+          this.showToasterMessage(2);
+        }
+      },
+      error: (err) => {
+        this.mainMssg = 'Something Went Wrong!';
+        this.descriptionMssg = 'An error occurred while deleting your account.';
+        this.showToasterMessage(2);
+      }
+    });
   }
 
   closeDeleteModal() {
