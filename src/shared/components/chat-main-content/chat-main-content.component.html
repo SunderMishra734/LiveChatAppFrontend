@@ -157,9 +157,9 @@
                     <i class="fa fa-minus-circle contact-info-action-icon-cls"></i>
                     <span>Clear chat</span>
                 </div>
-                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
-                    <i class="fa fa-ban contact-info-action-icon-cls"></i>
-                    <span>Block {{chattingUser?.fullName || 'user'}}</span>
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls" (click)="toggleBlock()">
+                    <i class="fa contact-info-action-icon-cls" [class.fa-ban]="!isBlocked" [class.fa-unlock]="isBlocked"></i>
+                    <span>{{ isBlocked ? 'Unblock' : 'Block' }} {{chattingUser?.fullName || 'user'}}</span>
                 </div>
                 <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
                     <i class="fa fa-thumbs-down contact-info-action-icon-cls"></i>
@@ -191,4 +191,9 @@
         </div>
     </div>
 </div>
+}
+
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
+    [descriptionMssg]="descriptionMssg"></app-toaster-message>
 }

@@ -8,6 +8,7 @@ import { SharedUserService } from '../../services/shared-user.service';
 import { AuthService } from '../../services/auth.service';
 import { UserDetailDto } from '../../models/user-detail-dto';
 import { Router } from '@angular/router';
+import { BlockedUserDto } from '../../models/blocked-user-dto';
 
 @Component({
   selector: 'app-setting-page',
@@ -42,38 +43,23 @@ export class SettingPageComponent {
   isShowChangePassword: boolean = false;
   changePasswordForm!: FormGroup;
   isAdmin: boolean = false;
+  loggedInUserId: number = 0;
   showSecurityNotifications: boolean = true;
   isDeleteModalVisible: boolean = false;
   isFeedbackModalVisible: boolean = false;
   isFeedbackSubmitted: boolean = false;
   feedbackForm!: FormGroup;
   userRating: number = 0;
-  blockedContactsCount: number = 3; // Mocking 3 contacts initially
+  blockedContactsCount: number = 0;
   disappearingMessagesStatus: string = 'Off';
   isUnblockModalVisible: boolean = false;
-  contactToUnblock: any = null;
+  contactToUnblock: BlockedUserDto | any = null;
 
-  blockedContacts = [
-    { name: 'John Doe', status: '', profilePic: '' },
-    { name: 'Official IIT × Masai', status: 'Official IIT × Masai channel | IIT-certified programmes with Masai | Upskill now, unlock career opportunities', profilePic: '' },
-    { name: 'Ricardo Gomez', status: '', profilePic: '' },
-    { name: 'Priya Sharma', status: '', profilePic: '' },
-    { name: 'Akash Verma', status: 'Hey there! I am using WhatsApp.', profilePic: '' },
-    { name: 'Sarah Wilson', status: '', profilePic: '' }
-  ];
+  blockedContacts: BlockedUserDto[] = [];
+  allUsers: any[] = [];
 
   contactSearchQuery: string = '';
-  allContacts = [
-    { name: 'Aman Upadhaya', status: 'Hey there! I am using WhatsApp.', profilePic: '' },
-    { name: 'Amar Singh', status: '', profilePic: '' },
-    { name: 'Amey Lr Clg Friend', status: 'Busy', profilePic: '' },
-    { name: 'Amit Bhai Gurudwara', status: '', profilePic: '' },
-    { name: 'Amit Kumar UPSC guide', status: '', profilePic: '' },
-    { name: 'Aniket Upadhyay School', status: '🇮🇳Here\'s a rainbow of wishes to start your day 😍🇮🇳', profilePic: '' },
-    { name: 'Anikey Pandey', status: '', profilePic: '' },
-    { name: 'Anil Yadav Dureit', status: '', profilePic: '' },
-    { name: 'Anjali Sharma', status: 'Available', profilePic: '' }
-  ];
+  // Removed hardcoded allContacts
   faqs = [
     {
       question: '1. How do I create an account in LiveChatApp?',
@@ -149,6 +135,9 @@ export class SettingPageComponent {
         this.isAdmin = details.userRole === UserRole.Admin;
       }
     });
+    this.sharedUserService.loggedInUserId.subscribe(userId => {
+      this.loggedInUserId = userId;
+    });
     this.initChangePasswordForm();
     this.initFeedbackForm();
   }
@@ -204,6 +193,7 @@ export class SettingPageComponent {
       this.activeView = 'account';
     } else if (item.title === 'Privacy') {
       this.activeView = 'privacy';
+      this.loadBlockedUsers();
     } else if (item.title === 'Help and feedback') {
       this.activeView = 'help';
     }
@@ -211,7 +201,26 @@ export class SettingPageComponent {
 
   openBlockedContacts() {
     this.activeView = 'blocked-contacts';
-    this.blockedContactsCount = this.blockedContacts.length;
+  }
+
+  loadBlockedUsers() {
+    this.userService.getBlockedUsers().subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.blockedContacts = res.data || [];
+          this.blockedContactsCount = this.blockedContacts.length;
+        } else {
+          this.blockedContacts = [];
+          this.blockedContactsCount = 0;
+        }
+      },
+      error: (err) => {
+        console.error('Error loading blocked users:', err);
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'Failed to load blocked contacts.';
+        this.showToasterMessage(2);
+      }
+    });
   }
 
   openDisappearingMessages() {
@@ -221,25 +230,54 @@ export class SettingPageComponent {
   openAddBlockedContact() {
     this.activeView = 'add-blocked-contact';
     this.contactSearchQuery = '';
+    this.loadAllUsers();
+  }
+
+  loadAllUsers() {
+    this.userService.getAllUser().subscribe({
+      next: (res) => {
+        if (res.success) {
+          // Filter out logged in user and already blocked users
+          this.allUsers = res.data.filter((u: any) => {
+            if (u.userId === this.loggedInUserId) return false;
+            return Array.isArray(this.blockedContacts) && !this.blockedContacts.some(bc => bc.blockedUserId === u.userId);
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error loading users:', err);
+      }
+    });
   }
 
   getFilteredContacts() {
-    if (!this.contactSearchQuery) return this.allContacts;
-    return this.allContacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.contactSearchQuery.toLowerCase())
+    if (!this.contactSearchQuery) return this.allUsers;
+    return this.allUsers.filter(contact =>
+      contact.fullName.toLowerCase().includes(this.contactSearchQuery.toLowerCase())
     );
   }
 
-  blockContact(contact: any) {
-    if (!this.blockedContacts.find(c => c.name === contact.name)) {
-      this.blockedContacts.push(contact);
-      this.blockedContactsCount = this.blockedContacts.length;
-    }
-    this.activeView = 'blocked-contacts';
-
-    this.mainMssg = 'Blocked!';
-    this.descriptionMssg = `${contact.name} has been added to blocked contacts.`;
-    this.showToasterMessage(1);
+  blockContact(user: any) {
+    this.userService.blockUser(user.userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.loadBlockedUsers();
+          this.activeView = 'blocked-contacts';
+          this.mainMssg = 'Blocked!';
+          this.descriptionMssg = `${user.fullName} has been added to blocked contacts.`;
+          this.showToasterMessage(1);
+        } else {
+          this.mainMssg = 'Error!';
+          this.descriptionMssg = res.message || 'Failed to block user.';
+          this.showToasterMessage(2);
+        }
+      },
+      error: (err) => {
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'An error occurred while blocking the user.';
+        this.showToasterMessage(2);
+      }
+    });
   }
 
   setDisappearingTimer(timer: string) {
@@ -277,13 +315,26 @@ export class SettingPageComponent {
 
   confirmUnblock() {
     if (this.contactToUnblock) {
-      this.blockedContacts = this.blockedContacts.filter(c => c.name !== this.contactToUnblock.name);
-      this.blockedContactsCount = this.blockedContacts.length;
-      this.closeUnblockModal();
-
-      this.mainMssg = 'Unblocked!';
-      this.descriptionMssg = `${this.contactToUnblock.name} has been unblocked.`;
-      this.showToasterMessage(1);
+      this.userService.unblockUser(this.contactToUnblock.blockedUserId).subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.loadBlockedUsers();
+            this.mainMssg = 'Unblocked!';
+            this.descriptionMssg = `${this.contactToUnblock.fullName} has been unblocked.`;
+            this.showToasterMessage(1);
+            this.closeUnblockModal();
+          } else {
+            this.mainMssg = 'Error!';
+            this.descriptionMssg = res.message || 'Failed to unblock user.';
+            this.showToasterMessage(2);
+          }
+        },
+        error: (err) => {
+          this.mainMssg = 'Error!';
+          this.descriptionMssg = 'An error occurred while unblocking the user.';
+          this.showToasterMessage(2);
+        }
+      });
     }
   }
 

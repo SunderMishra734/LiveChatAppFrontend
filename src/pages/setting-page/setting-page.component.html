@@ -371,12 +371,12 @@
         <div class="blocked-list-container" *ngIf="blockedContacts.length > 0">
             <div class="blocked-item-row" *ngFor="let contact of blockedContacts">
                 <div class="blocked-avatar-cont">
-                    <img *ngIf="contact.profilePic" [src]="contact.profilePic" alt="Profile">
-                    <i *ngIf="!contact.profilePic" class="fa fa-user"></i>
+                    <img *ngIf="contact.profilePicture" [src]="contact.profilePicture" alt="Profile">
+                    <i *ngIf="!contact.profilePicture" class="fa fa-user"></i>
                 </div>
                 <div class="blocked-item-info">
-                    <div class="blocked-item-name">{{contact.name}}</div>
-                    <div class="blocked-item-status" *ngIf="contact.status">{{contact.status}}</div>
+                    <div class="blocked-item-name">{{contact.fullName}}</div>
+                    <div class="blocked-item-status" *ngIf="contact.profileStatus">{{contact.profileStatus}}</div>
                 </div>
                 <div class="unblock-action-icon" (click)="openUnblockModal(contact)">
                     <i class="fa fa-times"></i>
@@ -427,8 +427,8 @@
                     <i *ngIf="!contact.profilePic" class="fa fa-user"></i>
                 </div>
                 <div class="contact-item-info">
-                    <div class="contact-item-name">{{contact.name}}</div>
-                    <div class="contact-item-status" *ngIf="contact.status">{{contact.status}}</div>
+                    <div class="contact-item-name">{{contact.fullName}}</div>
+                    <div class="contact-item-status" *ngIf="contact.profileStatus">{{contact.profileStatus}}</div>
                 </div>
             </div>
         </div>
@@ -810,7 +810,7 @@
 <div class="modal-overlay-cls" *ngIf="isUnblockModalVisible">
     <div class="unblock-modal-cls">
         <div class="unblock-modal-content">
-            Unblock {{contactToUnblock?.name}}?
+            Unblock {{contactToUnblock?.fullName}}?
         </div>
         <div class="unblock-modal-actions">
             <button class="unblock-cancel-btn" (click)="closeUnblockModal()">Cancel</button>

@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../services/chat.service';
 import { SignalrService } from '../../../services/signalr.service';
+import { UserService } from '../../../services/user.service';
+import { ToasterMessageComponent } from '../toaster-message/toaster-message.component';
 
 @Component({
   selector: 'app-chat-main-content',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ToasterMessageComponent],
   templateUrl: './chat-main-content.component.html',
   styleUrl: './chat-main-content.component.css'
 })
@@ -41,8 +43,15 @@ export class ChatMainContentComponent {
   searchResults: MessageDto[] = [];
   currentMatchIndex: number = -1;
   searchHighlightTimeout: any = null;
+  isBlocked: boolean = false;
 
-  constructor(private chatService: ChatService, private signalRService: SignalrService) { }
+  // Toaster properties
+  isTaosterVisible: boolean = false;
+  mainMssg: string = '';
+  descriptionMssg: string = '';
+  actionType: number = 0;
+
+  constructor(private chatService: ChatService, private signalRService: SignalrService, private userService: UserService) { }
 
   ngOnInit() {
     this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
@@ -52,6 +61,7 @@ export class ChatMainContentComponent {
         this.messages?.push(messageDtoData);
       }
     });
+    this.checkIfBlocked();
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
       if (this.currentUserId == changeUserStatus.status) {
         this.chattingUser!.onlineStatus = changeUserStatus.status;
@@ -70,6 +80,7 @@ export class ChatMainContentComponent {
     });
     this.getMessages(this.chattingUser!.userId);
     this.isContactInfoVisible = false;
+    this.checkIfBlocked();
   }
 
   ngAfterViewInit() {
@@ -334,5 +345,57 @@ export class ChatMainContentComponent {
 
   closeProfileImageModal(): void {
     this.isProfileImageModalVisible = false;
+  }
+
+  checkIfBlocked() {
+    if (!this.chattingUser) return;
+    this.userService.getBlockedUsers().subscribe({
+      next: (res) => {
+        if (res.success) {
+          const blockedList = res.data || [];
+          this.isBlocked = blockedList.some((u: any) => u.blockedUserId === this.chattingUser?.userId);
+        }
+      }
+    });
+  }
+
+  toggleBlock() {
+    if (!this.chattingUser) return;
+    const action = this.isBlocked ? this.userService.unblockUser(this.chattingUser.userId) : this.userService.blockUser(this.chattingUser.userId);
+    
+    action.subscribe({
+      next: (res) => {
+        if (res.success) {
+          const wasBlocked = this.isBlocked;
+          this.isBlocked = !this.isBlocked;
+          
+          this.mainMssg = wasBlocked ? 'Unblocked!' : 'Blocked!';
+          this.descriptionMssg = `${this.chattingUser?.fullName} has been ${wasBlocked ? 'unblocked' : 'added to blocked contacts'}.`;
+          this.showToasterMessage(1);
+        } else {
+          this.mainMssg = 'Error!';
+          this.descriptionMssg = res.message || `Failed to ${this.isBlocked ? 'unblock' : 'block'} user.`;
+          this.showToasterMessage(2);
+        }
+      },
+      error: (err) => {
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'An error occurred. Please try again later.';
+        this.showToasterMessage(2);
+        console.error('Error toggling block status:', err);
+      }
+    });
+  }
+
+  showToasterMessage(actType: number) {
+    this.isTaosterVisible = true;
+    this.actionType = actType;
+    setTimeout(() => {
+      this.closeToasterMessage();
+    }, 2500);
+  }
+
+  closeToasterMessage() {
+    this.isTaosterVisible = false;
   }
 }

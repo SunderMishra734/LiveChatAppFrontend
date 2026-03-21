@@ -26,10 +26,14 @@ export const URLS = Object({
     "UpdateUser": `${baseUrl}/User/UpdateUser`,
     "DeleteUser": `${baseUrl}/User/DeleteUser`,
     "ChangeUserStatus": `${baseUrl}/User/ChangeUserStatus`,
+    "GetBlockedUsers": `${baseUrl}/User/GetBlockedUsers`,
+    "BlockUser": `${baseUrl}/User/BlockUser`,
+    "UnblockUser": `${baseUrl}/User/UnblockUser`,
 
     //Settings
     "SaveFile": `${baseUrl}/File/SaveFile`,
     "DeleteFile": `${baseUrl}/File/DeleteFile`,
     "UploadFile": `${baseUrl}/File/UploadFile`,
     "SubmitFeedback": `${baseUrl}/Settings/SubmitFeedback`,
+    
 });

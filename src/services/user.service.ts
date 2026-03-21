@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { UserDetailDto } from '../models/user-detail-dto';
 import { URLS } from '../shared/config/api.config';
 import { ApiService } from './api.service';
+import { BlockedUserDto } from '../models/blocked-user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +63,20 @@ export class UserService {
   submitFeedback(feedbackData: any): Observable<any> {
     const url = URLS.SubmitFeedback;
     return this.apiService.post(url, feedbackData);
+  }
+
+  getBlockedUsers(): Observable<any> {
+    const url = URLS.GetBlockedUsers;
+    return this.apiService.get<any>(url);
+  }
+
+  blockUser(userId: number): Observable<any> {
+    const url = URLS.BlockUser;
+    return this.apiService.post(url, { blockedUserId : userId });
+  }
+
+  unblockUser(userId: number): Observable<any> {
+    const url = URLS.UnblockUser;
+    return this.apiService.post(url, { blockedUserId : userId });
   }
 }
