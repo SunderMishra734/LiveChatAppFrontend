@@ -63,11 +63,15 @@
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Email</label>
-                    <input type="email" class="profile-input" formControlName="email" [attr.disabled]="isDisable ? '' : null">
+                    <input type="email" class="profile-input" formControlName="email" [attr.disabled]="''">
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Date of Birth</label>
-                    <input type="date" class="profile-input" formControlName="dateOfBirth" [attr.disabled]="isDisable ? '' : null">
+                    <mat-form-field appearance="outline" class="mat-date-picker-cls">
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="isDisable"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Contact No</label>

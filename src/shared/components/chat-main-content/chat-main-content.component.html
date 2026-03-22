@@ -43,11 +43,11 @@
                                 <i class="fa fa-times-circle chat-header-dropdown-icon-cls"></i>
                                 <span>Close chat</span>
                             </div>
-                            <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls">
+                            <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls" (click)="openClearChatModal()">
                                 <i class="fa fa-minus-circle chat-header-dropdown-icon-cls"></i>
                                 <span>Clear chat</span>
                             </div>
-                            <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls">
+                            <div class="chat-header-dropdown-item-cls danger-dropdown-item-cls" (click)="openDeleteChatModal()">
                                 <i class="fa fa-trash-o chat-header-dropdown-icon-cls"></i>
                                 <span>Delete chat</span>
                             </div>
@@ -153,7 +153,7 @@
                 <p class="contact-info-about-text-cls">{{chattingUser?.profileStatus || 'No status'}}</p>
             </div>
             <div class="contact-info-actions-cls">
-                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls" (click)="openClearChatModal()">
                     <i class="fa fa-minus-circle contact-info-action-icon-cls"></i>
                     <span>Clear chat</span>
                 </div>
@@ -165,7 +165,7 @@
                     <i class="fa fa-thumbs-down contact-info-action-icon-cls"></i>
                     <span>Report {{chattingUser?.fullName || 'user'}}</span>
                 </div>
-                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls">
+                <div class="contact-info-action-item-cls contact-info-action-danger-cls com-dis-fl-cls" (click)="openDeleteChatModal()">
                     <i class="fa fa-trash-o contact-info-action-icon-cls"></i>
                     <span>Delete chat</span>
                 </div>
@@ -196,4 +196,39 @@
 @if (isTaosterVisible) {
 <app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
     [descriptionMssg]="descriptionMssg"></app-toaster-message>
+}
+<!-- Clear Chat Confirmation Modal -->
+@if(isClearChatModalVisible) {
+<div class="confirm-modal-overlay-cls" (click)="closeClearChatModal()">
+    <div class="confirm-modal-cont-cls" (click)="$event.stopPropagation()">
+        <div class="confirm-modal-title-cls">Clear this chat?</div>
+        <div class="confirm-modal-body-cls">
+            This chat will be empty but will remain in your chat list.
+        </div>
+        <div class="confirm-modal-checkbox-wrap-cls" (click)="keepStarred = !keepStarred">
+            <input type="checkbox" class="confirm-modal-checkbox-cls" [checked]="keepStarred" (click)="$event.stopPropagation(); keepStarred = !keepStarred">
+            <span>Keep starred messages</span>
+        </div>
+        <div class="confirm-modal-footer-cls">
+            <button class="confirm-modal-btn-cancel" (click)="closeClearChatModal()">Cancel</button>
+            <button class="confirm-modal-btn-confirm" (click)="confirmClearChat()">Clear chat</button>
+        </div>
+    </div>
+</div>
+}
+
+<!-- Delete Chat Confirmation Modal -->
+@if(isDeleteChatModalVisible) {
+<div class="confirm-modal-overlay-cls" (click)="closeDeleteChatModal()">
+    <div class="confirm-modal-cont-cls" (click)="$event.stopPropagation()">
+        <div class="confirm-modal-title-cls">Delete this chat?</div>
+        <div class="confirm-modal-body-cls">
+            This chat will be removed from your chat list and all messages will be deleted.
+        </div>
+        <div class="confirm-modal-footer-cls">
+            <button class="confirm-modal-btn-cancel" (click)="closeDeleteChatModal()">Cancel</button>
+            <button class="confirm-modal-btn-confirm" (click)="confirmDeleteChat()">Delete chat</button>
+        </div>
+    </div>
+</div>
 }

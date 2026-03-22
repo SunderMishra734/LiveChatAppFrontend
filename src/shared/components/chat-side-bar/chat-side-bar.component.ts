@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatMainContentComponent } from "../chat-main-content/chat-main-content.component";
+import { ToasterMessageComponent } from "../toaster-message/toaster-message.component";
 import { ChatListDto, ChattingUser, MessageDto } from '../../../models/chat';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.service';
@@ -10,7 +11,7 @@ import { UserService } from '../../../services/user.service';
 @Component({
   selector: 'app-chat-side-bar',
   standalone: true,
-  imports: [ChatMainContentComponent, CommonModule],
+  imports: [ChatMainContentComponent, ToasterMessageComponent, CommonModule],
   templateUrl: './chat-side-bar.component.html',
   styleUrl: './chat-side-bar.component.css'
 })
@@ -23,6 +24,12 @@ export class ChatSideBarComponent {
   isAllUserPopVisible: boolean = false;
   allUser: any;
   currentSearchQuery: string = '';
+  
+  // Toaster variables
+  isTaosterVisible: boolean = false;
+  actionType: number = 0;
+  mainMssg: string = '';
+  descriptionMssg: string = '';
 
   constructor(private chatService: ChatService, private sharedUserService: SharedUserService, private signalRService: SignalrService, private userService: UserService) { }
 
@@ -201,6 +208,34 @@ export class ChatSideBarComponent {
       const lastMessage = user.lastMessage?.toLowerCase() ?? '';
       return name.includes(term) || lastMessage.includes(term);
     });
+  }
+
+  onChatDeleted(userId: number): void {
+    this.mainMssg = 'Chat deleted!';
+    this.descriptionMssg = `The chat has been successfully deleted.`;
+    this.showToasterMessage(1);
+    
+    // Refresh the list from the server to ensure consistency
+    this.chatService.getAllChatUser().subscribe(res => {
+      if (res.success) {
+        this.allChatUser = res.data.map((user: ChatListDto) => ({
+          ...user,
+          unreadCount: 0
+        }));
+        this.applyFilter();
+      }
+    });
+    
+    // Close the current chat view
+    this.onCloseChat();
+  }
+
+  showToasterMessage(actType: number) {
+    this.isTaosterVisible = true;
+    this.actionType = actType;
+    setTimeout(() => {
+      this.isTaosterVisible = false;
+    }, 2500);
   }
 
 }

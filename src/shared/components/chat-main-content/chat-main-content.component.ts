@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ChatListDto, MessageDto, MessageRequestDto } from '../../../models/chat';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,8 +20,9 @@ export class ChatMainContentComponent {
   @Input() loggedInUserId: number = 0;
   @Output() messageSent = new EventEmitter<MessageDto>();
   @Output() closeChat = new EventEmitter<void>();
+  @Output() chatDeleted = new EventEmitter<number>();
   @ViewChild('messageContainer') messageContainer: any;
-  @ViewChild('textArea') textArea!: any;
+  @ViewChild('chatInput') chatInput!: ElementRef;
   @ViewChild('dotsMenuContainer') dotsMenuContainer!: ElementRef;
   messages?: MessageDto[];
   message: MessageDto | any;
@@ -44,6 +45,9 @@ export class ChatMainContentComponent {
   currentMatchIndex: number = -1;
   searchHighlightTimeout: any = null;
   isBlocked: boolean = false;
+  isClearChatModalVisible: boolean = false;
+  isDeleteChatModalVisible: boolean = false;
+  keepStarred: boolean = false;
 
   // Toaster properties
   isTaosterVisible: boolean = false;
@@ -55,40 +59,39 @@ export class ChatMainContentComponent {
 
   ngOnInit() {
     this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
-    this.getMessages(this.chattingUser!.userId);
     this.signalRService.receiveMessages(messageDtoData => {
       if (this.currentUserId == messageDtoData.loggedInUserId && this.loggedInUserId == messageDtoData.contactUserId) {
         this.messages?.push(messageDtoData);
       }
     });
-    this.checkIfBlocked();
+
     this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      if (this.currentUserId == changeUserStatus.status) {
-        this.chattingUser!.onlineStatus = changeUserStatus.status;
+      if (this.currentUserId == changeUserStatus.userId) {
+        if (this.chattingUser) {
+          this.chattingUser.onlineStatus = changeUserStatus.status;
+        }
         this.status = changeUserStatus.status === 1 ? 'Online' : 'Offline';
       }
     });
   }
 
-  ngOnChanges(): void {
-    this.status = this.chattingUser?.onlineStatus === 1 ? 'Online' : 'Offline';
-    this.signalRService.receiveChangeUserStatus(changeUserStatus => {
-      if (this.currentUserId == changeUserStatus.status) {
-        this.chattingUser!.onlineStatus = changeUserStatus.status;
-        this.status = changeUserStatus.status === 1 ? 'Online' : 'Offline';
-      }
-    });
-    this.getMessages(this.chattingUser!.userId);
-    this.isContactInfoVisible = false;
-    this.checkIfBlocked();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chattingUser'] && this.chattingUser) {
+      this.status = this.chattingUser.onlineStatus === 1 ? 'Online' : 'Offline';
+      this.getMessages(this.chattingUser.userId);
+      this.isContactInfoVisible = false;
+      this.checkIfBlocked();
+    }
   }
 
   ngAfterViewInit() {
-    this.textArea.nativeElement.addEventListener('input', () => {
-      const el = this.textArea.nativeElement;
-      el.style.height = 'auto';
-      el.style.height = el.scrollHeight + 'px';
-    });
+    if (this.chatInput) {
+      this.chatInput.nativeElement.addEventListener('input', () => {
+        const el = this.chatInput.nativeElement;
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+      });
+    }
   }
 
   handleMessageInput(event: KeyboardEvent, chatInput: HTMLElement): void {
@@ -383,6 +386,75 @@ export class ChatMainContentComponent {
         this.descriptionMssg = 'An error occurred. Please try again later.';
         this.showToasterMessage(2);
         console.error('Error toggling block status:', err);
+      }
+    });
+  }
+
+  openClearChatModal(): void {
+    this.isClearChatModalVisible = true;
+    this.isMenuVisible = false;
+  }
+
+  closeClearChatModal(): void {
+    this.isClearChatModalVisible = false;
+    this.keepStarred = false;
+  }
+
+  confirmClearChat(): void {
+    if (!this.chattingUser) return;
+    this.chatService.clearChat(this.chattingUser.userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.messages = [];
+          this.mainMssg = 'Chat cleared!';
+          this.descriptionMssg = `All messages with ${this.chattingUser?.fullName} have been cleared.`;
+          this.showToasterMessage(1);
+          this.closeClearChatModal();
+        } else {
+          this.mainMssg = 'Error!';
+          this.descriptionMssg = res.message || 'Failed to clear chat.';
+          this.showToasterMessage(2);
+        }
+      },
+      error: (err) => {
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'An error occurred while clearing chat.';
+        this.showToasterMessage(2);
+        console.error('Error clearing chat:', err);
+      }
+    });
+  }
+
+  openDeleteChatModal(): void {
+    this.isDeleteChatModalVisible = true;
+    this.isMenuVisible = false;
+  }
+
+  closeDeleteChatModal(): void {
+    this.isDeleteChatModalVisible = false;
+  }
+
+  confirmDeleteChat(): void {
+    if (!this.chattingUser) return;
+    this.chatService.deleteChat(this.chattingUser.userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.mainMssg = 'Chat deleted!';
+          this.descriptionMssg = `Chat with ${this.chattingUser?.fullName} has been deleted.`;
+          // Leave toaster to parent
+          this.chatDeleted.emit(this.chattingUser!.userId);
+          this.closeDeleteChatModal();
+        } else {
+          this.mainMssg = 'Error!';
+          this.descriptionMssg = res.message || 'Failed to delete chat.';
+          this.showToasterMessage(2);
+        }
+      },
+      error: (err) => {
+        this.mainMssg = 'Error!';
+        this.descriptionMssg = 'An error occurred while deleting chat.';
+        this.showToasterMessage(2);
+        console.error('Error deleting chat:', err);
       }
     });
   }

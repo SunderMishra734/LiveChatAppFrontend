@@ -118,3 +118,49 @@
     border-radius: 50%;
     background-color: rgb(255, 255, 255);
 }
+
+@media screen and (max-width: 480px) {
+    .wrapper {
+        width: 94%;
+        right: 3%;
+        top: 2%;
+        animation-name: showToasterMobile;
+    }
+
+    .toast {
+        height: auto;
+        min-height: 70px;
+        padding: 12px 15px;
+        grid-template-columns: 45px 1fr 20px;
+        gap: 10px;
+    }
+
+    .container-1 i {
+        font-size: 28px;
+    }
+
+    .container-2 p:first-child {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+
+    .container-2 p:last-child {
+        font-size: 11px;
+    }
+
+    .toast button {
+        font-size: 20px;
+    }
+}
+
+@keyframes showToasterMobile {
+    0% {
+        right: -100%;
+    }
+    15%, 85% {
+        right: 3%;
+    }
+    100% {
+        right: -100%;
+    }
+}

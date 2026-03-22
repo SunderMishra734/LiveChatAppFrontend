@@ -18,6 +18,8 @@ export const URLS = Object({
     "GetAllChat": `${baseUrl}/Chat/GetAllChat`,
     "GetMessages": `${baseUrl}/Chat/GetMessages`,
     "SaveMessages": `${baseUrl}/Chat/SaveMessages`,
+    "ClearChat": `${baseUrl}/Chat/ClearChat`,
+    "DeleteChat": `${baseUrl}/Chat/DeleteChat`,
 
     //User
     "GetUser": `${baseUrl}/User/GetUser`,

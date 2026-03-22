@@ -8,11 +8,18 @@ import { UserRole, Gender, LanguagePreference } from '../../models/enums.enum';
 import { UserService } from '../../services/user.service';
 import { ToasterMessageComponent } from '../../shared/components/toaster-message/toaster-message.component';
 import { AuthService } from '../../services/auth.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, ToasterMessageComponent],
+  imports: [
+    FormsModule, ReactiveFormsModule, CommonModule, ToasterMessageComponent,
+    MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule
+  ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
 })
@@ -70,13 +77,13 @@ export class ProfilePageComponent {
   initForm(userDetails?: UserDetailDto) {
     this.profileForm = this.fb.group({
       fullName: [userDetails?.fullName || ''],
-      email: [userDetails?.email || ''],
+      email: [{ value: userDetails?.email || '', disabled: true }],
       dateOfBirth: [this.formatDateForInput(userDetails?.dateOfBirth) || ''],
       phoneNumber: [userDetails?.phoneNumber || ''],
-      gender: [userDetails?.gender || ''],
+      gender: [userDetails?.gender ?? ''],
       profileStatus: [userDetails?.profileStatus || ''],
       timeZone: [userDetails?.timeZone || ''],
-      languagePreference: [userDetails?.languagePreference || ''],
+      languagePreference: [userDetails?.languagePreference ?? ''],
       address: [userDetails?.address || '']
     });
     if (this.isDisable) {
@@ -87,7 +94,6 @@ export class ProfilePageComponent {
     this.userFullName = userDetails?.fullName || '';
     this.userEmail = userDetails?.email || '';
 
-    this.profileForm.patchValue(this.userDetails!);
     this.originalFormValue = this.profileForm.getRawValue();
     this.profileForm.valueChanges.subscribe(() => {
       this.isEdited = JSON.stringify(this.originalFormValue) !== JSON.stringify(this.profileForm.getRawValue());
@@ -98,6 +104,7 @@ export class ProfilePageComponent {
     this.isDisable = false;
     this.isSaveBtnVisible = true;
     this.profileForm.enable();
+    this.profileForm.get('email')?.disable();
   }
 
   saveFn() {

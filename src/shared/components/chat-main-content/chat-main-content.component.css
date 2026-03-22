@@ -676,3 +676,107 @@
         padding: 8px 12px;
     }
 }
+/* --- CONFIRMATION MODAL STYLES --- */
+.confirm-modal-overlay-cls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(11, 20, 26, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.confirm-modal-cont-cls {
+    background-color: #ffffff;
+    width: min(500px, 90vw);
+    border-radius: 20px;
+    padding: 24px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    color: #111b21;
+}
+
+.confirm-modal-title-cls {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.confirm-modal-body-cls {
+    font-size: 16px;
+    color: #54656f;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.confirm-modal-checkbox-wrap-cls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    user-select: none;
+}
+
+.confirm-modal-checkbox-cls {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #54656f;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+}
+
+.confirm-modal-checkbox-cls:checked {
+    background-color: transparent;
+    border-color: #00a884;
+}
+
+.confirm-modal-checkbox-cls:checked::after {
+    content: "\f00c";
+    font-family: FontAwesome;
+    font-size: 11px;
+    color: #00a884;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.confirm-modal-footer-cls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+.confirm-modal-btn-cancel {
+    color: #00a884;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.confirm-modal-btn-confirm {
+    background-color: #ff5e6d;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 28px;
+    cursor: pointer;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.confirm-modal-btn-confirm:hover {
+    background-color: #ef5350;
+}

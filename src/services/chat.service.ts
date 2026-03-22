@@ -28,4 +28,16 @@ export class ChatService {
     const url = URLS.SaveMessages;
     return this.apiService.post<any>(url, MessageDto);
   }
+
+  clearChat(contactUserId: number): Observable<any> {
+    const url = URLS.ClearChat;
+    const params = { contactId: contactUserId };
+    return this.apiService.post<any>(url, params);
+  }
+
+  deleteChat(contactUserId: number): Observable<any> {
+    const url = URLS.DeleteChat;
+    const params = { contactId: contactUserId };
+    return this.apiService.post<any>(url, params);
+  }
 }

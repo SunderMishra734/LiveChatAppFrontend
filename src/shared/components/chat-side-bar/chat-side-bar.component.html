@@ -50,7 +50,8 @@
     <div class="chat-main-cont-cls">
         @if(isUserSelected){
         <app-chat-main-content [chattingUser]="selectedUser" [loggedInUserId]="loggedInUserId"
-            [isUserSelected]="isUserSelected" (messageSent)="onMessageSent($event)" (closeChat)="onCloseChat()"></app-chat-main-content>
+            [isUserSelected]="isUserSelected" (messageSent)="onMessageSent($event)" (closeChat)="onCloseChat()"
+            (chatDeleted)="onChatDeleted($event)"></app-chat-main-content>
         }
         @else {
         <div class="no-user-selected-page-cls">
@@ -89,4 +90,9 @@
         <button class="popup-close-btn" (click)="isAllUserPopVisible = false">Cancel</button>
     </div>
 </div>
+}
+
+@if (isTaosterVisible) {
+<app-toaster-message [actionType]="actionType" [mainMssg]="mainMssg"
+    [descriptionMssg]="descriptionMssg"></app-toaster-message>
 }
