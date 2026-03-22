@@ -1,6 +1,7 @@
 <div>
   <div class="header-cls">
     <span>Admin Page</span>
+    <button class="logout-btn-cls" (click)="logoutFn()">Logout</button>
   </div>
   <div class="main-body-cls">
     @if(isCEPageShow){
@@ -90,20 +91,20 @@
             Industry Type is required.</div>
         </div>
       </div>
-      <div>
-        <input type="checkbox" formControlName="isActive" />
-        <label>Is Active:</label>
+      <div class="checkbox-group">
+        <input type="checkbox" id="isActive" formControlName="isActive" />
+        <label for="isActive">Is Active</label>
       </div>
-      <div class="flex gap-4 mt-4">
+      <div class="flex gap-4 mt-6">
         @if(!isEditMode){
-        <button type="submit" class="btn btn-primary" (click)="submitForm()">Create</button>
+        <button type="submit" class="btn btn-primary" (click)="submitForm()">Create Customer</button>
         }
         @else {
         @if(isSaveMode){
-        <button type="submit" class="btn btn-primary" (click)="submitForm()">Save</button>
+        <button type="submit" class="btn btn-primary" (click)="submitForm()">Save Changes</button>
         }
         @else {
-        <button type="submit" class="btn btn-primary" (click)="onEditMode()">Edit</button>
+        <button type="submit" class="btn btn-primary" (click)="onEditMode()">Edit Profile</button>
         }
         }
         <button type="button" class="btn btn-secondary" (click)="cancelCreate()">Cancel</button>
@@ -172,46 +173,46 @@
     <div class="create-cont-cls">
       <div class="create-btn-cls" (click)="createCustomerFn()">Create Customer</div>
     </div>
-    <div class="overflow-auto">
-      <table class="min-w-full border border-gray-300 text-sm">
-        <thead class="bg-gray-200">
+    <div class="table-container overflow-auto">
+      <table class="min-w-full text-sm">
+        <thead>
           <tr>
-            <th class="p-2 border">ID</th>
-            <th class="p-2 border">Name</th>
-            <th class="p-2 border">Email</th>
-            <th class="p-2 border">Contact</th>
-            <th class="p-2 border">Expired</th>
-            <th class="p-2 border">Expiry Date</th>
-            <th class="p-2 border">Website</th>
-            <th class="p-2 border">City</th>
-            <th class="p-2 border">State</th>
-            <th class="p-2 border">Country</th>
-            <th class="p-2 border">TimeZone</th>
-            <th class="p-2 border">Industry</th>
-            <th class="p-2 border">Active</th>
-            <th class="p-2 border">Created</th>
-            <th class="p-2 border">Updated</th>
-            <th class="p-2 border">Action</th>
+            <th class="p-2">ID</th>
+            <th class="p-2">Name</th>
+            <th class="p-2">Email</th>
+            <th class="p-2">Contact</th>
+            <th class="p-2">Expired</th>
+            <th class="p-2">Expiry Date</th>
+            <th class="p-2">Website</th>
+            <th class="p-2">City</th>
+            <th class="p-2">State</th>
+            <th class="p-2">Country</th>
+            <th class="p-2">TimeZone</th>
+            <th class="p-2">Industry</th>
+            <th class="p-2">Active</th>
+            <th class="p-2">Created</th>
+            <th class="p-2">Updated</th>
+            <th class="p-2">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let customer of customers" class="hover:bg-gray-50">
-            <td class="p-2 border">{{ customer.id }}</td>
-            <td class="p-2 border">{{ customer.name }}</td>
-            <td class="p-2 border">{{ customer.email }}</td>
-            <td class="p-2 border">{{ customer.contactNumber }}</td>
-            <td class="p-2 border">{{ customer.isExpired ? 'Yes' : 'No' }}</td>
-            <td class="p-2 border">{{ customer.expiryDate | date:'mediumDate' }}</td>
-            <td class="p-2 border">{{ customer.websiteURL }}</td>
-            <td class="p-2 border">{{ customer.city }}</td>
-            <td class="p-2 border">{{ customer.state }}</td>
-            <td class="p-2 border">{{ customer.country }}</td>
-            <td class="p-2 border">{{ customer.timeZone }}</td>
-            <td class="p-2 border">{{ customer.industryType }}</td>
-            <td class="p-2 border">{{ customer.isActive ? 'Yes' : 'No' }}</td>
-            <td class="p-2 border">{{ customer.createdAt | date:'short' }}</td>
-            <td class="p-2 border">{{ customer.updatedAt | date:'short' }}</td>
-            <td class="p-2 border">
+          <tr *ngFor="let customer of customers">
+            <td class="p-2">{{ customer.id }}</td>
+            <td class="p-2">{{ customer.name }}</td>
+            <td class="p-2">{{ customer.email }}</td>
+            <td class="p-2">{{ customer.contactNumber }}</td>
+            <td class="p-2">{{ customer.isExpired ? 'Yes' : 'No' }}</td>
+            <td class="p-2">{{ customer.expiryDate | date:'mediumDate' }}</td>
+            <td class="p-2">{{ customer.websiteURL }}</td>
+            <td class="p-2">{{ customer.city }}</td>
+            <td class="p-2">{{ customer.state }}</td>
+            <td class="p-2">{{ customer.country }}</td>
+            <td class="p-2">{{ customer.timeZone }}</td>
+            <td class="p-2">{{ customer.industryType }}</td>
+            <td class="p-2">{{ customer.isActive ? 'Yes' : 'No' }}</td>
+            <td class="p-2">{{ customer.createdAt | date:'short' }}</td>
+            <td class="p-2">{{ customer.updatedAt | date:'short' }}</td>
+            <td class="p-2">
               <div class="icons-cont-cls">
                 <i class="fa fa-pencil edit-icon-cls" (click)="editFn(customer)"></i>
                 <i class="fa fa-trash delete-icon-cls" (click)="deleteFn(customer.id)"></i>

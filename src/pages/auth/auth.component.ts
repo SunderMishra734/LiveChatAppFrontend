@@ -40,6 +40,12 @@ export class AuthComponent {
 
   constructor(private router: Router, private authService: AuthService) { }
 
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/app/chat']);
+    }
+  }
+
   signInFn() {
     this.invalidNewEmail = false;
     this.isSignInVisible = true;

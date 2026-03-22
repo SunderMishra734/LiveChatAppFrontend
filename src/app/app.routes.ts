@@ -9,18 +9,21 @@ import { SettingPageComponent } from "../pages/setting-page/setting-page.compone
 import { AdminLoginComponent } from "../shared/components/admin-login/admin-login.component";
 import { AdminMainPageComponent } from "../shared/components/admin-main-page/admin-main-page.component";
 import { AuthGuard } from "./auth.guard";
+import { AdminGuard } from "./admin.guard";
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: 'app', component: MainAppComponent, canActivate: [AuthGuard], children: [
+        {path: '', redirectTo: 'chat', pathMatch: 'full'},
         {path: 'chat', component: ChatPageComponent},
         {path: 'profile', component: ProfilePageComponent},
         {path: 'setting', component: SettingPageComponent}
     ]},
     {path: 'login', component: AuthComponent},
     {path: 'admin', component: AdminComponent, children: [
+        {path: '', redirectTo: 'login', pathMatch: 'full'},
         {path: 'login', component: AdminLoginComponent},
-        {path: 'app', component: AdminMainPageComponent}
+        {path: 'app', component: AdminMainPageComponent, canActivate: [AdminGuard]}
     ]},
     {path: '**', component: PageNotFoundComponent}
 ];

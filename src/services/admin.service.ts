@@ -4,17 +4,16 @@ import { environment } from '../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { AuthDto } from '../models/auth-dto';
 import { Customer, User } from '../models/customer';
+import { URLS } from '../shared/config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  baseUrl: string = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   adminLogin(loginData: AuthDto) {
-    const url = `${this.baseUrl}/AdminLogin`;
-    return this.http.post<any>(url, loginData).pipe(
+    return this.http.post<any>(URLS.AdminLogin, loginData).pipe(
       tap(response => {
         if (response && response.token) {
           return response;
@@ -24,25 +23,43 @@ export class AdminService {
   }
 
   getAllCustomers() {
-    const url = `${this.baseUrl}/Admin/GetAllCustomers`;
-    return this.http.get<any>(url);
+    return this.http.get<any>(URLS.GetAllCustomers);
   }
 
   createCustomer(customer: Customer) {
-    const url = `${this.baseUrl}/Admin/CreateCustomer`;
-    return this.http.post<any>(url, customer);
+    return this.http.post<any>(URLS.CreateCustomer, customer);
   }
 
   updateCustomer(customer: Customer): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/Admin/UpdateCustomer`, customer);
+    return this.http.post<boolean>(URLS.UpdateCustomer, customer);
   }
 
   deleteCustomer(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}/Admin/DeleteCustomer?id=${id}`);
+    return this.http.delete<boolean>(URLS.DeleteCustomer + `?id=${id}`);
   }
 
   createUser(user: User) {
-    const url = `${this.baseUrl}/User/CreateUser`;
-    return this.http.post<any>(url, user);
+    return this.http.post<any>(URLS.CreateUser, user);
+  }
+
+  setAdminToken(token: string): void {
+    if (this.isBrowser()) {
+      localStorage.setItem('admintoken', token);
+    }
+  }
+
+  getAdminToken(): string | null {
+    if (!this.isBrowser()) return null;
+    return localStorage.getItem('admintoken');
+  }
+
+  clearAdminSession(): void {
+    if (this.isBrowser()) {
+      localStorage.removeItem('admintoken');
+    }
+  }
+
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 }

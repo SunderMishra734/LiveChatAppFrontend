@@ -39,6 +39,12 @@ export class AdminLoginComponent {
 
   constructor(private router: Router, private adminService: AdminService) { }
 
+  ngOnInit(): void {
+    if (this.adminService.getAdminToken()) {
+      this.router.navigate(['/admin/app']);
+    }
+  }
+
   signInFn() {
     this.invalidNewEmail = false;
     this.isSignInVisible = true;
@@ -65,7 +71,8 @@ export class AdminLoginComponent {
         this.adminService.adminLogin(this.loginData).subscribe({
           next: (data) => {
             this.isLoading = false;
-            if (data) {
+            if (data.success && data.data) {
+              this.adminService.setAdminToken(data.data);
               this.router.navigate(['/admin/app']);
             }
             this.errorMessage = 'Invalid credentials, please try again.';

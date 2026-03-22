@@ -5,11 +5,11 @@ export const URLS = Object({
     //AuthLogin
     "AuthLogin": `${baseUrl}/Auth/login`,
     "AuthChangePassword": `${baseUrl}/Auth/ChangePassword`,
+    "AdminLogin": `${baseUrl}/Auth/AdminLogin`,
 
     //Admin
     "GetAllCustomers": `${baseUrl}/Admin/GetAllCustomers`,
     "GetCustomer": `${baseUrl}/Admin/GetCustomer`,
-    "AdminLogin": `${baseUrl}/AdminLogin`,
     "CreateCustomer": `${baseUrl}/Admin/CreateCustomer`,
     "UpdateCustomer": `${baseUrl}/Admin/UpdateCustomer`,
     "DeleteCustomer": `${baseUrl}/Admin/DeleteCustomer`,
@@ -37,5 +37,5 @@ export const URLS = Object({
     "DeleteFile": `${baseUrl}/File/DeleteFile`,
     "UploadFile": `${baseUrl}/File/UploadFile`,
     "SubmitFeedback": `${baseUrl}/Settings/SubmitFeedback`,
-    
+
 });

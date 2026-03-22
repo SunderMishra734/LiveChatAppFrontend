@@ -12,21 +12,33 @@ export class authInterceptor implements HttpInterceptor{
   constructor(private authService: AuthService, private router: Router, private adminService: AdminService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
-    if (!token) {
-      return next.handle(req);
-    }
-    const modifiedReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const isAdminRequest = req.url.includes('/Admin');
+    const isLoginRequest = req.url.includes('/Auth/AdminLogin') || req.url.includes('/Auth/login');
 
-    return next.handle(modifiedReq).pipe(
+    const token = isAdminRequest 
+      ? this.adminService.getAdminToken() 
+      : this.authService.getToken();
+
+    let authReq = req;
+    if (token) {
+      authReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+
+    return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 || !isTokenValid(token)) {
-          this.authService.clearSession();
-          this.router.navigate(['/login'], { queryParams: { sessionExpired: true } });
+        // Only redirect if it's a 401 and NOT a login request
+        if (error.status === 401 && !isLoginRequest) {
+          if (isAdminRequest) {
+            this.adminService.clearAdminSession();
+            this.router.navigate(['/admin/login']);
+          } else {
+            this.authService.clearSession();
+            this.router.navigate(['/login'], { queryParams: { sessionExpired: true } });
+          }
         }
         return throwError(() => error);
       })

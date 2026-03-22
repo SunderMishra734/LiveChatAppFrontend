@@ -5,6 +5,7 @@ import { AdminService } from '../../../services/admin.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ToasterMessageComponent } from '../toaster-message/toaster-message.component';
 import { UserRole, Gender } from '../../../models/enums.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-main-page',
@@ -39,7 +40,7 @@ export class AdminMainPageComponent {
   isCustomerFormVisible: boolean = true;
   userIdToUpdate: number | null = null;
 
-  constructor(private adminService: AdminService, private fb: FormBuilder) { }
+  constructor(private adminService: AdminService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.loadCustomers();
@@ -274,5 +275,10 @@ export class AdminMainPageComponent {
         this.showToasterMessage(2);
       }
     });
+  }
+
+  logoutFn() {
+    this.adminService.clearAdminSession();
+    this.router.navigate(['/admin/login']);
   }
 }
