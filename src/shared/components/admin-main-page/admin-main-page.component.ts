@@ -76,7 +76,7 @@ export class AdminMainPageComponent {
 
   loadCustomers() {
     this.adminService.getAllCustomers().subscribe({
-      next: (response) => (this.customers = response.data),
+      next: (response) => (this.customers = response?.data),
       error: (error) => console.error('Error fetching customers:', error),
     });
     this.isSaveMode = false;

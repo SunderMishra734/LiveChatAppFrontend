@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { AuthDto } from '../models/auth-dto';
 import { Customer, User } from '../models/customer';
 import { URLS } from '../shared/config/api.config';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  constructor(private http: HttpClient) { }
+  constructor(private apiService: ApiService) { }
 
   adminLogin(loginData: AuthDto) {
-    return this.http.post<any>(URLS.AdminLogin, loginData).pipe(
+    return this.apiService.post<any>(URLS.AdminLogin, loginData).pipe(
       tap(response => {
         if (response && response.token) {
           return response;
@@ -23,23 +23,23 @@ export class AdminService {
   }
 
   getAllCustomers() {
-    return this.http.get<any>(URLS.GetAllCustomers);
+    return this.apiService.get<any>(URLS.GetAllCustomers);
   }
 
   createCustomer(customer: Customer) {
-    return this.http.post<any>(URLS.CreateCustomer, customer);
+    return this.apiService.post<any>(URLS.CreateCustomer, customer);
   }
 
   updateCustomer(customer: Customer): Observable<boolean> {
-    return this.http.post<boolean>(URLS.UpdateCustomer, customer);
+    return this.apiService.post<any>(URLS.UpdateCustomer, customer);
   }
 
   deleteCustomer(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(URLS.DeleteCustomer + `?id=${id}`);
+    return this.apiService.delete<any>(URLS.DeleteCustomer + `?id=${id}`);
   }
 
   createUser(user: User) {
-    return this.http.post<any>(URLS.CreateUser, user);
+    return this.apiService.post<any>(URLS.CreateUser, user);
   }
 
   setAdminToken(token: string): void {
