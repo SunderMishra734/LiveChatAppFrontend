@@ -65,6 +65,12 @@ export class MainAppComponent {
     });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: any): void {
+    // Use keepalive fetch to ensure request completes even if window is closed immediately
+    this.userService.changeUserStatusKeepAlive(Status.Offline);
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
     if (this.isUserProfileVisible && !this.userProfileContainer.nativeElement.contains(event.target)) {

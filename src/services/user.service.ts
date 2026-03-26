@@ -30,9 +30,27 @@ export class UserService {
     return this.apiService.post(url, userDetails);
   }
 
-  changeUserStatus(status: number){
+  changeUserStatus(status: number) {
     const url = URLS.ChangeUserStatus;
     return this.apiService.post(url, status);
+  }
+
+  changeUserStatusKeepAlive(status: number): void {
+    const url = URLS.ChangeUserStatus;
+    const token = localStorage.getItem('token');
+    
+    // Use native fetch with keepalive to ensure request completes after window close
+    if (token) {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(status),
+        keepalive: true
+      });
+    }
   }
 
   createUser(userDetails: any): Observable<any> {
