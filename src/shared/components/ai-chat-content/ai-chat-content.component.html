@@ -1,0 +1,97 @@
+<div class="chat-main-area-cls" style="height: 100%; display: flex; flex-direction: column;">
+    <!-- Header -->
+    <div class="chat-main-head-cont-cls com-dis-fl-cls">
+        <div style="display: flex; align-items: center; gap: 10px; cursor: pointer; width: 100%;">
+            <div class="user-img-cls">
+                <div class="ai-avatar-circle">
+                    <i class="fa fa-magic"></i>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="user-name-cls">{{ session ? session.title : 'New AI Conversation' }}</div>
+                <div class="user-status-cls com-dis-fl-cls">
+                    <div class="status-cls online-status-cls"></div>
+                    <span>{{ isLoading ? 'AI is thinking...' : 'AI Assistant' }}</span>
+                </div>
+            </div>
+            <button class="mobile-only" (click)="menuClicked.emit()" style="background: none; border: none; padding: 8px;">
+                <i class="fa fa-ellipsis-v" style="color: #667781; font-size: 20px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Message Content area -->
+    <div class="chat-main-content-cont-cls" #scrollContainer>
+        @if(messages.length === 0 && !isLoading) {
+            <div class="date-separator-cls">Welcome</div>
+            <div class="common-chat-cont-cls">
+                <div class="your-chat-cls">
+                    <div class="common-chat-cls your-chat-cont-cls">
+                        <div class="message-text">I'm here to help you navigate the Live Chat App! Ask me anything about account settings or chat features.</div>
+                        <div class="time-cls">Just now</div>
+                    </div>
+                </div>
+            </div>
+            <div class="suggestions-grid">
+                <div class="suggestion-bubble" (click)="newMessage = 'How do I block a user?'; sendMessage()">"How do I block a user?"</div>
+                <div class="suggestion-bubble" (click)="newMessage = 'How can I change my profile picture?'; sendMessage()">"Change my profile picture?"</div>
+            </div>
+        }
+
+        @for(msg of messages; track msg.aiMessageId) {
+            <div class="common-chat-cont-cls">
+                @if(msg.sender === senderType.User) {
+                    <div class="my-chat-cls">
+                        <div class="common-chat-cls my-chat-cont-cls">
+                            <div class="message-text">{{msg.message || msg.messageText}}</div>
+                            <div class="time-cls">{{msg.createdAt | date:'shortTime'}}</div>
+                        </div>
+                    </div>
+                }
+                @else {
+                    <div class="your-chat-cls">
+                        <div class="common-chat-cls your-chat-cont-cls">
+                            <div class="message-text">{{msg.message || msg.messageText}}</div>
+                            <div class="time-cls">{{msg.createdAt | date:'shortTime'}}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @if(isLoading) {
+            <div class="common-chat-cont-cls">
+                <div class="your-chat-cls">
+                    <div class="common-chat-cls your-chat-cont-cls">
+                        @if(waitingMessage) {
+                            <div class="waiting-text">{{waitingMessage}}</div>
+                        }
+                        <div class="typing-indicator">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Footer -->
+    <div class="chat-main-footter-cont-cls com-dis-fl-cls">
+        <div class="type-mssg-cont-cls com-dis-fl-cls">
+            <div style="width: 100%;">
+                <textarea 
+                    class="inp-mssg-cls"
+                    [(ngModel)]="newMessage" 
+                    placeholder="Type a new message..." 
+                    (keydown.enter)="sendMessage(); $event.preventDefault()"
+                    rows="1">
+                </textarea>
+            </div>
+        </div>
+        <div class="common-commu-cont-cls">
+            <i class="fa fa-paper-plane-o common-communication-img-cls" 
+               [class.disabled]="!newMessage.trim() || isLoading"
+               (click)="sendMessage()"></i>
+        </div>
+    </div>
+</div>

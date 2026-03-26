@@ -1,0 +1,91 @@
+<div class="chat-side-bar-main-cls">
+    <aside>
+        <div class="sidebar-header">
+            <h2>AI Conversations</h2>
+        </div>
+
+        <div class="chat-list-scroll-container">
+            <!-- New Chat Option styled as a tile -->
+            <div class="common-chat-tiles-cls" [class.active-chat-tiles-cls]="selectedSessionId === null" (click)="selectSession(null)">
+                <div class="chat-tiles-img-cls">
+                    <div class="ai-new-icon">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                </div>
+                <div class="chat-details-col">
+                    <div class="chat-user-name">New AI Chat</div>
+                    <div class="chat-last-message">Start a fresh conversation</div>
+                </div>
+            </div>
+
+            <div class="separator">Previous Sessions</div>
+
+            @for(session of filteredSessions; track session.sessionId) {
+                <div class="session-item-wrapper" (mouseenter)="$event.stopImmediatePropagation()">
+                    <div class="common-chat-tiles-cls" 
+                         [class.active-chat-tiles-cls]="selectedSessionId === session.sessionId"
+                         (click)="selectSession(session)">
+                        <div class="chat-tiles-img-cls">
+                            <div class="ai-session-icon">
+                                <i class="fa fa-magic"></i>
+                            </div>
+                        </div>
+                        <div class="chat-details-col">
+                            @if(editingSessionId === session.sessionId) {
+                                <input #renameInput type="text" class="rename-input" [(ngModel)]="editTitle" (blur)="saveRename()" (keydown.enter)="saveRename()" (click)="$event.stopPropagation()" />
+                            } @else {
+                                <div class="chat-user-name">{{session.title}}</div>
+                                <div class="chat-last-message">AI Assistant</div>
+                            }
+                        </div>
+                        <div class="chat-meta-col">
+                            <span class="chat-time">{{ getDisplayDate(session) | date:'shortDate' }}</span>
+                            <div class="menu-trigger" (click)="toggleMenu($event, session.sessionId)">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Context Menu Popup -->
+                    @if(activeMenuSessionId === session.sessionId) {
+                        <div class="context-menu" (click)="$event.stopPropagation()">
+                            <div class="menu-item" (click)="startRename(session)">
+                                <i class="fa fa-pencil"></i>
+                                <span>Rename</span>
+                            </div>
+                            <div class="menu-item delete-item" (click)="openDeleteModal(session)">
+                                <i class="fa fa-trash-o"></i>
+                                <span>Delete</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if(filteredSessions.length === 0 && !isLoading) {
+                <div class="empty-state">
+                    <i class="fa fa-comment-o" style="align-self: anchor-center; padding-left: 1rem;"></i>
+                    <p>{{ searchQuery ? 'No sessions match your search' : 'No previous AI chats' }}</p>
+                </div>
+            }
+        </div>
+    </aside>
+
+    <!-- Delete Confirmation Modal -->
+    @if(isDeleteModalVisible) {
+        <div class="modal-overlay" (click)="closeDeleteModal()">
+            <div class="modal-content" (click)="$event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Delete chat?</h3>
+                </div>
+                <div class="modal-body">
+                    <p>This will delete <strong>{{sessionToDelete?.title}}</strong>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
+                    <button class="btn-delete" (click)="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

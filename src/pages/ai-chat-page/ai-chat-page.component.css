@@ -1,0 +1,53 @@
+.chat-side-bar-main-cls {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+aside {
+    width: 30%;
+    min-width: 320px;
+    height: 100%;
+    border-right: 1px solid #d1d7db;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.chat-main-cont-cls {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    aside {
+        position: absolute;
+        left: -100%;
+        top: 0;
+        width: 85%;
+        min-width: unset;
+        background: white;
+        box-shadow: 10px 0 20px rgba(0,0,0,0.1);
+        z-index: 100;
+    }
+
+    aside.mobile-hidden {
+        left: -100%;
+    }
+
+    aside:not(.mobile-hidden) {
+        left: 0;
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.4);
+        z-index: 50;
+    }
+}

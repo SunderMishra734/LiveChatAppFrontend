@@ -19,3 +19,8 @@ export enum LanguagePreference {
     English = 0,
     Hindi = 1,
 }
+
+export enum SenderType {
+    User = 1,
+    AI = 2
+}

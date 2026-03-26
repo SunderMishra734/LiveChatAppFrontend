@@ -80,16 +80,20 @@
             @if(message.loggedInUserId == loggedInUserId){
             <div class="common-chat-cont-cls" [id]="'msg-' + message.id">
                 <div class="com-dis-fl-cls my-chat-cls">
-                    <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
-                    <div class="common-chat-cls my-chat-cont-cls">{{message.message}}</div>
+                    <div class="common-chat-cls my-chat-cont-cls">
+                        <div class="message-text">{{message.message}}</div>
+                        <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                    </div>
                 </div>
             </div>
             }
             @else if(message.loggedInUserId === currentUserId) {
             <div class="common-chat-cont-cls" [id]="'msg-' + message.id">
                 <div class="com-dis-fl-cls your-chat-cls">
-                    <div class="common-chat-cls your-chat-cont-cls">{{message.message}}</div>
-                    <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                    <div class="common-chat-cls your-chat-cont-cls">
+                        <div class="message-text">{{message.message}}</div>
+                        <div class="time-cls">{{message.timeStamp | date:'shortTime'}}</div>
+                    </div>
                 </div>
             </div>
             }

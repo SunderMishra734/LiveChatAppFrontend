@@ -1,0 +1,19 @@
+<div class="chat-side-bar-main-cls">
+    <!-- Sidebar Section -->
+    <aside [class.mobile-hidden]="!showMobileHistory && isMobile()">
+        <app-ai-chat-sidebar (sessionSelected)="onSessionSelected($event)"></app-ai-chat-sidebar>
+    </aside>
+
+    <!-- Main Content Section -->
+    <div class="chat-main-cont-cls" [class.mobile-full]="showMobileHistory || !isMobile()">
+        <app-ai-chat-content 
+            [session]="selectedSession" 
+            (menuClicked)="toggleMobileHistory()">
+        </app-ai-chat-content>
+    </div>
+
+    <!-- Mobile Overlay -->
+    @if(showMobileHistory) {
+        <div class="mobile-overlay" (click)="toggleMobileHistory()"></div>
+    }
+</div>

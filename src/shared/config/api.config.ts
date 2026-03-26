@@ -38,4 +38,10 @@ export const URLS = Object({
     "UploadFile": `${baseUrl}/File/UploadFile`,
     "SubmitFeedback": `${baseUrl}/Settings/SubmitFeedback`,
 
+    // AI
+    "SendMessage": `${baseUrl}/AI/SendMessage`,
+    "GetAllSessions": `${baseUrl}/AI/GetAllSessions`,
+    "GetSessionMessages": `${baseUrl}/AI/GetSessionMessages`,
+    "RenameSession": `${baseUrl}/AI/RenameSession`,
+    "DeleteSession": `${baseUrl}/AI/DeleteSession`,
 });
