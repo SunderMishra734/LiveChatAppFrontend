@@ -9,7 +9,8 @@
     width: 80px;
     background-color: rgb(71, 73, 84);
     color: rgb(184, 193, 197);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15); /* Add depth */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+    /* Add depth */
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -18,22 +19,31 @@
 
 .lg-logo-cls {
     width: 100%;
-    height: 70px; /* Match header height */
+    height: 70px;
+    /* Match header height */
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separation */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* Subtle separation */
 }
 
 .logo-cls {
     width: 45px;
     height: 45px;
-    background: linear-gradient(135deg, rgb(47, 136, 154), rgb(32, 98, 112));
+    background: transparent;
     border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* Ensure rounded corners for the image */
+}
+
+.logo-img-cls {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .side-bar-cont-cls nav {
@@ -45,7 +55,8 @@
     justify-content: space-between;
 }
 
-.nav-top, .nav-bottom {
+.nav-top,
+.nav-bottom {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -97,12 +108,14 @@
 
 /* Active State Design */
 .active-nav-cls .nav-link {
-    background-color: rgba(47, 136, 154, 0.2); /* Brand color transparent */
+    background-color: rgba(47, 136, 154, 0.2);
+    /* Brand color transparent */
     color: rgb(113, 204, 222);
 }
 
 .active-nav-cls .common-icon-cls {
-    color: rgb(113, 204, 222); /* Active Icon Color */
+    color: rgb(113, 204, 222);
+    /* Active Icon Color */
 }
 
 /* Left Indicator Bar for Active Link */
@@ -121,11 +134,13 @@
 
 /* Logout specific styling */
 .logout-link:hover {
-    background-color: rgba(239, 68, 68, 0.15); /* Red tinted background */
+    background-color: rgba(239, 68, 68, 0.15);
+    /* Red tinted background */
 }
 
 .logout-link:hover .common-icon-cls {
-    color: #f87171; /* Red icon color on hover */
+    color: #f87171;
+    /* Red icon color on hover */
 }
 
 /* Base Icon setup */
@@ -163,7 +178,7 @@
 .header-sec-cls {
     height: 70px;
     /* Maintained original border color */
-    border-bottom: 4px solid rgb(102, 91, 193); 
+    border-bottom: 4px solid rgb(102, 91, 193);
     background-color: #ffffff;
     flex-shrink: 0;
 }
@@ -174,7 +189,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
 }
 
 /* Mobile element toggles */
@@ -191,7 +207,8 @@
     height: 30px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgb(113, 204, 222); /* Active color */
+    border: 2px solid rgb(113, 204, 222);
+    /* Active color */
 }
 
 /* Red hover state for logout button in popup */
@@ -203,7 +220,8 @@
 
 .main-section-cls {
     height: calc(100% - 70px);
-    background-color: #f9fafb; /* Light clean main background */
+    background-color: #f9fafb;
+    /* Light clean main background */
 }
 
 .main-section-cls main {
@@ -212,7 +230,8 @@
 
 .search-cont-cls {
     border: 1px solid #e5e7eb;
-    border-radius: 20px; /* Rounded pill search */
+    border-radius: 20px;
+    /* Rounded pill search */
     padding: 6px 16px;
     display: flex;
     align-items: center;
@@ -289,7 +308,7 @@
     color: rgb(255, 193, 7);
 }
 
-.edit-icon-cls:hover {  
+.edit-icon-cls:hover {
     background-color: rgba(255, 193, 7, 0.1);
 }
 
@@ -365,8 +384,15 @@
 }
 
 @keyframes popupFade {
-    0% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .profile-popup-header {
@@ -389,7 +415,7 @@
     justify-content: center;
     flex-shrink: 0;
     border: 3px solid #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .popup-img-cls {
@@ -460,6 +486,7 @@
 /* ========================================= */
 
 @media (max-width: 768px) {
+
     /* 1. Main Layout shifts to column */
     .home-cont-cls {
         flex-direction: column;
@@ -468,7 +495,8 @@
     /* 2. Main content takes top area, reserving 60px for bottom bar */
     .main-cont-cls {
         width: 100vw;
-        height: calc(100vh - 65px); /* Leave room for bottom nav */
+        height: calc(100vh - 65px);
+        /* Leave room for bottom nav */
     }
 
     /* 3. Sidebar transforms to Bottom Navigation Bar */
@@ -519,7 +547,7 @@
         width: 45px;
         height: 45px;
     }
-    
+
     .active-nav-cls::before {
         /* Move indicator from left edge to top edge for bottom bar */
         left: 50%;
@@ -535,15 +563,20 @@
     .header-sec-cls {
         height: auto;
         min-height: 60px;
-        padding: 12px 0 18px 0; /* Increased bottom padding for a white strip below search */
+        padding: 12px 0 18px 0;
+        /* Increased bottom padding for a white strip below search */
     }
+
     .main-section-cls {
-        height: calc(100% - 116px); /* adjust slightly for the increased padding */
+        height: calc(100% - 116px);
+        /* adjust slightly for the increased padding */
     }
-    
+
     .search-cont-cls {
-        display: none !important; /* Hide desktop search */
+        display: none !important;
+        /* Hide desktop search */
     }
+
     .header-sec-cls header {
         padding: 0 16px;
         flex-direction: column;
@@ -555,16 +588,18 @@
     .desktop-header-actions-cls {
         display: none !important;
     }
+
     .header-actions-wrapper {
         margin-left: 0 !important;
         width: 100%;
     }
-    
+
     .mobile-header-logo-cls {
         display: flex !important;
         flex-direction: column;
         width: 100%;
         margin-left: 0;
+        gap: 0.25rem;
     }
 
     .mobile-logo-wrap {
@@ -575,13 +610,15 @@
     }
 
     .mobile-brand-text {
-        font-size: 26px;
-        font-weight: 700;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
         background: linear-gradient(135deg, rgb(47, 136, 154), rgb(32, 98, 112));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
+        font-family: 'Inter', sans-serif;
     }
 
     .mobile-search-cont-cls {
@@ -608,7 +645,7 @@
 
     /* 5. Hide bottom nav (logout), distribute top nav evenly */
     .nav-bottom {
-        display: none !important; 
+        display: none !important;
     }
 
     .nav-top {

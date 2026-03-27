@@ -10,7 +10,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: .5rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -19,7 +19,7 @@
 
 ::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 .logo-cls {

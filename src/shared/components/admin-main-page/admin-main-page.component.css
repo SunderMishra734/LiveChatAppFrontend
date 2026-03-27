@@ -1,8 +1,9 @@
-:host {
-    display: block;
+.admin-main-page-cls {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     background-color: #f0f2f5;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .header-cls {
@@ -14,6 +15,7 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 }
 
 .header-cls span {
@@ -42,6 +44,8 @@
     padding: 24px;
     max-width: 100%; /* INCREASED TO FULL WIDTH */
     margin: 0;
+    flex: 1;
+    overflow: auto;
 }
 
 .create-cont-cls {

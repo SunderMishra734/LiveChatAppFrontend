@@ -30,6 +30,19 @@
     margin-top: 100px;
 }
 
+.logo-cls {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo-img-cls {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
 .logo-icon-cls {
     color: rgb(255, 255, 255);
     font-size: 30px;
