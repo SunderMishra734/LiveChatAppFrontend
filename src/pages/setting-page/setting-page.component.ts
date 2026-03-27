@@ -63,7 +63,7 @@ export class SettingPageComponent {
   faqs = [
     {
       question: '1. How do I create an account in LiveChatApp?',
-      answer: 'To create an account, open the registration page, enter your required details such as name, email, and password, and complete the verification process. Once registered, you can start chatting with other users.'
+      answer: 'To create a new account, please contact the admin. The admin will provide you with the necessary credentials or complete the registration process for you. Once your account is set up, you can log in and start chatting with other users.'
     },
     {
       question: '2. How can I change my profile information?',
@@ -71,19 +71,19 @@ export class SettingPageComponent {
     },
     {
       question: '3. How do I change my password?',
-      answer: 'Navigate to Settings → Security → Change Password. Enter your current password and your new password, then confirm the changes.'
+      answer: 'Navigate to Settings → Account → Change Password. Enter your current password and your new password, then confirm the changes.'
     },
     {
       question: '4. What should I do if I forget my password?',
-      answer: 'Click on Forgot Password on the login page and follow the instructions to reset your password using your registered email.'
+      answer: 'If you forget your password, please contact the admin. The admin will reset your password and provide you with a new one so you can log in again.'
     },
     {
       question: '5. How can I block or unblock a user?',
-      answer: 'Open the user\'s profile or chat options and select Block User. To unblock, go to Settings → Privacy → Blocked Users and remove the user from the blocked list.'
+      answer: 'Open the user\'s profile or chat options and select Block User. To unblock, go to Settings → Privacy → Blocked Contacts and remove the user from the blocked list.'
     },
     {
       question: '6. Can I delete my chat messages?',
-      answer: 'Yes, you can delete messages by selecting the message and choosing the Delete option. This will remove the message from your chat history.'
+      answer: 'Yes, you can delete chat messages by clicking on the three-dot menu and selecting the Delete Chat option. This will remove the chat from your chat history. Please note that this action is irreversible and will only delete the chat from your account, not from the recipient\'s account.'
     },
     {
       question: '7. How can I update my status?',
@@ -91,7 +91,7 @@ export class SettingPageComponent {
     },
     {
       question: '8. How can I report a problem in LiveChatApp?',
-      answer: 'If you encounter an issue, go to Help & Feedback → Contact Us and describe the problem. Our support team will review your request and assist you.'
+      answer: 'If you encounter an issue, go to Help & Feedback → Send feedback and describe the problem. Our support team will review your request and assist you.'
     },
     {
       question: '9. Is my data secure on LiveChatApp?',
