@@ -208,7 +208,12 @@ export class AdminMainPageComponent {
     this.isEditMode = false;
     this.isSaveMode = false;
     this.customerIdToUpdate = null;
-    this.customerForm.reset();
+    this.customerForm.reset({
+      isActive: true,
+      isExpired: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
   }
 
   private formatDateForInput(date: Date | string): string {
