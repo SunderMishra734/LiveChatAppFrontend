@@ -1,5 +1,4 @@
-export class Chat {
-}
+import { MessageType } from "./enums.enum";
 
 export class ChattingUser {
     id: number;
@@ -25,7 +24,7 @@ export class Messages {
     receiverId: number;
     text?: string;
     mediaUrl?: string;
-    messageType: 'text' | 'media' | 'system';
+    messageType: MessageType;
     timestamp: string;
     isRead: boolean;
 
@@ -34,7 +33,7 @@ export class Messages {
         this.senderId = 0;
         this.receiverId = 0;
         this.text = '';
-        this.messageType = 'text';
+        this.messageType = MessageType.Text;
         this.timestamp = '00:00';
         this.isRead = false;
     }
@@ -64,7 +63,7 @@ export interface MessageDto {
     loggedInUserId: number;
     contactUserId: number;
     message: string;
-    messageType: string;
+    messageType: MessageType;
     timeStamp: Date;
     isRead: boolean;
 }

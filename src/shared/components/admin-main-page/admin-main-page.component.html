@@ -37,8 +37,11 @@
         </div>
         <div>
           <label>Expiry Date: <span class="error">*</span></label>
-          <input formControlName="expiryDate" type="date" class="input-cls" [ngClass]="{'disable-cls':!isSaveMode}"
-            [disabled]="!isSaveMode" />
+          <div class="datepicker-cls">
+            <input matInput [matDatepicker]="picker" formControlName="expiryDate" [ngClass]="{'disable-cls':!isSaveMode}" [disabled]="!isSaveMode">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
           <div *ngIf="customerForm.get('expiryDate')?.invalid && customerForm.get('expiryDate')?.touched" class="error">
             Expiry date is required.</div>
         </div>
@@ -135,9 +138,11 @@
       <div>
         <div>
           <label>Role: <span class="error">*</span></label>
-          <select formControlName="ur" class="input-cls">
-            <option *ngFor="let role of userRoles" [value]="role.value">{{ role.key }}</option>
-          </select>
+          <mat-form-field>
+              <mat-select formControlName="ur" class="input-cls">
+                  <mat-option *ngFor="let role of userRoles" [value]="role.value">{{ role.key }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div>
           <label>Full Name: <span class="error">*</span></label>
@@ -153,15 +158,21 @@
         </div>
         <div>
           <label>Gender: <span class="error">*</span></label>
-          <select formControlName="gender" class="input-cls">
-            <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
-          </select>
+          <mat-form-field>
+              <mat-select formControlName="gender" class="input-cls">
+                  <mat-option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <div>
         <div>
           <label>Date of Birth: <span class="error">*</span></label>
-          <input formControlName="dob" type="date" class="input-cls">
+          <div class="datepicker-cls">
+            <input matInput [matDatepicker]="picker" formControlName="dob">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
           <div *ngIf="userForm.get('dob')?.invalid && userForm.get('dob')?.touched" class="error">Please select your date of birth.</div>
         </div>
       </div>
@@ -173,9 +184,86 @@
     }
     }
     @else {
-    <div class="create-cont-cls">
-      <div class="create-btn-cls" (click)="createCustomerFn()">Create Customer</div>
+    <div class="admin-controls-cls">
+      <div class="create-btn-cls" (click)="createCustomerFn()">
+        <i class="fa fa-plus" style="margin-right: 8px;"></i> Create Customer
+      </div>
+      <div class="view-toggle-cls">
+        <button [class.active]="viewMode === 'card'" (click)="toggleView()">
+          <i class="fa fa-th-large"></i> Card View
+        </button>
+        <button [class.active]="viewMode === 'table'" (click)="toggleView()">
+          <i class="fa fa-list"></i> Table View
+        </button>
+      </div>
     </div>
+
+    @if(viewMode === 'card'){
+    <div class="customer-grid-cls">
+      @for(customer of customers; track customer.id){
+      <div class="customer-card-cls">
+        <div class="card-status-cls">
+          <span class="status-badge" [class.active-badge]="customer.isActive" [class.inactive-badge]="!customer.isActive">
+            {{ customer.isActive ? 'Active' : 'Inactive' }}
+          </span>
+          <span class="expiry-badge" [class.expired-badge]="customer.isExpired" [class.valid-badge]="!customer.isExpired">
+            {{ customer.isExpired ? 'Expired' : 'Valid' }}
+          </span>
+        </div>
+        
+        <div class="card-header-content-cls">
+          <div class="customer-logo-cont">
+            @if(customer.logoURL){
+            <img [src]="customer.logoURL" alt="Logo">
+            }
+            @else {
+            <div class="logo-placeholder">{{ customer.name?.charAt(0) }}</div>
+            }
+          </div>
+          <div class="customer-main-info">
+            <h3 class="customer-name-txt">{{ customer.name }}</h3>
+            <span class="industry-badge">{{ customer.industryType }}</span>
+          </div>
+        </div>
+
+        <div class="card-details-cls">
+          <div class="detail-item">
+            <i class="fa fa-envelope-o"></i>
+            <span>{{ customer.email }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fa fa-phone"></i>
+            <span>{{ customer.contactNumber }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fa fa-map-marker"></i>
+            <span>{{ customer.city }}, {{ customer.country }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fa fa-calendar-o"></i>
+            <span>Expires: {{ customer.expiryDate | date:'mediumDate' }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer-cls">
+          <a [href]="customer.websiteURL" target="_blank" class="website-link" *ngIf="customer.websiteURL">
+            <i class="fa fa-external-link"></i> Website
+          </a>
+          <div class="card-actions-cls">
+            <button class="icon-btn edit-btn" (click)="editFn(customer)" title="Edit">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button class="icon-btn delete-btn" (click)="deleteFn(customer.id)" title="Delete">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+    @if(viewMode === 'table'){
     <div class="table-container overflow-auto">
       <table class="min-w-full text-sm">
         <thead>
@@ -225,6 +313,7 @@
         </tbody>
       </table>
     </div>
+    }
     }
   </div>
 </div>

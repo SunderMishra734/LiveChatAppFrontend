@@ -6,17 +6,29 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ToasterMessageComponent } from '../toaster-message/toaster-message.component';
 import { UserRole, Gender } from '../../../models/enums.enum';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-admin-main-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToasterMessageComponent],
+  imports: [
+    CommonModule, ReactiveFormsModule, ToasterMessageComponent,
+    MatFormFieldModule, MatSelectModule, MatInputModule, MatDatepickerModule, MatNativeDateModule,
+    MatCardModule, MatButtonModule
+  ],
   templateUrl: './admin-main-page.component.html',
-  styleUrl: './admin-main-page.component.css'
+  styleUrl: './admin-main-page.component.css',
 })
 export class AdminMainPageComponent {
   customers!: Customer[];
   isCEPageShow: boolean = false;
+  viewMode: 'card' | 'table' = 'card';
   isEditMode: boolean = false;
   isSaveMode: boolean = false;
   customerIdToUpdate: number | null = null;
@@ -252,7 +264,7 @@ export class AdminMainPageComponent {
     const formValue = this.userForm.value;
 
     const user: User = {
-      cId: this.customerIdToUpdate ?? 0,
+      corporateId: this.customerIdToUpdate ?? 0,
       userName: formValue.userName,
       email: formValue.email,
       ur: Number(formValue.ur),
@@ -280,5 +292,9 @@ export class AdminMainPageComponent {
   logoutFn() {
     this.adminService.clearAdminSession();
     this.router.navigate(['/admin/login']);
+  }
+
+  toggleView() {
+    this.viewMode = this.viewMode === 'card' ? 'table' : 'card';
   }
 }

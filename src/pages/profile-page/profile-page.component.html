@@ -79,9 +79,11 @@
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Gender</label>
-                    <select class="profile-input" formControlName="gender" [attr.disabled]="isDisable ? '' : null">
-                        <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</option>
-                    </select>
+                    <mat-form-field>
+                        <mat-select class="profile-input" formControlName="gender">
+                            <mat-option *ngFor="let gender of genders" [value]="gender.value">{{ gender.key }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Profile Status</label>
@@ -93,9 +95,11 @@
                 </div>
                 <div class="profile-form-group">
                     <label class="profile-label">Language</label>
-                    <select class="profile-input" formControlName="languagePreference" [attr.disabled]="isDisable ? '' : null">
-                        <option *ngFor="let l of language" [value]="l.value">{{ l.key }}</option>
-                    </select>
+                    <mat-form-field>
+                        <mat-select class="profile-input" formControlName="languagePreference" [attr.disabled]="isDisable ? '' : null">
+                            <mat-option *ngFor="let l of language" [value]="l.value">{{ l.key }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="profile-form-group full-width">
                     <label class="profile-label">Address</label>

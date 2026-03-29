@@ -24,3 +24,8 @@ export enum SenderType {
     User = 1,
     AI = 2
 }
+
+export enum MessageType {
+    Text = 0,
+    File = 1
+}

@@ -19,7 +19,7 @@ export interface Customer {
 }
 
 export interface User {
-    cId: number;
+    corporateId: number;
     userName: string;
     email: string;
     ur: number;

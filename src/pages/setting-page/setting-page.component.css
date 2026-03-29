@@ -296,15 +296,15 @@
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #107bea;
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px #107bea;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(20px);
 }
 
@@ -313,7 +313,7 @@ input:checked + .slider:before {
     border: 2px solid #ccc;
 }
 
-input:checked + .slider.round {
+input:checked+.slider.round {
     border-color: #107bea;
 }
 
@@ -328,7 +328,8 @@ input:checked + .slider.round {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(11, 20, 26, 0.85); /* Slightly darker for focus */
+    background-color: rgba(11, 20, 26, 0.85);
+    /* Slightly darker for focus */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -340,7 +341,8 @@ input:checked + .slider.round {
     background-color: #ffffff;
     width: 90%;
     max-width: 480px;
-    border-radius: 3px; /* WhatsApp style sharp edges */
+    border-radius: 3px;
+    /* WhatsApp style sharp edges */
     padding: 24px;
     box-shadow: 0 17px 50px 0 rgba(11, 20, 26, 0.19), 0 12px 15px 0 rgba(11, 20, 26, 0.24);
     animation: slideUp 0.15s ease-out;
@@ -414,13 +416,25 @@ input:checked + .slider.round {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* ========================================= */
@@ -440,12 +454,13 @@ input:checked + .slider.round {
     /* Stack the side-by-side inputs on mobile for Create User & Password */
     .common-side-inp-cont-cls {
         flex-direction: column;
-        gap: 0; 
+        gap: 0;
     }
 
     .common-side-inp-cls {
         width: 100%;
-        margin-bottom: 15px; /* Add spacing between stacked inputs */
+        margin-bottom: 15px;
+        /* Add spacing between stacked inputs */
     }
 
     .class-common-cont-cls {
@@ -456,7 +471,7 @@ input:checked + .slider.round {
         padding: 16px;
         margin-top: 20px;
     }
-    
+
     .settings-subview-header-cls {
         margin-bottom: 16px;
     }
@@ -951,7 +966,8 @@ input:checked + .slider.round {
     width: 90%;
     max-width: 400px;
     padding: 24px;
-    border-radius: 3px; /* WhatsApp style */
+    border-radius: 3px;
+    /* WhatsApp style */
     box-shadow: 0 17px 50px 0 rgba(11, 20, 26, 0.19), 0 12px 15px 0 rgba(11, 20, 26, 0.24);
 }
 
@@ -1157,4 +1173,75 @@ input:checked + .slider.round {
         font-size: 20px;
     }
 }
-
+
+::ng-deep.mdc-text-field {
+    padding: 0px !important;
+    position: inherit !important;
+}
+
+::ng-deep.mat-mdc-form-field {
+    width: 95%;
+}
+
+::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding: 0px !important;
+}
+
+::ng-deep.mat-mdc-form-field-infix {
+    min-height: 0px !important;
+    padding: 0px !important;
+}
+
+::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled){
+    background-color: inherit !important;
+}
+
+::ng-deep.select-inp-cls{
+    background-color: inherit !important;
+}
+
+/* Material Form Field Customization */
+::ng-deep .common-mat-form-field {
+    width: 95%;
+    display: block;
+}
+
+::ng-deep .common-mat-form-field .mat-mdc-text-field-wrapper {
+    padding: 0 12px !important;
+    height: 42px !important;
+    background-color: transparent !important;
+}
+
+::ng-deep .common-mat-form-field .mat-mdc-form-field-flex {
+    height: 40px !important;
+    align-items: center !important;
+}
+
+::ng-deep .common-mat-form-field .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+::ng-deep .common-mat-form-field .mat-mdc-select-value {
+    font-size: 15px !important;
+    color: #111b21 !important;
+}
+
+::ng-deep .common-mat-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+::ng-deep .common-mat-form-field .mdc-notched-outline__leading,
+::ng-deep .common-mat-form-field .mdc-notched-outline__notch,
+::ng-deep .common-mat-form-field .mdc-notched-outline__trailing {
+    border-color: #c4c6d0 !important;
+}
+
+::ng-deep .common-mat-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .common-mat-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .common-mat-form-field.mat-focused .mdc-notched-outline__trailing {
+    border-color: hsl(218, 81.8%, 56.9%) !important;
+    border-width: 1px !important;
+}

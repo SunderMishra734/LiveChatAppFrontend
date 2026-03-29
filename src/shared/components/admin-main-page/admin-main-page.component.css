@@ -42,7 +42,7 @@
 
 .main-body-cls {
     padding: 24px;
-    max-width: 100%; /* INCREASED TO FULL WIDTH */
+    max-width: 100%;
     margin: 0;
     flex: 1;
     overflow: auto;
@@ -83,13 +83,13 @@
     gap: 20px;
 }
 
-.create-edit-form > div {
+.create-edit-form>div {
     display: flex;
     gap: 20px;
     width: 100%;
 }
 
-.create-edit-form > div > div {
+.create-edit-form>div>div {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -124,7 +124,7 @@
     cursor: not-allowed;
 }
 
-/* Table Scrolling Fix - Compact Version */
+/* Table Scrolling Fix */
 .table-container {
     background-color: #ffffff;
     border-radius: 12px;
@@ -138,7 +138,7 @@
 
 table {
     width: 100%;
-    min-width: 1000px; /* Reduced min-width to minimize scrolling on medium screens */
+    min-width: 1000px;
     border-collapse: collapse;
 }
 
@@ -148,7 +148,7 @@ thead {
 }
 
 th {
-    padding: 12px 8px; /* REDUCED PADDING */
+    padding: 12px 8px;
     font-size: 12px;
     font-weight: 600;
     color: #54656f;
@@ -158,12 +158,12 @@ th {
 }
 
 td {
-    padding: 12px 8px; /* REDUCED PADDING */
+    padding: 12px 8px;
     font-size: 14px;
     color: #111b21;
     border-bottom: 1px solid #f0f2f5;
     white-space: nowrap;
-    max-width: 250px; /* Limit very long columns */
+    max-width: 250px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -264,31 +264,320 @@ tr:hover {
     color: #111b21;
 }
 
-/* Responsive Overrides */
-@media screen and (max-width: 768px) {
-    .main-body-cls {
-        padding: 16px;
-    }
+/* Datepicker Fix */
+.datepicker-cls {
+    display: flex;
+    width: 100%;
+    padding: 0px 0px 0px 10px;
+    border: 1px solid #d1d7db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 15px;
+    color: #111b21;
+    outline: none;
+    transition: border-color 0.2s;
+}
 
-    .create-edit-form {
-        padding: 20px;
-    }
+.datepicker-cls:focus-within {
+    border-color: rgb(47, 136, 154);
+}
 
-    .create-edit-form > div {
+.datepicker-cls input {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background-color: inherit;
+    font-size: 15px;
+    color: #111b21;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+/* Admin Controls & View Toggle */
+.admin-controls-cls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .admin-controls-cls {
         flex-direction: column;
-        gap: 15px;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .create-btn-cls {
+        justify-content: center;
     }
 
-    .header-cls span {
-        font-size: 18px;
+    .view-toggle-cls {
+        justify-content: center;
     }
 
-    .flex.gap-4.mt-6 {
-        flex-direction: column;
-        width: 100%;
+    .view-toggle-cls button {
+        flex: 1;
+        justify-content: center;
     }
+}
 
-    .flex.gap-4.mt-6 button {
-        width: 100%;
-    }
+.view-toggle-cls {
+    display: flex;
+    background-color: #e9edef;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.view-toggle-cls button {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #54656f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.view-toggle-cls button.active {
+    background-color: white;
+    color: rgb(47, 136, 154);
+    box-shadow: 0 1px 3px rgba(11, 20, 26, 0.1);
+}
+
+/* Customer Grid & Cards */
+.customer-grid-cls {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding-bottom: 24px;
+}
+
+.customer-card-cls {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(11, 20, 26, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    border: 1px solid #e9edef;
+}
+
+.customer-card-cls:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(11, 20, 26, 0.12);
+    border-color: rgba(47, 136, 154, 0.3);
+}
+
+.card-status-cls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-badge, .expiry-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.active-badge { background-color: rgba(0, 168, 132, 0.1); color: #00a884; }
+.inactive-badge { background-color: rgba(234, 0, 56, 0.1); color: #ea0038; }
+.expired-badge { background-color: #ea0038; color: white; }
+.valid-badge { background-color: #f0f2f5; color: #54656f; }
+
+.card-header-content-cls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.customer-logo-cont {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #f8fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid #e9edef;
+}
+
+.customer-logo-cont img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-placeholder {
+    font-size: 26px;
+    font-weight: 700;
+    color: rgb(47, 136, 154);
+}
+
+.customer-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.customer-name-txt {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111b21;
+}
+
+.industry-badge {
+    align-self: flex-start;
+    font-size: 11px;
+    color: #54656f;
+    background-color: #f0f2f5;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.card-details-cls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid #f0f2f5;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #54656f;
+}
+
+.detail-item i {
+    width: 16px;
+    text-align: center;
+    color: rgb(47, 136, 154);
+    font-size: 16px;
+}
+
+.card-footer-cls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.website-link {
+    font-size: 14px;
+    color: rgb(47, 136, 154);
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.website-link:hover { color: rgb(32, 98, 112); }
+
+.card-actions-cls {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-btn { background-color: rgba(47, 136, 154, 0.08); color: rgb(47, 136, 154); }
+.delete-btn { background-color: rgba(234, 0, 56, 0.08); color: #ea0038; }
+
+.edit-btn:hover { background-color: rgb(47, 136, 154); color: white; }
+.delete-btn:hover { background-color: #ea0038; color: white; }
+
+/* Material Form Field Customization */
+::ng-deep .admin-mat-form-field {
+    width: 100%;
+    display: block;
+}
+
+::ng-deep .admin-mat-form-field .mat-mdc-text-field-wrapper {
+    padding: 0px 12px !important;
+    height: 42px !important;
+    background-color: #ffffff !important;
+}
+
+::ng-deep .admin-mat-form-field .mat-mdc-form-field-flex {
+    height: 42px !important;
+    align-items: center !important;
+}
+
+::ng-deep .admin-mat-form-field .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+::ng-deep .admin-mat-form-field .mat-mdc-select-value {
+    font-size: 15px !important;
+    color: #111b21 !important;
+}
+
+::ng-deep .admin-mat-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+::ng-deep .admin-mat-form-field .mdc-notched-outline__leading,
+::ng-deep .admin-mat-form-field .mdc-notched-outline__notch,
+::ng-deep .admin-mat-form-field .mdc-notched-outline__trailing {
+    border-color: #d1d7db !important;
+}
+
+::ng-deep .admin-mat-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .admin-mat-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .admin-mat-form-field.mat-focused .mdc-notched-outline__trailing {
+    border-color: rgb(47, 136, 154) !important;
+    border-width: 1px !important;
+}
+
+/* Material Global Overrides for consistency */
+::ng-deep .mdc-text-field {
+    padding: 0px !important;
+    position: inherit !important;
+}
+
+::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding: 0px !important;
+}
+
+::ng-deep .mat-mdc-form-field-infix {
+    min-height: 0px !important;
+    padding: 0px !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: inherit !important;
 }

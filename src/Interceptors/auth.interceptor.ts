@@ -12,7 +12,7 @@ export class authInterceptor implements HttpInterceptor{
   constructor(private authService: AuthService, private router: Router, private adminService: AdminService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const isAdminRequest = req.url.includes('/Admin');
+    const isAdminRequest = req.url.includes('/Admin') || this.router.url.includes('/admin');
     const isLoginRequest = req.url.includes('/Auth/AdminLogin') || req.url.includes('/Auth/login');
 
     const token = isAdminRequest 

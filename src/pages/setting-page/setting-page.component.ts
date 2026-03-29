@@ -9,11 +9,12 @@ import { AuthService } from '../../services/auth.service';
 import { UserDetailDto } from '../../models/user-detail-dto';
 import { Router } from '@angular/router';
 import { BlockedUserDto } from '../../models/blocked-user-dto';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-setting-page',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, ToasterMessageComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, ToasterMessageComponent, MatSelectModule],
   templateUrl: './setting-page.component.html',
   styleUrl: './setting-page.component.css'
 })
