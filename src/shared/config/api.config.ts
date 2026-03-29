@@ -13,6 +13,7 @@ export const URLS = Object({
     "CreateCustomer": `${baseUrl}/Admin/CreateCustomer`,
     "UpdateCustomer": `${baseUrl}/Admin/UpdateCustomer`,
     "DeleteCustomer": `${baseUrl}/Admin/DeleteCustomer`,
+    "GetAdminUsers": `${baseUrl}/Admin/GetAdminUsers`,
 
     //Chat
     "GetAllChat": `${baseUrl}/Chat/GetAllChat`,

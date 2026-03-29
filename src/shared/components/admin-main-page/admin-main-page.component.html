@@ -118,6 +118,39 @@
         <button type="button" class="btn btn-primary" (click)="showAdminUserForm()">Create Admin User</button>
         }
       </div>
+
+      <!-- Admin Users List Section -->
+      <div *ngIf="isEditMode && adminUsers.length > 0" class="admin-users-section mt-8">
+        <h4 class="section-title">Associated Admin Users</h4>
+        <div class="admin-users-table-cont overflow-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Status</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of adminUsers">
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>{{ user.gender === 1 ? 'Male' : (user.gender === 2 ? 'Female' : 'Other') }}</td>
+                <td>
+                  <span class="status-badge" [class.active-badge]="user.accountStatus" [class.inactive-badge]="!user.accountStatus">
+                    {{ user.accountStatus ? 'Enabled' : 'Disabled' }}
+                  </span>
+                </td>
+                <td>{{ user.createdAt | date:'mediumDate' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </form>
     }
     @if(isAdminUserFormVisible){

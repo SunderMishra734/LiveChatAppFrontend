@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Customer, User } from '../../../models/customer';
+import { UserDetailDto } from '../../../models/user-detail-dto';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../services/admin.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +52,7 @@ export class AdminMainPageComponent {
   isAdminUserFormVisible: boolean = false;
   isCustomerFormVisible: boolean = true;
   userIdToUpdate: number | null = null;
+  adminUsers: UserDetailDto[] = [];
 
   constructor(private adminService: AdminService, private fb: FormBuilder, private router: Router) { }
 
@@ -182,6 +184,17 @@ export class AdminMainPageComponent {
       isExpired: customer.isExpired,
     });
     this.toggleFormControls(false);
+
+    if (customer.id) {
+      this.adminService.getAdminUsers(customer.id).subscribe({
+        next: (response) => {
+          this.adminUsers = response?.data || [];
+        },
+        error: (err) => {
+          this.adminUsers = [];
+        }
+      });
+    }
   }
 
   deleteFn(cutomerId: number) {
@@ -208,6 +221,7 @@ export class AdminMainPageComponent {
     this.isEditMode = false;
     this.isSaveMode = false;
     this.customerIdToUpdate = null;
+    this.adminUsers = [];
     this.customerForm.reset({
       isActive: true,
       isExpired: false,

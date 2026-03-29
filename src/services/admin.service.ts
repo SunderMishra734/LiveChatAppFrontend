@@ -42,6 +42,10 @@ export class AdminService {
     return this.apiService.post<any>(URLS.CreateUser, user);
   }
 
+  getAdminUsers(corporateId: number): Observable<any> {
+    return this.apiService.get<any>(URLS.GetAdminUsers, { corporateId });
+  }
+
   setAdminToken(token: string): void {
     if (this.isBrowser()) {
       localStorage.setItem('admintoken', token);

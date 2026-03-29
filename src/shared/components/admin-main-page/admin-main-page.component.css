@@ -581,3 +581,53 @@ tr:hover {
 ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: inherit !important;
 }
+
+/* Admin Users Section Styling */
+.admin-users-section {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    border-top: 1px dashed #d1d7db;
+    padding-top: 24px;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111b21;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 18px;
+    background-color: rgb(47, 136, 154);
+    border-radius: 2px;
+}
+
+.admin-users-table-cont {
+    background-color: #f8f9fa;
+    border: 1px solid #e9edef;
+    border-radius: 8px;
+}
+
+.admin-users-table-cont table th {
+    background-color: #ffffff;
+    border-bottom: 2px solid #e9edef;
+    padding: 10px 12px;
+}
+
+.admin-users-table-cont table td {
+    border-bottom: 1px solid #e9edef;
+    padding: 10px 12px;
+}
+
+.admin-users-table-cont table tr:last-child td {
+    border-bottom: none;
+}
