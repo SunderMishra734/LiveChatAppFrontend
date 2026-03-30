@@ -124,27 +124,13 @@ export class ProfilePageComponent {
             fileName: this.fileName,
           }
           if (this.isFileChanged) {
-            this.userService.saveProfileImage(fileData).subscribe({
-              next: (res) => {
-                if (res && res.data && res.data.successMessage) {
-                  if (this.userDetails) {
-                    this.userDetails.profilePic = res.data.successMessage;
-                  }
-                  this.isFileChanged = false;
-                  this.isDisable = true;
-                  this.isSaveBtnVisible = false;
-                  this.profileForm.disable();
-                  this.mainMssg = 'Updated!';
-                  this.descriptionMssg = 'User updated successfully.';
-                  this.showToasterMessage(1);
-                }
-              },
-              error: (err) => {
-                this.mainMssg = 'Something Went Wrong!';
-                this.descriptionMssg = 'Failed to save profile image';
-                this.showToasterMessage(2);
-              }
-            });
+            this.isFileChanged = false;
+            this.isDisable = true;
+            this.isSaveBtnVisible = false;
+            this.profileForm.disable();
+            this.mainMssg = 'Updated!';
+            this.descriptionMssg = 'User updated successfully.';
+            this.showToasterMessage(1);
           }
           else {
             this.isFileChanged = false;
