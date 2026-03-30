@@ -63,11 +63,6 @@ export class UserService {
     return this.apiService.post(url, userDetails);
   }
 
-  saveProfileImage(fileData: any): Observable<any> {
-    const url = URLS.SaveFile;
-    return this.apiService.post(url, fileData);
-  }
-
   deleteProfileImage(fileData: any): Observable<any> {
     const url = URLS.DeleteFile;
     return this.apiService.post(url, fileData);

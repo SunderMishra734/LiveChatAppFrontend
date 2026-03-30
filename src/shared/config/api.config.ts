@@ -34,9 +34,8 @@ export const URLS = Object({
     "UnblockUser": `${baseUrl}/User/UnblockUser`,
 
     //Settings
-    "SaveFile": `${baseUrl}/File/SaveFile`,
-    "DeleteFile": `${baseUrl}/File/DeleteFile`,
     "UploadFile": `${baseUrl}/File/UploadFile`,
+    "DeleteFile": `${baseUrl}/File/DeleteFile`,
     "SubmitFeedback": `${baseUrl}/Settings/SubmitFeedback`,
 
     // AI
