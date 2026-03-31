@@ -1,5 +1,5 @@
 <main class="home-cont-cls">
-    <aside class="side-bar-cont-cls">
+    <aside class="side-bar-cont-cls" [class.mobile-nav-hidden]="isChatActive">
         <header>
             <div class="lg-logo-cls">
                 <div class="logo-cls">
@@ -76,7 +76,7 @@
             </ul>
         </nav>
     </aside>
-    <div class="main-cont-cls">
+    <div class="main-cont-cls" [class.mobile-full-height]="isChatActive">
         <section class="header-sec-cls">
             <header>
                 @if(isSearchVisible) {

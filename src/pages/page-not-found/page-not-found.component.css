@@ -1,6 +1,6 @@
 .nf-cont-cls {
     position: relative;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgb(71, 73, 84);
 }
 

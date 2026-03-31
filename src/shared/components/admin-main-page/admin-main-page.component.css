@@ -1,7 +1,7 @@
 .admin-main-page-cls {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     background-color: #f0f2f5;
     overflow: hidden;
 }

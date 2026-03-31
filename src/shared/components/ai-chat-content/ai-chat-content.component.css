@@ -2,6 +2,10 @@
     display: none !important;
 }
 
+.mobile-back-btn-cls {
+    display: none;
+}
+
 /* Theme Variables adopted from regular chat */
 .chat-main-head-cont-cls {
     width: 100%;
@@ -280,9 +284,29 @@
     animation: bounce 1.4s infinite ease-in-out both;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .mobile-only {
         display: block !important;
+    }
+
+    .header-ai-icon-group {
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Tight grouping of arrow and avatar */
+    }
+    
+    .mobile-back-btn-cls {
+        display: block !important;
+        font-size: 20px;
+        color: #54656f;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .mobile-back-btn-cls:hover {
+        background-color: rgba(11, 20, 26, 0.05);
     }
     
     .chat-main-content-cont-cls {
@@ -292,3 +316,5 @@
         max-width: 92%;
     }
 }
+
+

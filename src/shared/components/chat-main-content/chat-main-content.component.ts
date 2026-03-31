@@ -62,6 +62,7 @@ export class ChatMainContentComponent {
     this.signalRService.receiveMessages(messageDtoData => {
       if (this.currentUserId == messageDtoData.loggedInUserId && this.loggedInUserId == messageDtoData.contactUserId) {
         this.messages?.push(messageDtoData);
+        this.scrollToBottom();
       }
     });
 
@@ -100,7 +101,6 @@ export class ChatMainContentComponent {
       this.newMessage = chatInput.innerText.trim();
       if (this.newMessage) {
         this.sendMessage();
-        this.scrollToBottom();
         // clear input
         chatInput.innerHTML = '';
       }
@@ -110,7 +110,6 @@ export class ChatMainContentComponent {
     this.newMessage = chatInput.innerText.trim();
     if (this.newMessage) {
       this.sendMessage();
-      this.scrollToBottom();
       // clear input
       chatInput.innerHTML = '';
     }
@@ -129,6 +128,7 @@ export class ChatMainContentComponent {
             this.messages?.push(res.data);
             this.signalRService.sendMessage(res.data);
             this.messageSent.emit(res.data);
+            this.scrollToBottom();
           }
         },
         error: (error) => {
@@ -158,9 +158,11 @@ export class ChatMainContentComponent {
   }
 
   private scrollToBottom(): void {
-    if (this.messageContainer) {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    }
+    setTimeout(() => {
+      if (this.messageContainer) {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }
+    }, 100);
   }
 
   getMessagesGroupedByDate(): { dateLabel: string; messages: MessageDto[] }[] {

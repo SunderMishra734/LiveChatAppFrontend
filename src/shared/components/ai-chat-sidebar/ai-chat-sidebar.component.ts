@@ -29,6 +29,7 @@ export class AiChatSidebarComponent implements OnInit {
   @ViewChild('renameInput') renameInput!: ElementRef;
 
   @Output() sessionSelected = new EventEmitter<AIChatSessionDto | null>();
+  @Output() exitAi = new EventEmitter<void>();
 
   constructor(private aiChatService: AiChatService, private sharedUserService: SharedUserService) { }
 

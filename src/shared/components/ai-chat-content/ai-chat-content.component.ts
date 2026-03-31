@@ -15,6 +15,7 @@ import { SenderType } from '../../../models/enums.enum';
 export class AiChatContentComponent implements OnChanges, AfterViewChecked {
   @Input() session: AIChatSessionDto | null = null;
   @Output() menuClicked = new EventEmitter<void>();
+  @Output() backClicked = new EventEmitter<void>();
   messages: AIChatMessageDto[] = [];
   newMessage: string = '';
   isLoading: boolean = false;

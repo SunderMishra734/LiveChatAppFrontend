@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100dvh;
     /* Theme Compliant Background */
     background-color: #474954;
     font-family: 'Inter', sans-serif;
@@ -315,7 +315,7 @@
 @media (max-width: 899px) {
     .lg-main-cont-cls {
         height: auto;
-        min-height: 100vh;
+        min-height: 100dvh;
         overflow: auto;
         padding: 40px 20px;
     }

@@ -1,6 +1,6 @@
 .lg-main-cont-cls {
     display: flex;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgb(71, 73, 84);
     font-size: 16px;
 }
