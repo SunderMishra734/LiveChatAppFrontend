@@ -15,7 +15,7 @@ export class SignalrService {
 
   startConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.hubUrl}/chatHub`)
+      .withUrl(`${environment.apiUrl}/chatHub`)
       .withAutomaticReconnect()
       .build();
 
